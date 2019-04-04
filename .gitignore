@@ -32,7 +32,9 @@
 *.app
 
 # Figs and movies
-
 *.png
 *.avi
 *.mp4
+#
+# time dirs
+[0-9]*

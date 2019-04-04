@@ -149,7 +149,7 @@ void volumes(Triangulation& T) {
     Point c2 = CGAL::centroid(poly_vertices2.begin() , poly_vertices2.end(),
 				CGAL::Dimension_tag<0>());
     
-    fv->set_centroid( c2 );
+    fv->centroid.set( c2 );
     
     totalV += area;
 

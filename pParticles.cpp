@@ -67,8 +67,8 @@ int main() {
 
       cout << " : disp " << displ << endl ;
 
-      //algebra.w_equation();
-      algebra.solve_for_weights();
+      algebra.w_equation();
+      //algebra.solve_for_weights();
       //volumes( T ); 
 
       if( displ < 1e-8) break;
@@ -80,8 +80,8 @@ int main() {
     }
 
     FT displ = move( T , dt , d0 );
-    //algebra.w_equation();
-    algebra.solve_for_weights();
+    algebra.w_equation();
+    //algebra.solve_for_weights();
     //volumes( T ); 
 
     update_full_vel( T );

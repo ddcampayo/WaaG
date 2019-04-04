@@ -116,8 +116,8 @@ private:
 //   scalar_link nabla_;   // vertices linked by discrete laplacian
 //   scalar_link Delta_;   // vertices linked by discrete laplacian
 //   vector_link grad_;    // idem grad (vector)
+
   Polygon poly_;
-  Point centroid_;
 
 public:
 
@@ -133,8 +133,6 @@ public:
 
   Polygon poly() const {return poly_;}
   void set_poly(Polygon& pp)  { poly_ = pp ;}
-  Point centroid() const {return centroid_;}
-  void set_centroid(Point& pp)  { centroid_ = pp;}
   
   scalar_field p;          // pressure
   scalar_field vol;
@@ -150,6 +148,9 @@ public:
   // FT w() { return this->point().weight(); }
   scalar_field w0;
   scalar_field w;
+
+  point_field  centroid;
+
   
   //  weight_field w;
 

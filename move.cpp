@@ -190,6 +190,82 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
 
 
+FT move_from_centroid(Triangulation& T, const FT dt ) {
+
+  cout << "Moving nodes from centroids ... " << endl;
+  
+  copy_weights( T );
+  
+  vector<data_kept> prev;
+
+  FT dd=0;
+
+  //  bool first=true;
+
+  for(F_v_it fv=T.finite_vertices_begin();
+      fv!=T.finite_vertices_end();
+      fv++) {
+
+    int idx = fv->idx();
+    
+    data_kept data(fv);
+
+    if(idx < 0 ) {
+      
+      data.pos = fv->point().point(); 
+
+      prev.push_back (data);
+
+      continue;
+
+    }
+    
+    Vector_2  vel = fv->U();
+
+    Vector_2 disp = dt * vel;
+
+    Point r0 = fv->centroid.val();
+
+    Point rnew= r0 + disp;
+
+    FT rel_disp = sqrt(disp.squared_length() ) / simu.h();
+
+    dd += rel_disp;
+
+    data.pos = rnew;
+
+    data.Dr = disp;
+
+    prev.push_back (data);
+
+  }
+  
+  cout << " moved. Relative displacement: " <<
+    sqrt(dd)/simu.no_of_particles()/simu.h()   ;
+  dd /= simu.no_of_particles();
+
+  cout << " . Mean displacement: " << dd << endl ;
+
+  T.clear(); // clears the triangulation !!
+
+  for(vector<data_kept>::iterator data=prev.begin();
+      data!=prev.end();
+      data++) {
+
+    //    cout << "Inserting back at " << data->pos << endl ;
+    
+    Vertex_handle fv=T.insert(   wPoint( data->pos , data->w )  );
+
+    data->restore(fv);
+
+  }
+
+  return dd;
+}
+
+
+
+
 
 void move_weights( Triangulation& T )
 {

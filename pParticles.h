@@ -89,6 +89,7 @@ void backup( Triangulation& Tp );
 void copy_weights( Triangulation& Tp );
 void move_weights( Triangulation& Tp );
 void update_full_vel(  Triangulation& Tp );
+FT move_from_centroid(Triangulation& T, const FT dt );
 
 
 
