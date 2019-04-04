@@ -768,6 +768,33 @@ linear_w_equation.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_w_equation.cpp.s
 .PHONY : linear_w_equation.cpp.s
 
+lloyds.o: lloyds.cpp.o
+
+.PHONY : lloyds.o
+
+# target to build an object file
+lloyds.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/lloyds.cpp.o
+.PHONY : lloyds.cpp.o
+
+lloyds.i: lloyds.cpp.i
+
+.PHONY : lloyds.i
+
+# target to preprocess a source file
+lloyds.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/lloyds.cpp.i
+.PHONY : lloyds.cpp.i
+
+lloyds.s: lloyds.cpp.s
+
+.PHONY : lloyds.s
+
+# target to generate assembly for a file
+lloyds.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/lloyds.cpp.s
+.PHONY : lloyds.cpp.s
+
 move.o: move.cpp.o
 
 .PHONY : move.o
@@ -822,32 +849,32 @@ number.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles.o: pParticles.cpp.o
+pParticles_dG.o: pParticles_dG.cpp.o
 
-.PHONY : pParticles.o
+.PHONY : pParticles_dG.o
 
 # target to build an object file
-pParticles.cpp.o:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles.cpp.o
-.PHONY : pParticles.cpp.o
+pParticles_dG.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.o
+.PHONY : pParticles_dG.cpp.o
 
-pParticles.i: pParticles.cpp.i
+pParticles_dG.i: pParticles_dG.cpp.i
 
-.PHONY : pParticles.i
+.PHONY : pParticles_dG.i
 
 # target to preprocess a source file
-pParticles.cpp.i:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles.cpp.i
-.PHONY : pParticles.cpp.i
+pParticles_dG.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.i
+.PHONY : pParticles_dG.cpp.i
 
-pParticles.s: pParticles.cpp.s
+pParticles_dG.s: pParticles_dG.cpp.s
 
-.PHONY : pParticles.s
+.PHONY : pParticles_dG.s
 
 # target to generate assembly for a file
-pParticles.cpp.s:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles.cpp.s
-.PHONY : pParticles.cpp.s
+pParticles_dG.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.s
+.PHONY : pParticles_dG.cpp.s
 
 volumes.o: volumes.cpp.o
 
@@ -944,15 +971,18 @@ help:
 	@echo "... linear_w_equation.o"
 	@echo "... linear_w_equation.i"
 	@echo "... linear_w_equation.s"
+	@echo "... lloyds.o"
+	@echo "... lloyds.i"
+	@echo "... lloyds.s"
 	@echo "... move.o"
 	@echo "... move.i"
 	@echo "... move.s"
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles.o"
-	@echo "... pParticles.i"
-	@echo "... pParticles.s"
+	@echo "... pParticles_dG.o"
+	@echo "... pParticles_dG.i"
+	@echo "... pParticles_dG.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"

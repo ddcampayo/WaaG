@@ -12,7 +12,6 @@ void linear::w_equation( ) {
   cout << "Solving weight equation " << endl;
   
   volumes( T );
-  copy_weights( T );
 
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
 
@@ -44,7 +43,7 @@ void linear::w_equation( ) {
   
     //    copy_weights( T ) ;
 
-  VectorXd w0  = field_to_vctr( sfield_list::w ) ;
+  VectorXd w0  = field_to_vctr( sfield_list::w0 ) ;
 
   vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
 

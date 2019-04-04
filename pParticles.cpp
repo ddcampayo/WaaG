@@ -80,9 +80,9 @@ int main() {
     }
 
     FT displ = move( T , dt , d0 );
-    algebra.w_equation();
+    //    algebra.w_equation();
     //algebra.solve_for_weights();
-    //volumes( T ); 
+    volumes( T ); 
 
     update_full_vel( T );
     

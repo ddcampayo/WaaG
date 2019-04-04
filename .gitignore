@@ -6,6 +6,7 @@
 *.lo
 *.o
 *.obj
+CMakeFiles/*
 
 # Precompiled Headers
 *.gch
@@ -36,5 +37,7 @@
 *.avi
 *.mp4
 #
-# time dirs
+# time dirs and logs, backups
 [0-9]*
+*log
+*~

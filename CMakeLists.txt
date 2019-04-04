@@ -72,7 +72,10 @@ add_executable( pPart
 		fields.cpp
 		linear_p_equation.cpp
 		linear_w_equation.cpp
-		pParticles.cpp
+		pParticles_dG.cpp
+		lloyds.cpp
+# choice of main file:
+# 		pParticles_other.cpp	
 )
 
 add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart )

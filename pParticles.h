@@ -83,6 +83,7 @@ void draw_diagram(Triangulation& T,  const std::string file_name  ) ;
 void create(Triangulation& Tp, const FT& LL) ;
 void volumes(Triangulation& T) ;
 void number(Triangulation& T);
+FT lloyds(Triangulation& T) ;
 
 FT move(Triangulation& Tp, const FT dt , FT& dd0 ) ;
 void backup( Triangulation& Tp );
