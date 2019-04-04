@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Figs and movies
+
+*.png
+*.avi
