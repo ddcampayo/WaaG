@@ -6,7 +6,6 @@
 #include"linear.h"
 #include"simu.h"
 
-
 sim_data simu;
 
 int main() {
