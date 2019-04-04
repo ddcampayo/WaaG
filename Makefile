@@ -849,32 +849,32 @@ number.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles_dG.o: pParticles_dG.cpp.o
+pParticles_w.o: pParticles_w.cpp.o
 
-.PHONY : pParticles_dG.o
+.PHONY : pParticles_w.o
 
 # target to build an object file
-pParticles_dG.cpp.o:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.o
-.PHONY : pParticles_dG.cpp.o
+pParticles_w.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_w.cpp.o
+.PHONY : pParticles_w.cpp.o
 
-pParticles_dG.i: pParticles_dG.cpp.i
+pParticles_w.i: pParticles_w.cpp.i
 
-.PHONY : pParticles_dG.i
+.PHONY : pParticles_w.i
 
 # target to preprocess a source file
-pParticles_dG.cpp.i:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.i
-.PHONY : pParticles_dG.cpp.i
+pParticles_w.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_w.cpp.i
+.PHONY : pParticles_w.cpp.i
 
-pParticles_dG.s: pParticles_dG.cpp.s
+pParticles_w.s: pParticles_w.cpp.s
 
-.PHONY : pParticles_dG.s
+.PHONY : pParticles_w.s
 
 # target to generate assembly for a file
-pParticles_dG.cpp.s:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_dG.cpp.s
-.PHONY : pParticles_dG.cpp.s
+pParticles_w.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_w.cpp.s
+.PHONY : pParticles_w.cpp.s
 
 volumes.o: volumes.cpp.o
 
@@ -980,9 +980,9 @@ help:
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles_dG.o"
-	@echo "... pParticles_dG.i"
-	@echo "... pParticles_dG.s"
+	@echo "... pParticles_w.o"
+	@echo "... pParticles_w.i"
+	@echo "... pParticles_w.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"
