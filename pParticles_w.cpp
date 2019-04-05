@@ -99,7 +99,7 @@ int main() {
 
       algebra.u_add_press_grad( dt2 );
 
-      //algebra.w_equation();
+      //      algebra.w_equation();
       algebra.solve_for_weights();
       //volumes( T ); 
 
@@ -107,10 +107,13 @@ int main() {
 
     }
 
+
+    copy_weights( T ) ;
+
     FT displ = move( T , dt , d0 );
     //    algebra.w_equation();
-    //algebra.solve_for_weights();
-    volumes( T ); 
+    algebra.solve_for_weights();
+    //volumes( T ); 
 
     update_full_vel( T );
     
