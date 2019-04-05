@@ -35,9 +35,11 @@ void linear::w_equation( ) {
   
   //  VectorXd divDr( 0*vol ) ;//
 
-  VectorXd divDr  =  DD_scalar_vfield( vfield_list::Dr );
+//  VectorXd divDr  =  DD_scalar_vfield( vfield_list::Dr );
   
-  VectorXd Dw = Delta_solver.solve( divDr );
+//  VectorXd Dw = Delta_solver.solve( divDr );
+  VectorXd vol00  = field_to_vctr( sfield_list::vol0 ) ;
+  VectorXd Dw = Delta_solver.solve( vol - vol00 );
 
   //  cout << "Dw " << Dw << endl;
   
