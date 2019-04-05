@@ -33,13 +33,15 @@ void linear::w_equation( ) {
   
   // div of displacement:
   
-  //  VectorXd divDr( 0*vol ) ;//
 
 //  VectorXd divDr  =  DD_scalar_vfield( vfield_list::Dr );
-  
 //  VectorXd Dw = Delta_solver.solve( divDr );
-  VectorXd vol00  = field_to_vctr( sfield_list::vol0 ) ;
-  VectorXd Dw = Delta_solver.solve( vol - vol00 );
+
+//  VectorXd vol00  = field_to_vctr( sfield_list::vol0 ) ;
+//  VectorXd Dw = Delta_solver.solve( vol - vol00 );
+
+  VectorXd Dvol  = vol.array() - target_vol_val ;
+  VectorXd Dw = Delta_solver.solve( Dvol );
 
   //  cout << "Dw " << Dw << endl;
   

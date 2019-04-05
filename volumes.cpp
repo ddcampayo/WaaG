@@ -157,13 +157,17 @@ void volumes(Triangulation& T) {
 
   cout << "Volumes computed; total V = " << totalV << " ; ";
 
-  totalV = 0;
-
+  FT  inner_V = 0;
+  int inner   = 0;
+  
+  
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++)
-    if (fv->idx() > 0 )
-      totalV +=  fv->vol.val();
+    if (fv->idx() > 0 ) {
+      inner_V +=  fv->vol.val();
+      ++inner;
+    }
 
   cout << "inner V = " << totalV << " ; ";
 

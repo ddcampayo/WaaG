@@ -28,7 +28,7 @@ int main() {
   // Init loop!
   
   const int max_iter = 100;
-  const FT tol2 = 1e-3;
+  const FT tol2 = 1e-2;
   int iter=0;
 
   for( ; iter < max_iter ; ++iter) {
@@ -51,7 +51,6 @@ int main() {
   set_vels_Gresho( T );
 
   volumes( T ); 
-
   
   FT d0;
   FT dt=0.001;
