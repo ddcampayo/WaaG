@@ -9,6 +9,14 @@ sim_data simu;
 
 int main() {
 
+  const int init_iter=2;
+  const FT  init_tol2 = 1e-2;
+
+  const int inner_iter=10;
+  const FT  inner_tol = 1e-3;
+
+  const FT total_time = 1/( 2 * 3.14 * 0.2) ;
+
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
 
@@ -16,7 +24,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //ysimu.do_perturb(0.01);
+  //simu.do_perturb(0.01);
   create( T , 1.0 );
   number( T );
 
@@ -27,11 +35,9 @@ int main() {
 
   // Init loop!
   
-  const int max_iter = 100;
-  const FT tol2 = 1e-2;
   int iter=0;
 
-  for( ; iter < max_iter ; ++iter) {
+  for( ; iter < init_iter ; ++iter) {
   
     volumes( T ); 
 
@@ -42,9 +48,11 @@ int main() {
     FT dd = lloyds( T ) ;
 
     cout << " init loop , iter " << iter << " dd = " << dd << endl;
-    if( dd < tol2) break;
+    if( dd < init_tol2) break;
 
   }
+
+  copy_weights( T ) ;
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   
@@ -61,10 +69,12 @@ int main() {
 
   simu.set_dt( dt );
 
-  FT total_time = 1/( 2 * 3.14 * 0.2) ;
 
-  algebra.solve_for_weights();
+  //  algebra.solve_for_weights();
 
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+  
   std::ofstream log_file;
   log_file.open("main.log");
 
@@ -76,54 +86,62 @@ int main() {
 
     volumes( T ); 
 
+    copy_weights( T ) ;
+    
     //  volumes( T );
     //  algebra.fill_Delta();
   
     algebra.u_star( );
 
-    int iter = 0;
-
-    copy_weights( T ) ;
+    int iter = 1;
 
     // half-step corrector loop
-    for ( ; iter < 40 ; iter++) {
-      cout << "Iter  " << iter << "  ";
-  
+    for ( ; iter <= inner_iter ; iter++) {
+
       FT displ = move( T , dt2 , d0 );
 
       cout << " : disp " << displ << endl ;
 
+      cout
+	<< "Iter  " << iter
+	<< " : disp " << displ << endl ;
+
+      
       volumes( T ); 
 
       algebra.p_equation( dt2 );
-
       algebra.u_add_press_grad( dt2 );
 
-      //      algebra.w_equation();
-      algebra.solve_for_weights();
+      algebra.w_equation();
+      //algebra.solve_for_weights();
       //volumes( T ); 
 
-      if( displ < 1e-8) break;
-
+      if( displ < inner_tol ) break;
+      
     }
-
 
     copy_weights( T ) ;
 
     FT displ = move( T , dt , d0 );
+
+    cout
+      << "Whole step  "
+      << " : disp " << displ << endl ;
+
     //    algebra.w_equation();
-    algebra.solve_for_weights();
-    //volumes( T ); 
+    //algebra.solve_for_weights();
+    volumes( T ); 
 
     update_full_vel( T );
-    
+
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 
     log_file
       << simu.current_step() << "  "
-      << simu.time() << "  " << " iters  "
-      << iter
+      << simu.time() << "  "
+      << " iters = " << iter
+      << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;
 
     

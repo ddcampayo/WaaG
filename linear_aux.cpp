@@ -7,7 +7,7 @@
 void linear::u_star( void ) {
   VectorXd usx, usy;
   
-  vfield_to_vctrs( vfield_list::U , usx, usy );
+  vfield_to_vctrs( vfield_list::U0 , usx, usy );
 
   vctrs_to_vfield( usx, usy, vfield_list::Ustar );
 

@@ -92,11 +92,9 @@ void move_weights( Triangulation& Tp );
 void update_full_vel(  Triangulation& Tp );
 FT move_from_centroid(Triangulation& T, const FT dt );
 
-
-
 void set_vels_rotating(Triangulation& T);
 void set_vels_Lamb_Oseen(Triangulation& T) ;
 void set_vels_Gresho(Triangulation& T) ;
-
+FT L2_vel_Gresho( Triangulation& T) ;
 
 #endif

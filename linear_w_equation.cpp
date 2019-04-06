@@ -13,6 +13,8 @@ void linear::w_equation( ) {
   
   volumes( T );
 
+  //  copy_weights( T ) ;
+
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
 
   FT totV= vol.sum();
@@ -32,29 +34,28 @@ void linear::w_equation( ) {
   fill_Delta_DD();
   
   // div of displacement:
-  
-
-//  VectorXd divDr  =  DD_scalar_vfield( vfield_list::Dr );
-//  VectorXd Dw = Delta_solver.solve( divDr );
+  VectorXd divDr  =  DD_scalar_vfield( vfield_list::Dr );
+  VectorXd Dw = Delta_solver.solve( divDr );
 
 //  VectorXd vol00  = field_to_vctr( sfield_list::vol0 ) ;
 //  VectorXd Dw = Delta_solver.solve( vol - vol00 );
 
-  VectorXd Dvol  = vol.array() - target_vol_val ;
-  VectorXd Dw = Delta_solver.solve( Dvol );
+  // given by volume departure
+  //VectorXd Dvol  = vol.array() - target_vol_val ;
+  //VectorXd Dw = Delta_solver.solve( Dvol );
 
   //  cout << "Dw " << Dw << endl;
   
     //    copy_weights( T ) ;
 
   VectorXd w0  = field_to_vctr( sfield_list::w0 ) ;
-
+  
   vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
 
 //    volumes( T ); // ??
 
   move_weights( T );
-
+  
   volumes( T );
 
   VectorXd vol0( vol );

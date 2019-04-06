@@ -15,14 +15,17 @@ void linear::p_equation(const FT dt ) {
 
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
 
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
   // Approximate Laplacian ~ Delta 
-  VectorXd p =  Delta_solver.solve( divUstar );
+  //  VectorXd p =  Delta_solver.solve( divUstar );
   // times (-0.5), because the Laplacian is approximated by -2 Delta / V
-  vctr_to_field( -0.5 * p / dt ,  sfield_list::p ) ;
+  //vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
   //  Laplacian as div of grad :
-  //VectorXd p =  LL_solver.solve( divUstar );
-  //vctr_to_field( p / dt ,  sfield_list::p ) ;
+  VectorXd p =  LL_solver.solve( divUstar );
+  vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
   return;
 }
@@ -43,8 +46,11 @@ void linear::u_add_press_grad( const FT dt ) {
 
   VectorXd U_x, U_y;
 
-  U_x = Ustar_x.array() - dt * gradPx.array() / vol.array();
-  U_y = Ustar_y.array() - dt * gradPy.array() / vol.array();
+  FT ddt = dt;
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  U_x = Ustar_x.array() - ddt * gradPx.array() / vol.array();
+  U_y = Ustar_y.array() - ddt * gradPy.array() / vol.array();
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
