@@ -19,13 +19,13 @@ void linear::p_equation(const FT dt ) {
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
   // Approximate Laplacian ~ Delta 
-  //  VectorXd p =  Delta_solver.solve( divUstar );
+  VectorXd p =  Delta_solver.solve( divUstar );
   // times (-0.5), because the Laplacian is approximated by -2 Delta / V
-  //vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+  vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
   //  Laplacian as div of grad :
-  VectorXd p =  LL_solver.solve( divUstar );
-  vctr_to_field( p / ddt ,  sfield_list::p ) ;
+  //  VectorXd p =  LL_solver.solve( divUstar );
+  //vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
   return;
 }

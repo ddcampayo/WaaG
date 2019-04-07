@@ -9,13 +9,16 @@ sim_data simu;
 
 int main() {
 
-  const int init_iter=2;
+
+  // TODO: read parameter file
+  
+  const int init_iter = 10;
   const FT  init_tol2 = 1e-2;
 
-  const int inner_iter=10;
+  const int inner_iter= 10;
   const FT  inner_tol = 1e-3;
 
-  const FT total_time = 1/( 2 * 3.14 * 0.2) ;
+  const FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -106,16 +109,16 @@ int main() {
 	<< "Iter  " << iter
 	<< " : disp " << displ << endl ;
 
-      
       volumes( T ); 
 
       algebra.p_equation( dt2 );
       algebra.u_add_press_grad( dt2 );
 
-      algebra.w_equation();
-      //algebra.solve_for_weights();
+      //algebra.w_equation();
+      algebra.solve_for_weights();
       //volumes( T ); 
 
+      
       if( displ < inner_tol ) break;
       
     }
@@ -128,8 +131,8 @@ int main() {
       << "Whole step  "
       << " : disp " << displ << endl ;
 
-    //    algebra.w_equation();
-    //algebra.solve_for_weights();
+    //algebra.w_equation();
+    algebra.solve_for_weights();
     volumes( T ); 
 
     update_full_vel( T );
