@@ -17,7 +17,7 @@ path='./'
 
 LL= 1
 
-for n in range(1,2000000+skip,skip):
+for n in range(0,2000000+skip,skip):
     plt.clf()
     dt=np.loadtxt(path+str(n)+'/particles.dat')
  

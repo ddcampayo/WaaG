@@ -12,7 +12,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iter = 10;
+  const int init_iter = 0;
   const FT  init_tol2 = 1e-2;
 
   const int inner_iter= 10;
@@ -112,16 +112,17 @@ int main() {
       volumes( T ); 
 
       algebra.p_equation( dt2 );
-      algebra.u_add_press_grad( dt2 );
+      //      algebra.u_add_press_grad( dt2 );
 
       //algebra.w_equation();
-      algebra.solve_for_weights();
-      //volumes( T ); 
+      //algebra.solve_for_weights();
+      volumes( T ); 
 
       
       if( displ < inner_tol ) break;
       
     }
+    algebra.u_add_press_grad( dt2 );
 
     copy_weights( T ) ;
 
@@ -132,7 +133,7 @@ int main() {
       << " : disp " << displ << endl ;
 
     //algebra.w_equation();
-    algebra.solve_for_weights();
+    //algebra.solve_for_weights();
     volumes( T ); 
 
     update_full_vel( T );
