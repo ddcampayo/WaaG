@@ -160,7 +160,6 @@ void volumes(Triangulation& T) {
   FT  inner_V = 0;
   int inner   = 0;
   
-  
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++)

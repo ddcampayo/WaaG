@@ -112,7 +112,7 @@ int main() {
       volumes( T ); 
 
       algebra.p_equation( dt2 );
-      //      algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad( dt2 );
 
       //algebra.w_equation();
       //algebra.solve_for_weights();
@@ -122,7 +122,7 @@ int main() {
       if( displ < inner_tol ) break;
       
     }
-    algebra.u_add_press_grad( dt2 );
+    //    algebra.u_add_press_grad( dt2 );
 
     copy_weights( T ) ;
 
