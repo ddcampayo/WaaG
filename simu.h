@@ -13,11 +13,16 @@ class sim_data
     return nn;
   }
 
-  void set_totalV (FT totalV ) {
+  void set_totalV (const FT totalV ) {
     totalV_ = totalV;
-    meanV_  = totalV / FT( no_of_particles_ );
   }
 
+  void set_innerV (const FT innerV ) {
+    innerV_ = innerV;
+    meanV_  = innerV / FT( no_of_particles_ );
+  }
+
+  
   FT totalV() const {
     return totalV_;
   }
@@ -66,6 +71,7 @@ private:
   FT pert_rel_;
 
   FT totalV_;
+  FT innerV_;
   FT  meanV_;
 
   

@@ -35,6 +35,7 @@ class linear {
   void w_equation( );
   void p_equation(const FT dt );
   void u_star( void );
+  void reset_p( void );
   void u_add_press_grad( const FT dt ) ;
   
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );  

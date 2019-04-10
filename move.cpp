@@ -56,7 +56,7 @@ void update_full_vel( Triangulation& T ) {
 
 FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
-  cout << "Moving nodes ... " << endl;
+  //  cout << "Moving nodes ... " << endl;
   
   copy_weights( T );
   
@@ -124,13 +124,13 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
   }
 
-  cout << " moved. Relative displacement: " <<
-    sqrt(dd2)/simu.no_of_particles()/simu.h()   ;
+  // cout << " moved. Relative displacement: " <<
+  //   sqrt(dd2)/simu.no_of_particles()/simu.h()   ;
 
-  dd2 /= simu.no_of_particles();
-  dd0 /= simu.no_of_particles();
+  dd2 /= simu.no_of_particles()*simu.h();
+  dd0 /= simu.no_of_particles()*simu.h();
 
-  cout << " . Mean displacement: " << dd2 << endl ;
+  //  cout << " . Mean displacement: " << dd2 << endl ;
 
   T.clear(); // clears the triangulation !!
 

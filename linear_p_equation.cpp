@@ -11,11 +11,11 @@ void linear::p_equation(const FT dt ) {
 
   cout << "Solving pressure equation " << endl;
   
-  fill_Delta_DD(); // This may be important -- or not
+  //  fill_Delta_DD(); // This may be important -- or not
 
   FT ddt = dt;
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-
+  
   // A
   // Approximate Laplacian ~ Delta 
   //  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
@@ -25,30 +25,35 @@ void linear::p_equation(const FT dt ) {
 
   // B
   //  Laplacian as div of grad :
-  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  VectorXd p =  LL_solver.solve( divUstar );
-   vctr_to_field( p / ddt ,  sfield_list::p ) ;
+  //  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  //  VectorXd p =  LL_solver.solve( divUstar );
+  // vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
   // C
-  // As B, but Dvol source
+  // As B, but Dvol source. This is an _iterative_ procedure,
+  // yielding a pressure change
 
-  // volumes( T );
+  volumes( T );
 
-  // VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
 
-  // FT target_vol_val =  simu.meanV() ;
+  //  FT target_vol_val =  simu.meanV() ;
   
-  // VectorXd Dvol = vol.array() - target_vol_val  ;
+  //  VectorXd Dvol = vol.array() - target_vol_val  ;
+  VectorXd Dvol = vol.array() - vol0.array()  ;
 
-  // FT Dvol_sigma = Dvol.array().square().sum() / FT( vol.size() );
+  FT Dvol_sigma = Dvol.array().square().sum() / FT( vol.size() );
 
-  // cout << "Pressure  "
-  //      << " rel Dvol variance " << Dvol_sigma
-  //      << endl;
+  cout << "Pressure  "
+       << " rel Dvol variance " << Dvol_sigma
+       << endl;
 
-  // VectorXd p  =  LL_solver.solve( Dvol );
-    
-  // vctr_to_field( p / ( ddt * ddt) ,  sfield_list::p ) ;
+  VectorXd Dp  =  LL_solver.solve( Dvol );
+
+  VectorXd p0  = field_to_vctr( sfield_list::p ) ;
+  
+  vctr_to_field( p0 + Dp / ( ddt * ddt) ,  sfield_list::p ) ;
 
   return;
 }

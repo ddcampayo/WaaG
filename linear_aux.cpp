@@ -15,3 +15,13 @@ void linear::u_star( void ) {
 }
 
 
+void linear::reset_p( void ) {
+
+  VectorXd p = field_to_vctr( sfield_list::p );
+
+  vctr_to_field( 0*p , sfield_list::p );
+
+  return;
+}
+
+

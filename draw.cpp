@@ -4,14 +4,14 @@
 void draw(Triangulation& T,  const std::string file_name  ) {
 
 
-  cout << "draw on step  "<< simu.current_step() << endl;
+  //  cout << "draw on step  "<< simu.current_step() << endl;
 
   std::stringstream  mkdir;
   std::stringstream  dirname;
 
   dirname << simu.current_step();
   mkdir << "mkdir -p "  << dirname.str();
-  cout << "running : " << mkdir.str() << endl;
+  //  cout << "running : " << mkdir.str() << endl;
   system(mkdir.str().c_str());
 
     // std::stringstream  cp_cfg;
@@ -22,7 +22,7 @@ void draw(Triangulation& T,  const std::string file_name  ) {
   std::stringstream  namefile;
   namefile << simu.current_step() << '/' << file_name;
 
-  cout << "writing on file : " << namefile.str() << endl;
+  //  cout << "writing on file : " << namefile.str() << endl;
   std::ofstream main_data;
   main_data.open(namefile.str().c_str() );
 
@@ -45,14 +45,14 @@ void draw(Triangulation& T,  const std::string file_name  ) {
 
 void draw_diagram(Triangulation& T,  const std::string file_name  ) {
 
-  cout << "draw on step  "<< simu.current_step() << endl;
+  //  cout << "draw on step  "<< simu.current_step() << endl;
 
   std::stringstream  mkdir;
   std::stringstream  dirname;
     
   dirname << simu.current_step();
   mkdir << "mkdir -p "  << dirname.str();
-  cout << "running : " << mkdir.str() << endl;
+  //cout << "running : " << mkdir.str() << endl;
   system(mkdir.str().c_str());
 
     // std::stringstream  cp_cfg;
@@ -63,7 +63,7 @@ void draw_diagram(Triangulation& T,  const std::string file_name  ) {
   std::stringstream  namefile;
   namefile << simu.current_step() << '/' << file_name;
 
-  cout << "writing on file : " << namefile.str() << endl;
+  //cout << "writing on file : " << namefile.str() << endl;
   std::ofstream main_data;
   main_data.open(namefile.str().c_str() );
 

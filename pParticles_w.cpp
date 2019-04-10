@@ -16,7 +16,7 @@ int main() {
   const FT  init_tol2 = 1e-2;
 
   const int inner_iter= 10;
-  const FT  inner_tol = 1e-3;
+  const FT  inner_tol = 1e-6;
 
   const FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
@@ -76,6 +76,7 @@ int main() {
   //  algebra.solve_for_weights();
 
   draw( T , particle_file     );
+
   draw_diagram( T , diagram_file );
   
   std::ofstream log_file;
@@ -85,10 +86,12 @@ int main() {
     simu.next_step();
     simu.advance_time( );
 
-    backup( T );
-
     volumes( T ); 
 
+    backup( T );
+
+    algebra.reset_p();
+    
     copy_weights( T ) ;
     
     //  volumes( T );
@@ -103,11 +106,14 @@ int main() {
 
       FT displ = move( T , dt2 , d0 );
 
-      cout << " : disp " << displ << endl ;
-
       cout
+	<< "********" << endl
 	<< "Iter  " << iter
-	<< " : disp " << displ << endl ;
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
+	<< endl ;
+
+      if( displ < inner_tol ) break;
 
       volumes( T ); 
 
@@ -118,8 +124,6 @@ int main() {
       //algebra.solve_for_weights();
       volumes( T ); 
 
-      
-      if( displ < inner_tol ) break;
       
     }
     //    algebra.u_add_press_grad( dt2 );

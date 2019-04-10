@@ -155,7 +155,7 @@ void volumes(Triangulation& T) {
 
   }
 
-  cout << "Volumes computed; total V = " << totalV << " ; ";
+  cout << "Volumes: total = " << totalV << " ; ";
 
   FT  inner_V = 0;
   int inner   = 0;
@@ -168,11 +168,12 @@ void volumes(Triangulation& T) {
       ++inner;
     }
 
-  cout << "inner V = " << totalV << " ; ";
+  cout << "inner = " << inner_V << " ; ";
 
   simu.set_totalV( totalV );
+  simu.set_innerV( inner_V );
 
-  cout << "mean V = " << simu.meanV() << endl;
-  
+  cout << "mean inner V = " << simu.meanV() << endl;
+
   
 }

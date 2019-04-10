@@ -76,7 +76,8 @@ add_executable( pPart
 # choice of main file:
 # 		pParticles_other.cpp	
 #		pParticles_dG.cpp
-		pParticles_w.cpp
+#		pParticles_w.cpp
+		pParticles_p.cpp
 )
 
 add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart )
