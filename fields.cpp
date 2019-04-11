@@ -118,7 +118,7 @@ FT L2_vel_Gresho( Triangulation& T) {
     FT y=vit->point().y();
 
     Vector_2 U0 = Gresho_v( x , y) ;
-    Vector_2 U  = vit->U.val( );
+    Vector_2 U  = vit->U.val();
     L2 += ( U - U0 ).squared_length();
     ++nn;
     

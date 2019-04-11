@@ -13,7 +13,7 @@ int main() {
   // TODO: read parameter file
   
   const int init_iters = 0;
-  const FT  init_tol2 = 1e-2;
+  const FT  init_tol2 = 1e-3;
 
   const int inner_iters= 100;
   const FT  inner_tol  = 1e-6;
@@ -81,7 +81,8 @@ int main() {
   std::ofstream log_file;
   log_file.open("main.log");
 
-  
+  volumes( T ); 
+
   do {
     simu.next_step();
     simu.advance_time( );
@@ -89,8 +90,6 @@ int main() {
     volumes( T ); 
 
     backup( T );
-
-    //    algebra.reset_p();
     
     copy_weights( T ) ;
     
@@ -102,12 +101,6 @@ int main() {
     // half-step corrector loop
     for ( ; iter <= inner_iters ; iter++) {
 
-      algebra.u_star( );
-
-      algebra.fill_Delta_DD();
-
-      algebra.u_add_press_grad( dt2 );
-
       FT displ = move( T , dt2 , d0 );
 
       cout
@@ -117,12 +110,18 @@ int main() {
 	" ; from original (rel.): " << d0
 	<< endl ;
 
-      volumes( T ); 
-      
       if( displ < inner_tol ) break;
+
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
+
+      algebra.u_star( );
 
       algebra.p_equation( dt2 );
 
+      algebra.u_add_press_grad( dt2 );
+      
       //algebra.w_equation();
       //algebra.solve_for_weights();
       //      volumes( T ); 

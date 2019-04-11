@@ -33,30 +33,37 @@ void linear::p_equation(const FT dt ) {
   // As B, but Dvol source. This is an _iterative_ procedure,
   // yielding a pressure change
 
-  volumes( T );
+  //  volumes( T );
 
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
-  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
 
-  //  FT target_vol_val =  simu.meanV() ;
-  
-  //  VectorXd Dvol = vol.array() - target_vol_val  ;
+  //FT target_vol_val =  simu.meanV() ;
+
+  //  FT target_vol_val = vol.array().sum() / FT( vol.size() );
+  //VectorXd Dvol = vol.array() - target_vol_val  ;
+
+  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
   VectorXd Dvol = vol.array() - vol0.array()  ;
 
-  FT Dvol_sigma = Dvol.array().square().sum() / FT( vol.size() );
+  FT Dvol_sigma =  Dvol.array().square().sum() ; // / FT( vol.size() );
+  FT Dvol_mean  =  vol.array().square().sum() ; // / FT( vol.size() );
 
   cout << "Pressure  "
-       << " rel Dvol variance " << Dvol_sigma
+       << " rel Dvol std dev: " << sqrt( Dvol_sigma / Dvol_mean )
        << endl;
 
   VectorXd Dp  =  LL_solver.solve( Dvol );
 
   VectorXd p0  = field_to_vctr( sfield_list::p ) ;
   
-  vctr_to_field( p0 + Dp / ( ddt * ddt) ,  sfield_list::p ) ;
+  vctr_to_field( p0 + Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
+  //  vctr_to_field( vol , sfield_list::vol0 );
 
   return;
 }
+
+
 
 
 void linear::u_add_press_grad( const FT dt ) {
@@ -77,8 +84,8 @@ void linear::u_add_press_grad( const FT dt ) {
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
-  U_x = Ustar_x.array() - ddt * gradPx.array() / vol.array();
-  U_y = Ustar_y.array() - ddt * gradPy.array() / vol.array();
+  U_x = Ustar_x.array() - ddt * gradPx.array() / vol.array()  ;
+  U_y = Ustar_y.array() - ddt * gradPy.array() / vol.array() ;
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 

@@ -83,6 +83,7 @@ public:
     switch(sf)
       {
       case sfield_list::p : return p;
+      case sfield_list::p0 : return p0;
       case sfield_list::vol0 : return vol0;
       case sfield_list::vol  : return vol;
       case sfield_list::w    : return w;
@@ -135,6 +136,7 @@ public:
   void set_poly(Polygon& pp)  { poly_ = pp ;}
   
   scalar_field p;          // pressure
+  scalar_field p0;
   scalar_field vol;
   scalar_field vol0;
 

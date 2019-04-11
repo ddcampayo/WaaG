@@ -25,6 +25,7 @@ void backup( Triangulation& T ) {
       fv++) {
     fv->vol0.set( fv->vol.val()  );
     fv->w0.set(   fv->w()  );
+    fv->p0.set(   fv->p()  );
     fv->U0.set(   fv->U()  );
     fv->r0.set(   fv->point().point() );
   }
