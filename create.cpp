@@ -8,7 +8,7 @@ void create(Triangulation& T, const FT& LL) {
 
   typedef CGAL::Creator_uniform_2<FT,Point> Creator;
 
-  int Nb = 20; //simu_N_side() ;
+  int Nb = 50; //simu_N_side() ;
   typedef std::vector<Point> vctP;
   vctP points;
 

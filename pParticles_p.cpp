@@ -28,7 +28,7 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   //simu.do_perturb(0.01);
-  create( T , 1.0 );
+  create( T , 1.4 );
   number( T );
 
   //  set_vels_rotating( T );
