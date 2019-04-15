@@ -28,7 +28,7 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   //simu.do_perturb(0.01);
-  create( T , 1.4 );
+  create( T , 1.0 );
   number( T );
 
   //  set_vels_rotating( T );
@@ -68,9 +68,13 @@ int main() {
 
   cin >> dt ;
 
-  FT dt2 = dt / 2.0 ;
-
   simu.set_dt( dt );
+
+  // half-step leapfrog
+//  FT dt2 = dt / 2.0 ;
+
+  // whole step
+  FT dt2 = dt  ;
 
   //  algebra.solve_for_weights();
 
@@ -95,13 +99,34 @@ int main() {
     
     //  volumes( T );
     //  algebra.fill_Delta();
+
+    algebra.reset_p();
   
     int iter = 1;
 
+//    algebra.fill_Delta_DD();
+
+    algebra.u_star( );
+
+    FT displ = move( T , dt2 , d0 );
+
     // half-step corrector loop
     for ( ; iter <= inner_iters ; iter++) {
+      volumes( T ); 
 
-      FT displ = move( T , dt2 , d0 );
+      algebra.fill_Delta_DD();
+
+      algebra.p_equation( dt2 );
+
+      // whole step, special 1st time
+      if( simu.current_step() == 1 ){
+      algebra.u_add_press_grad( dt / 2 );
+      }  else 
+      {
+      algebra.u_add_press_grad( dt2 );
+      }
+
+      displ = move( T , dt2 , d0 );
 
       cout
 	<< "********" << endl
@@ -112,16 +137,6 @@ int main() {
 
       if( displ < inner_tol ) break;
 
-      volumes( T ); 
-
-      algebra.fill_Delta_DD();
-
-      algebra.u_star( );
-
-      algebra.p_equation( dt2 );
-
-      algebra.u_add_press_grad( dt2 );
-      
       //algebra.w_equation();
       //algebra.solve_for_weights();
       //      volumes( T ); 
@@ -129,10 +144,13 @@ int main() {
       
     }
     //    algebra.u_add_press_grad( dt2 );
+//    draw( T , particle_file     );
+//    draw_diagram( T , diagram_file );
+//    return 0;
 
     copy_weights( T ) ;
 
-    FT displ = move( T , dt , d0 );
+    displ = move( T , dt , d0 );
 
     cout
       << "Whole step  "
@@ -142,7 +160,8 @@ int main() {
     //algebra.solve_for_weights();
     volumes( T ); 
 
-    update_full_vel( T );
+    // half-step:
+//    update_full_vel( T );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
