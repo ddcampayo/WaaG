@@ -1,7 +1,38 @@
 #include"pParticles.h"
 #include"simu.h"
 
+
 // #define WARNING
+
+typedef vector<Point> vvP;
+
+
+// second moment of area wrt p -- Ix + Iy
+// https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
+FT moi( const Point& p , const vvP& vs ) {
+
+  FT mm = 0;
+
+  for(int i=0 ; i < vs.size() - 1 ; i++ ) {
+    Vector_2 pi = vs[i  ] - p ;
+    Vector_2 pj = vs[i+1] - p ;
+
+    FT xi= pi.x();
+    FT yi= pi.y();
+
+    FT xj= pj.x();
+    FT yj= pj.y();
+
+    
+    mm +=
+      (      xi*xi + yi*yi +
+	     xj*xj + yj*yj +
+	     xi*xj + yi*yj ) *
+      ( xi * yj - xj * yi ) / 12 ;
+  }
+
+  return mm;
+}
 
 // Compute Voronoi volumes (i.e. areas, in 2D)
 //
@@ -23,7 +54,6 @@ void volumes(Triangulation& T) {
 
     first--; // avoid last one entirely
     
-    typedef vector<Point> vvP;
 
     vvP poly_vertices;
 
@@ -150,9 +180,11 @@ void volumes(Triangulation& T) {
 				CGAL::Dimension_tag<0>());
     
     fv->centroid.set( c2 );
-    
+
     totalV += area;
 
+    fv->I.set( moi( fv->point().point() ,  poly_vertices2  ) );
+    
   }
 
   cout << "Volumes: total = " << totalV << " ; ";

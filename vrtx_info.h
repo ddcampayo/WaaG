@@ -153,6 +153,8 @@ public:
 
   point_field  centroid;
 
+  scalar_field I;  // second moment of area
+
   
   //  weight_field w;
 

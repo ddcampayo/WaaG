@@ -56,7 +56,9 @@ private:
   SpMat Delta;
   SpMat DDx, DDy;
   SpMat LL;
-
+  SpMat MMx, MMy;
+  SpMat NN;
+  
   VectorXd field_to_vctr(const sfield_list::take sf );
   void vctr_to_field(const VectorXd& vv, const sfield_list::take sf  );
   void vfield_to_vctrs(const vfield_list::take vf , VectorXd& vx, VectorXd& vy ) ;
@@ -70,6 +72,7 @@ private:
 #else
   Eigen::SimplicialLDLT<SpMat> Delta_solver;
   Eigen::SimplicialLDLT<SpMat> LL_solver;
+  Eigen::SimplicialLDLT<SpMat> NN_solver;
 #endif
 #else
   Eigen::BiCGSTAB<SpMat> solver_stiffp1;
