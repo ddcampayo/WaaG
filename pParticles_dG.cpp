@@ -61,7 +61,7 @@ int main() {
 
   simu.set_dt( dt );
   
-  move_from_centroid( T , dt);
+//  move_from_centroid( T , dt);
 
   draw( T , particle_file);
   draw_diagram( T , diagram_file );
@@ -76,6 +76,12 @@ int main() {
     simu.advance_time( );
 
     backup( T );
+
+    move_from_centroid( T , dt);
+     
+    algebra.solve_for_weights();
+
+    copy_weights( T ) ;
 
     volumes( T ); 
   
@@ -92,11 +98,6 @@ int main() {
     algebra.p_equation( dt );
 
     algebra.u_add_press_grad( dt );
-
-    move_from_centroid( T , dt);
-     
-    algebra.solve_for_weights();
-    copy_weights( T ) ;
 
     //volumes( T ); 
 
