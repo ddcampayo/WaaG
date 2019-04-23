@@ -11,7 +11,6 @@ sim_data simu;
 
 int main() {
 
-
   // TODO: read parameter file
   
   const int init_iters = 0;
@@ -73,10 +72,10 @@ int main() {
   simu.set_dt( dt );
 
   // half-step leapfrog
-//  FT dt2 = dt / 2.0 ;
+  FT dt2 = dt / 2.0 ;
 
   // whole step
-  FT dt2 = dt  ;
+  //FT dt2 = dt  ;
 
   //  algebra.solve_for_weights();
 
@@ -135,7 +134,7 @@ int main() {
 
       cout
 	<< "********" << endl
-	<< "Iter  " << iter
+	<< "P Iter  " << iter
 	<< " . Moved from previous (rel.): " << displ <<
 	" ; from original (rel.): " << d0
 	<< endl ;
@@ -148,18 +147,9 @@ int main() {
 
       
     }
-    //    algebra.u_add_press_grad( dt2 );
-//    draw( T , particle_file     );
-//    draw_diagram( T , diagram_file );
-//    return 0;
 
     volumes( T ); 
 
-    draw( T , particle_file     );
-    draw_diagram( T , diagram_file );    
-
-    simu.next_step();
-    simu.advance_time( );
     
     //   moment of inertia (s)   iteration
 
@@ -190,7 +180,7 @@ int main() {
 
       cout
 	<< "********" << endl
-	<< "Iter  " << iter
+	<< "S Iter  " << iter
 	<< " . Moved from previous (rel.): " << displ <<
 	" ; from original (rel.): " << d0
 	<< endl ;
@@ -199,23 +189,17 @@ int main() {
       
     }
 
-      volumes( T ); 
+    volumes( T ); 
 
-    draw( T , particle_file     );
-    draw_diagram( T , diagram_file );    
-
-    return 0;
- 
     copy_weights( T ) ;
 
-    displ = move( T , dt , d0 );
+    //    displ = move( T , dt , d0 );
+    displ = move( T , dt2 , d0 );
 
     cout
       << "Whole step  "
       << " : disp " << displ << endl ;
 
-    //algebra.w_equation();
-    //algebra.solve_for_weights();
     volumes( T ); 
 
     // half-step:
