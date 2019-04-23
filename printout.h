@@ -8,4 +8,6 @@ main_data
 << vit->U.val() << "  "   //  5, 6
 << vit->Ustar.val() << "  "   //  7, 8
 << vit->p.val() << "  "   //  9
+<< vit->s.val() << "  "   //  10
+<< vit->I.val() << "  "   //  11
 << endl;

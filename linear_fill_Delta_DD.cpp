@@ -245,7 +245,7 @@ void linear::fill_Delta_DD(void){
   NN_solver.compute( NN );
 
   if( NN_solver.info() != Eigen::Success ) {
-    std::cout << "Failure decomposing LL matrix " << endl;
+    std::cout << "Failure decomposing NN matrix " << endl;
   }
   
   

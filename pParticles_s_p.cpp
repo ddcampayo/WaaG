@@ -17,7 +17,7 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 100;
+  const int inner_iters= 40;
   const FT  inner_tol  = 1e-6;
 
   const FT total_time =  1/( 2 * 3.14 * 0.2) ;
@@ -153,21 +153,24 @@ int main() {
 //    draw_diagram( T , diagram_file );
 //    return 0;
 
+    volumes( T ); 
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );    
 
     simu.next_step();
     simu.advance_time( );
-
     
     //   moment of inertia (s)   iteration
-    
-    //    algebra.u_star( );
+
+    backup( T );
+
+    algebra.u_star( );
 
     displ = move( T , dt2 , d0 );
 
-    // half-step corrector loop
+    iter=0;
+    
     for ( ; iter <= inner_iters ; iter++) {
       volumes( T ); 
 
@@ -195,6 +198,8 @@ int main() {
       if( displ < inner_tol ) break;
       
     }
+
+      volumes( T ); 
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );    

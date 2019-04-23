@@ -52,10 +52,10 @@ void linear::MM_times_sfield(const sfield_list::take from ,
 			     VectorXd& Dx,VectorXd& Dy)
 {
 
-  VectorXd p = field_to_vctr( from );
+  VectorXd s = field_to_vctr( from );
 
-  Dx = -MMx.transpose() * p;
-  Dy = -MMy.transpose() * p;
+  Dx = -MMx.transpose() * s;
+  Dy = -MMy.transpose() * s;
 
   return;
 }

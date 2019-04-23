@@ -6,7 +6,7 @@
 
 // Solve for s field
 
-void linear::p_equation(const FT dt ) {
+void linear::s_equation(const FT dt ) {
 
   cout << "Solving s equation " << endl;
   
@@ -19,20 +19,15 @@ void linear::p_equation(const FT dt ) {
   //  volumes( T );
 
   VectorXd I  = field_to_vctr( sfield_list::I ) ;
+  VectorXd I0  = field_to_vctr( sfield_list::I0 ) ;
 
-  //FT target_vol_val =  simu.meanV() ;
-
-  //  FT target_vol_val = vol.array().sum() / FT( vol.size() );
-  //VectorXd Dvol = vol.array() - target_vol_val  ;
-
-  VectorXd I0  = field_to_vctr( sfield_list::vol0 ) ;
   VectorXd DI = I.array() - I0.array()  ;
 
-  FT DI_sigma =  DI.array().square().sum() ; // / FT( vol.size() );
-  FT DI_mean  =  I.array().square().sum() ; // / FT( vol.size() );
+  FT DI_sigma =  DI.array().square().sum() ;
+  FT I_mean  =  I.array().square().sum() ;
 
   cout << " s field  "
-       << " rel DI std dev: " << sqrt( DI_sigma / DI_mean )
+       << " rel DI std dev: " << sqrt( DI_sigma / I_mean )
        << endl;
 
   VectorXd Ds  =  NN_solver.solve( DI );
@@ -56,8 +51,8 @@ void linear::u_add_s_grad( const FT dt ) {
 
   MM_times_sfield( sfield_list::s  ,  gradsx, gradsy);
 
-  VectorXd I  = field_to_vctr( sfield_list::I );
-  
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+
   VectorXd Ustar_x, Ustar_y;
 
   vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
