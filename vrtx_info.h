@@ -88,6 +88,8 @@ public:
       case sfield_list::vol  : return vol;
       case sfield_list::w    : return w;
       case sfield_list::w0   : return w0;//  return this->point().weight();
+      case sfield_list::I   : return I;
+      case sfield_list::I0   : return I0;
       default : return vol;
       }
   }
@@ -154,7 +156,7 @@ public:
   point_field  centroid;
 
   scalar_field I;  // second moment of area
-
+  scalar_field I0;
   
   //  weight_field w;
 

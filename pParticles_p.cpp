@@ -1,5 +1,6 @@
 // pParticles
 // no weigths are used, basically
+// Pressure is used in order to enforce incompressibility
 
 #include"pParticles.h"
 #include"linear.h"

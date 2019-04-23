@@ -12,10 +12,10 @@ typedef vector<Point> vvP;
 FT moi( const Point& p , const vvP& vs ) {
 
   FT mm = 0;
-
-  for(int i=0 ; i < vs.size() - 1 ; i++ ) {
-    Vector_2 pi = vs[i  ] - p ;
-    Vector_2 pj = vs[i+1] - p ;
+  int N = vs.size();
+  for(int i=0 ; i < N ; i++ ) {
+    Vector_2 pi = vs[  i         ] - p ;
+    Vector_2 pj = vs[ (i+1 ) % N ] - p ;
 
     FT xi= pi.x();
     FT yi= pi.y();
@@ -23,12 +23,9 @@ FT moi( const Point& p , const vvP& vs ) {
     FT xj= pj.x();
     FT yj= pj.y();
 
+    FT area = ( xi * yj - xj * yi ) / 2 ;
     
-    mm +=
-      (      xi*xi + yi*yi +
-	     xj*xj + yj*yj +
-	     xi*xj + yi*yj ) *
-      ( xi * yj - xj * yi ) / 12 ;
+    mm += ( pi.squared_length() + pj.squared_length() + pi * pj ) * area / 6 ;
   }
 
   return mm;
