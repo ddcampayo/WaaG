@@ -16,8 +16,10 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 40;
-  const FT  inner_tol  = 1e-6;
+  const int s_iters= 100;
+  
+  const int p_iters= 10;
+  const FT  disp_tol  = 1e-6;
 
   const FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
@@ -38,8 +40,10 @@ int main() {
   linear algebra( T );
 
   // Init loop!
+
+  int iter;
   
-  int iter=0;
+  iter=0;
 
   for( ; iter < init_iters ; ++iter) {
   
@@ -72,10 +76,10 @@ int main() {
   simu.set_dt( dt );
 
   // half-step leapfrog
-  FT dt2 = dt / 2.0 ;
+  //  FT dt2 = dt / 2.0 ;
 
   // whole step
-  //FT dt2 = dt  ;
+  FT dt2 = dt  ;
 
   //  algebra.solve_for_weights();
 
@@ -86,82 +90,25 @@ int main() {
   std::ofstream log_file;
   log_file.open("main.log");
 
-  volumes( T ); 
-
   do {
     simu.next_step();
     simu.advance_time( );
 
-    volumes( T ); 
+    FT displ;
 
-    backup( T );
-    
-    copy_weights( T ) ;
-    
-    //  volumes( T );
-    //  algebra.fill_Delta();
-
-    algebra.reset_p();
-  
-    int iter = 1;
-
-//    algebra.fill_Delta_DD();
-
-
-    //   volume (p)   iteration
-    
-    algebra.u_star( );
-
-    FT displ = move( T , dt2 , d0 );
-
-    // half-step corrector loop
-    for ( ; iter <= inner_iters ; iter++) {
-      volumes( T ); 
-
-      algebra.fill_Delta_DD();
-
-      algebra.p_equation( dt2 );
-
-      // whole step, special 1st time
-      if( simu.current_step() == 1 ){
-      algebra.u_add_press_grad( dt / 2 );
-      }  else 
-      {
-      algebra.u_add_press_grad( dt2 );
-      }
-
-      displ = move( T , dt2 , d0 );
-
-      cout
-	<< "********" << endl
-	<< "P Iter  " << iter
-	<< " . Moved from previous (rel.): " << displ <<
-	" ; from original (rel.): " << d0
-	<< endl ;
-
-      if( displ < inner_tol ) break;
-
-      //algebra.w_equation();
-      //algebra.solve_for_weights();
-      //      volumes( T ); 
-
-      
-    }
-
-    volumes( T ); 
-
-    
     //   moment of inertia (s)   iteration
 
+    volumes( T ); 
+
     backup( T );
 
     algebra.u_star( );
-
+    
+    iter=1;
+    
     displ = move( T , dt2 , d0 );
 
-    iter=0;
-    
-    for ( ; iter <= inner_iters ; iter++) {
+    for ( ; iter <= s_iters ; iter++) {
       volumes( T ); 
 
       algebra.fill_Delta_DD();
@@ -185,7 +132,7 @@ int main() {
 	" ; from original (rel.): " << d0
 	<< endl ;
 
-      if( displ < inner_tol ) break;
+      //      if( displ < disp_tol ) break;
       
     }
 
@@ -196,6 +143,72 @@ int main() {
     //    displ = move( T , dt , d0 );
     displ = move( T , dt2 , d0 );
 
+    /////////////  s iter
+
+
+
+
+    //    //   volume (p)   iteration
+    
+    volumes( T ); 
+
+    backup( T );
+    
+    copy_weights( T ) ;
+    
+    //  volumes( T );
+    //  algebra.fill_Delta();
+
+
+    
+    algebra.reset_p();
+  
+    int iter = 1;
+
+//    algebra.fill_Delta_DD();
+
+
+    algebra.u_star( );
+
+    displ = move( T , dt2 , d0 );
+
+    // half-step corrector loop
+    for ( ; iter <= p_iters ; iter++) {
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
+
+      algebra.p_equation( dt2 );
+
+      // whole step, special 1st time
+      if( simu.current_step() == 1 ){
+      algebra.u_add_press_grad( dt / 2 );
+      }  else 
+      {
+      algebra.u_add_press_grad( dt2 );
+      }
+
+      displ = move( T , dt2 , d0 );
+
+      cout
+	<< "********" << endl
+	<< "P Iter  " << iter
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
+	<< endl ;
+      if( displ < disp_tol ) break;
+
+      //algebra.w_equation();
+      //algebra.solve_for_weights();
+      //      volumes( T ); 
+
+      
+    }
+    ////////////////////// p iter
+
+
+
+    
     cout
       << "Whole step  "
       << " : disp " << displ << endl ;

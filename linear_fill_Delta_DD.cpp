@@ -67,6 +67,7 @@ void linear::fill_Delta_DD(void){
     Vector_2 MMij = Aij / lij * (
 				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
 				 - ( Aij*Aij / 12 ) * eij
+				 // i.e.  + ( Aij*Aij / 12 ) * eji
 				 );
 
     Vector_2 MMji = Aij / lij * (
@@ -85,7 +86,6 @@ void linear::fill_Delta_DD(void){
 
       ax.push_back( triplet( j, i,  DDji.x() ));
       ay.push_back( triplet( j, i,  DDji.y() ));
-
 
       mx.push_back( triplet( i, j,  MMij.x() ));
       my.push_back( triplet( i, j,  MMij.y() ));

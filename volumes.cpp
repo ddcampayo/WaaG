@@ -23,9 +23,19 @@ FT moi( const Point& p , const vvP& vs ) {
     FT xj= pj.x();
     FT yj= pj.y();
 
-    FT area = std::fabs( ( xi * yj - xj * yi ) / 2 );
-    
-    mm += ( pi.squared_length() + pj.squared_length() + pi * pj ) * area / 6 ;
+    // ugly.-
+    mm += std::fabs(
+		    (  xi * xi + yi * yi +
+		       xj * xj + yj * yj +
+		       xi * xj + yi * yj  ) *
+		    ( xi * yj - xj * yi ) / 12  );
+
+    // elegant.-
+    //    FT area =  ( xi * yj - xj * yi ) / 2 ;    
+    // mm += std::fabs(
+    // 		    ( pi.squared_length() +
+    // 		      pj.squared_length() +
+    // 		      pi * pj ) * area / 6  );
   }
 
   return mm;
