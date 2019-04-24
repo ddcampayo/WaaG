@@ -57,13 +57,13 @@ void linear::fill_Delta_DD(void){
     Vector_2 rr_ij_j = pj - bij;
     Vector_2 rr_ij_i = pi - bij;
 
-    
     Vector_2 DDij = Aij / lij * rr_ij_j; // ( pj - bij);
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
 
-    FT r2_ij_j = rr_ij_j.squared_length();
+    FT r2_ij_j = rr_ij_j.squared_length();  // (these two are the same on Voronoi)
     FT r2_ij_i = rr_ij_i.squared_length();
     
+    // todo: maybe define I = Aij*Aij/12, to ease notation
     Vector_2 MMij = Aij / lij * (
 				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
 				 - ( Aij*Aij / 12 ) * eij
@@ -76,7 +76,6 @@ void linear::fill_Delta_DD(void){
 				 );
 
 
-    
     if( (i >= 0 ) && ( j >= 0) ) {
       aa.push_back( triplet( i, j,  ddelta ));
       aa.push_back( triplet( j, i,  ddelta ));
@@ -99,20 +98,28 @@ void linear::fill_Delta_DD(void){
 
     if (i >= 0 ) {
       dd[ i ]  -= ddelta;
-      dd_x[ i ] -= DDij.x();
-      dd_y[ i ] -= DDij.y();
+//      dd_x[ i ] -= DDij.x();
+//      dd_y[ i ] -= DDij.y();
+      dd_x[ i ] -= DDji.x();
+      dd_y[ i ] -= DDji.y();
 
-      dm_x[ i ] -= MMij.x();
-      dm_y[ i ] -= MMij.y();
+//      dm_x[ i ] -= MMij.x();
+//      dm_y[ i ] -= MMij.y();
+      dm_x[ i ] -= MMji.x();
+      dm_y[ i ] -= MMji.y();
  
     }
     if (j >= 0 ) {
       dd[ j ]  -= ddelta;
-      dd_x[ j ] -= DDji.x();
-      dd_y[ j ] -= DDji.y();
+//      dd_x[ j ] -= DDji.x();
+//      dd_y[ j ] -= DDji.y();
+      dd_x[ j ] -= DDij.x();
+      dd_y[ j ] -= DDij.y();
 
-      dm_x[ j ] -= MMji.x();
-      dm_y[ j ] -= MMji.y();
+//      dm_x[ j ] -= MMji.x();
+//      dm_y[ j ] -= MMji.y();
+      dm_x[ j ] -= MMij.x();
+      dm_y[ j ] -= MMij.y();
 
     }
 
