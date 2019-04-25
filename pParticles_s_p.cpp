@@ -13,7 +13,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_max_iters = 20;
+  const int init_max_iters = 0;
   const FT  init_tol2 = 1e-3;
 
   const int inner_max_iters = 10;
@@ -162,17 +162,19 @@ int main() {
     //  algebra.fill_Delta();
 
 
-      algebra.reset_p();
-  
-      p_it = 1;
+      volumes( T ); 
 
-//    algebra.fill_Delta_DD();
+      backup( T );
 
       algebra.u_star( );
-
+    
+      p_it = 1;
+     
       displ = move( T , dt2 , d0 );
 
-      // half-step corrector loop
+      algebra.reset_p();
+
+      // predictor loop
       for ( ; p_it <= p_iters ; p_it++) {
 	volumes( T ); 
 
@@ -198,7 +200,7 @@ int main() {
 	  << endl ;
 
       }
-      
+ 
       if( displ < disp_tol ) break;
 
       //algebra.w_equation();
