@@ -37,6 +37,7 @@ class linear {
   void s_equation(const FT dt );
   void u_star( void );
   void reset_p( void );
+  void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
   void u_add_s_grad( const FT dt ) ;
   

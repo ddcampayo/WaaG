@@ -25,3 +25,13 @@ void linear::reset_p( void ) {
 }
 
 
+void linear::reset_s( void ) {
+
+  VectorXd s = field_to_vctr( sfield_list::s );
+
+  vctr_to_field( 0*s , sfield_list::s );
+
+  return;
+}
+
+
