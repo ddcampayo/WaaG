@@ -11,18 +11,18 @@ sim_data simu;
 
 int main() {
 
-  // TODO: read parameter file
+  // TODO: read better from parameter file
   
-  const int init_max_iters = 0;
-  const FT  init_tol2 = 1e-3;
+  int init_max_iters; cin >> init_max_iters; // = 40;
+  FT  init_tol2 ; cin >> init_tol2 ; // = 1e-3; 
 
-  const int inner_max_iters = 10;
-  const FT  disp_tol  = 1e-6;
+  int inner_max_iters; cin >> inner_max_iters; // = 10; 
+  FT  disp_tol; cin >> disp_tol; //  = 1e-6;
 
-  const int s_iters= 10;  
-  const int p_iters= 4;
+  int s_iters; cin >> s_iters; //= 10;
+  int p_iters; cin >> p_iters; //= 10;
 
-  const FT total_time =  1/( 2 * 3.14 * 0.2) ;
+  FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -48,9 +48,9 @@ int main() {
   
     volumes( T ); 
 
-    copy_weights( T ) ;
+    //    copy_weights( T ) ;
 
-    algebra.solve_for_weights();
+    //    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
@@ -59,7 +59,7 @@ int main() {
 
   }
 
-  copy_weights( T ) ;
+  //  copy_weights( T ) ;
 
   cout << "Init loop converged in " << init_iter << " steps " << endl;
   
@@ -97,22 +97,33 @@ int main() {
 
     int in_iter = 1 , s_it = 1 , p_it= 1;
     
+    volumes( T ); 
+    
+    backup( T );
+
+    algebra.u_star( );
+    
+    displ = move( T , dt2 , d0 );
+
+    algebra.reset_s();
+    algebra.reset_p();
+
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
       //   moment of inertia (s)   iteration
 
-      volumes( T ); 
+      // volumes( T ); 
 
-      backup( T );
+      // backup( T );
 
-      algebra.u_star( );
+      // algebra.u_star( );
     
+      // displ = move( T , dt2 , d0 );
+
+      // algebra.reset_s();
+
       s_it = 1;
-     
-      displ = move( T , dt2 , d0 );
-
-      algebra.reset_s();
-
+      
       for ( ; s_it <= s_iters ; s_it++) {
 	volumes( T ); 
 
@@ -137,13 +148,9 @@ int main() {
 	  " ; from original (rel.): " << d0
 	  << endl ;
 
-	//      if( displ < disp_tol ) break;
+	if( displ < disp_tol ) break;
 
       }
-
-      volumes( T ); 
-
-      copy_weights( T ) ;
 
       //      displ = move( T , dt2 , d0 );
 
@@ -152,27 +159,18 @@ int main() {
 
       //    //   volume (p)   iteration
     
-      //    volumes( T ); 
 
-      //    backup( T );
-    
-      //    copy_weights( T ) ;
-    
-    //  volumes( T );
-    //  algebra.fill_Delta();
+      // volumes( T ); 
 
-
-      volumes( T ); 
-
-      backup( T );
+      // backup( T );
 
       algebra.u_star( );
     
-      p_it = 1;
-     
-      displ = move( T , dt2 , d0 );
+      //      displ = move( T , dt2 , d0 );
 
-      algebra.reset_p();
+      //algebra.reset_p();
+
+      p_it = 1;
 
       // predictor loop
       for ( ; p_it <= p_iters ; p_it++) {
@@ -199,6 +197,8 @@ int main() {
 	  " ; from original (rel.): " << d0
 	  << endl ;
 
+	if( displ < disp_tol ) break;
+	
       }
  
       if( displ < disp_tol ) break;
