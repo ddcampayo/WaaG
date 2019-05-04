@@ -124,6 +124,8 @@ int main() {
 
       s_it = 1;
       
+      algebra.u_star( );
+
       for ( ; s_it <= s_iters ; s_it++) {
 	volumes( T ); 
 

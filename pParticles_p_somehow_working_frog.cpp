@@ -63,7 +63,6 @@ int main() {
   set_vels_Gresho( T );
 
   volumes( T ); 
-  algebra.copy( sfield_list::vol,  sfield_list::vol0);
   
   FT d0;
   FT dt=0.001;
@@ -72,36 +71,32 @@ int main() {
 
   simu.set_dt( dt );
 
-  // half-step (for e.g. leapfrog)
+  // half-step leapfrog
   FT dt2 = dt / 2.0 ;
 
   // whole step
-  // FT dt2 = dt  ;
+  //FT dt2 = dt  ;
 
   //  algebra.solve_for_weights();
 
   draw( T , particle_file     );
+
   draw_diagram( T , diagram_file );
   
   std::ofstream log_file;
   log_file.open("main.log");
 
-  // special first iter.-
-  // cout << " First iter, free ";
-  // algebra.reset_p();
-  // FT displ1 = move( T , dt , d0 );  
-  // volumes( T ); 
-  // simu.next_step();  simu.advance_time();
-  // draw( T , particle_file     );
-  // draw_diagram( T , diagram_file );
- 
+  volumes( T ); 
+
   do {
     simu.next_step();
     simu.advance_time( );
 
+    volumes( T ); 
+
     backup( T );
     
-    //    copy_weights( T ) ;
+    copy_weights( T ) ;
     
     //  volumes( T );
     //  algebra.fill_Delta();
@@ -115,11 +110,13 @@ int main() {
     algebra.u_star( );
 
     FT displ = 0; // move( T , dt2 , d0 );
-    
-    // full-step corrector loop
-    
+
+    algebra.fill_Delta_DD();
+
+    // half-step corrector loop
     for ( ; iter <= inner_iters ; iter++) {
-      displ = move( T , dt , d0 );
+
+      displ = move( T , dt2 , d0 );	    
 
       cout
 	<< "********" << endl
@@ -127,25 +124,23 @@ int main() {
 	<< " . Moved from previous (rel.): " << displ <<
 	" ; from original (rel.): " << d0
 	<< endl ;
+
+      if( displ < inner_tol ) break;
+      
       volumes( T ); 
       
       algebra.fill_Delta_DD();
 
-      // // whole step, special 1st time
-      // if( simu.current_step() == 1 ){
-      // 	algebra.p_equation( dt2 ); 
-      // 	algebra.u_add_press_grad( dt2/2  );
+      algebra.p_equation( dt2 );
 
-      // }  else 
-      // {
-      // 	algebra.p_equation( dt ); 
-      // 	algebra.u_add_press_grad( dt2 );
-      // }
+      // whole step, special 1st time
+      if( simu.current_step() > -1 ){
+	algebra.u_add_press_grad( dt2 / 2 );
+      }  else 
+      {
+	algebra.u_add_press_grad( dt2 );
+      }
 
-      algebra.p_equation( dt ); 
-      algebra.u_add_press_grad( dt2 );
-
-      if( displ < inner_tol ) break;
 
       ////// testing ...
       //      backup( T );
@@ -167,8 +162,12 @@ int main() {
 
 //    copy_weights( T ) ;
     
-//    displ = move( T , dt , d0 );
-//    volumes( T ); 
+    displ = move( T , dt , d0 );
+
+    // half-step:
+    update_full_vel( T );
+
+    volumes( T ); 
       
     //    algebra.fill_Delta_DD();
     //    algebra.p_equation( dt2 );
@@ -182,9 +181,7 @@ int main() {
 
     //    volumes( T ); 
 
-    // half-step:
-    //  update_full_vel( T );
-    algebra.u_add_press_grad( dt );
+
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );

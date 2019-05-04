@@ -56,7 +56,9 @@ void linear::p_equation(const FT dt ) {
 
   VectorXd p0  = field_to_vctr( sfield_list::p ) ;
   
-  vctr_to_field( p0 + Dp / ( ddt * ddt) , sfield_list::p  ) ;
+  //vctr_to_field( p0 + Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
+  vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
   //  vctr_to_field( vol , sfield_list::vol0 );
 

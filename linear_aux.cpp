@@ -35,3 +35,11 @@ void linear::reset_s( void ) {
 }
 
 
+void linear::copy(const sfield_list::take from, sfield_list::take to  ) {
+
+  VectorXd p = field_to_vctr( from );
+
+  vctr_to_field( p , to );
+
+  return;
+}
