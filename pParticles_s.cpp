@@ -13,7 +13,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 0;
+  const int init_iters = 20;
   const FT  init_tol2 = 1e-3;
 
   const int inner_iters= 100;
@@ -63,7 +63,7 @@ int main() {
   set_vels_Gresho( T );
 
   volumes( T ); 
-  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
   
   FT d0;
   FT dt=0.001;
@@ -145,9 +145,9 @@ int main() {
       // 	algebra.u_add_press_grad( dt2 );
       // }
 
-      algebra.p_equation( dt ); 
+      algebra.s_equation( dt ); 
 
-      algebra.u_add_press_grad( dt2 );
+      algebra.u_add_s_grad( dt2 );
 
       if( displ < inner_tol ) break;
 
@@ -188,7 +188,7 @@ int main() {
 
     // half-step:
     //  update_full_vel( T );
-    algebra.u_add_press_grad( dt );
+    algebra.u_add_s_grad( dt );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );

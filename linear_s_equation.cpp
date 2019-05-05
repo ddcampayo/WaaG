@@ -34,7 +34,8 @@ void linear::s_equation(const FT dt ) {
 
   VectorXd s0  = field_to_vctr( sfield_list::s ) ;
 
-  vctr_to_field( s0 + Ds / ( ddt * ddt) , sfield_list::s  ) ;
+  //  vctr_to_field( s0 + Ds / ( ddt * ddt) , sfield_list::s  ) ;
+  vctr_to_field( Ds / ( ddt * ddt) , sfield_list::s  ) ;
 
   //  vctr_to_field( vol , sfield_list::vol0 );
 

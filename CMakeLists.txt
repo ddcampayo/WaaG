@@ -78,7 +78,8 @@ add_executable( pPart
 # 		pParticles_other.cpp	
 #		pParticles_dG.cpp
 #		pParticles_w.cpp
-		pParticles_p.cpp
+#		pParticles_p.cpp
+		pParticles_s.cpp
 #		pParticles_s_p.cpp
 )
 
