@@ -43,13 +43,16 @@ void linear::p_equation(const FT dt ) {
   //VectorXd Dvol = vol.array() - target_vol_val  ;
 
   VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
+
   VectorXd Dvol = vol.array() - vol0.array()  ;
 
-  FT Dvol_sigma =  Dvol.array().square().sum() ; // / FT( vol.size() );
-  FT Dvol_mean  =  vol.array().square().sum() ; // / FT( vol.size() );
+  int N = vol.size();
+
+  FT Dvol_sigma =  Dvol.array().square().sum() / N ; // / FT( vol.size() );
+  FT Dvol_mean  =  vol.array().sum() / N ; // / FT( vol.size() );
 
   cout << "Pressure  "
-       << " rel Dvol std dev: " << sqrt( Dvol_sigma / Dvol_mean )
+       << " rel Dvol std dev: " << sqrt( Dvol_sigma ) / Dvol_mean 
        << endl;
 
   VectorXd Dp  =  LL_solver.solve( Dvol );

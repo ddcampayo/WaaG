@@ -21,13 +21,15 @@ void linear::s_equation(const FT dt ) {
   VectorXd I  = field_to_vctr( sfield_list::I ) ;
   VectorXd I0  = field_to_vctr( sfield_list::I0 ) ;
 
+  int N = I.size();
+
   VectorXd DI = I.array() - I0.array()  ;
 
-  FT DI_sigma =  DI.array().square().sum() ;
-  FT I_mean  =  I.array().square().sum() ;
+  FT DI_sigma =  DI.array().square().sum() / N;
+  FT I_mean  =  I.array().sum() / N ;
 
   cout << " s field  "
-       << " rel DI std dev: " << sqrt( DI_sigma / I_mean )
+       << " rel DI std dev: " << sqrt( DI_sigma ) / I_mean
        << endl;
 
   VectorXd Ds  =  NN_solver.solve( DI );
