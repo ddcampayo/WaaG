@@ -9,7 +9,6 @@ sim_data simu;
 
 int main() {
 
-
   // TODO: read parameter file
   
   const int init_iter = 20;

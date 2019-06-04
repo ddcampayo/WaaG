@@ -42,6 +42,11 @@ void linear::w_equation( ) {
 
   // given by volume departure
   VectorXd Dvol  =  target_vol_val - vol.array() ;
+
+
+  //  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
+  //  VectorXd Dvol = vol.array() - vol0.array()  ;
+  
   VectorXd Dw = Delta_solver.solve( Dvol );
 
   //  cout << "Dw " << Dw << endl;
@@ -49,8 +54,9 @@ void linear::w_equation( ) {
     //    copy_weights( T ) ;
 
   VectorXd w0  = field_to_vctr( sfield_list::w0 ) ;
-  
-  vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
+
+  //  vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
+  vctr_to_field( Dw ,  sfield_list::w ) ;
 
 //    volumes( T ); // ??
 
@@ -59,6 +65,7 @@ void linear::w_equation( ) {
   volumes( T );
 
   VectorXd vol0( vol );
+  //vol0 = vol ;
 
   vol  = field_to_vctr( sfield_list::vol ) ;
 
