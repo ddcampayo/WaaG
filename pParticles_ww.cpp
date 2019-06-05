@@ -11,11 +11,11 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iter = 20;
-  const FT  init_tol2 = 1e-3;
+  const int init_iter = 100;
+  const FT  init_tol2 = 1e-4;
 
-  const int inner_iter= 10;
-  const FT  inner_tol = 1e-6;
+  const int inner_iter= 20;
+  const FT  inner_tol = 1e-5;
 
   const FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
@@ -103,7 +103,11 @@ int main() {
     // half-step corrector loop
     for ( ; iter <= inner_iter ; iter++) {
 
-      displ = move( T , dt2 , d0 );
+      displ = move( T , dt , d0 );
+
+      move_weights( T );
+
+      //    volumes( T );
 
       cout
 	<< "********" << endl
@@ -113,21 +117,20 @@ int main() {
 	<< endl ;
 
       volumes( T ); 
-     
-      algebra.fill_Delta_DD();
-      
-      //      algebra.solve_for_weights();
+ 
+      algebra.fill_Delta_DD( dt );
+ 
+      // algebra.solve_for_weights();
+      //      copy_weights( T ) ;
 
       algebra.w_equation();
-      copy_weights( T ) ;
- 
+
       algebra.copy( sfield_list::w,  sfield_list::p);
     
       algebra.u_add_press_grad( dt2 );
 
       if( displ < inner_tol ) break;
 
-      
     }
     //    algebra.u_add_press_grad( dt2 );
 
@@ -138,6 +141,8 @@ int main() {
     //algebra.w_equation();
     //algebra.solve_for_weights();
     algebra.u_add_press_grad( dt );
+
+    algebra.solve_for_weights();
 
     //    volumes( T ); 
     //    update_full_vel( T );

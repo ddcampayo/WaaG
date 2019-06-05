@@ -29,7 +29,7 @@ class linear {
  linear(Triangulation& TT) : T(TT) {}
 
   void fill_Delta();
-  void fill_Delta_DD();
+  void fill_Delta_DD( const FT dt = 0);
 
   void solve_for_weights( );
   void w_equation( );

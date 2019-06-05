@@ -55,8 +55,8 @@ void linear::w_equation( ) {
 
   VectorXd w0  = field_to_vctr( sfield_list::w0 ) ;
 
-  //  vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
-  vctr_to_field( Dw ,  sfield_list::w ) ;
+  vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
+    //vctr_to_field( Dw ,  sfield_list::w ) ;
 
 //    volumes( T ); // ??
 

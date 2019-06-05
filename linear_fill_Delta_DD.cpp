@@ -1,6 +1,6 @@
 #include"linear.h"
 
-void linear::fill_Delta_DD(void){ 
+void linear::fill_Delta_DD( const FT dt ) {
 
   std::cout << " Filling Delta _and_ capital D matrices" << std::endl;
 
@@ -223,13 +223,6 @@ void linear::fill_Delta_DD(void){
 
   // set up solvers .-
   
-  Delta_solver.compute( Delta );
-
-  if(Delta_solver.info()!=Eigen::Success) {
-    std::cout << "Failure decomposing Delta " << //minus 1
-      " matrix\n";
-  }
-
   
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
   VectorXd inv_vol  = 1.0 / vol.array() ;
@@ -245,6 +238,20 @@ void linear::fill_Delta_DD(void){
   }
 
 
+  // special.-
+  
+  if( dt > 1e-8) Delta += dt*dt*LL;
+
+  Delta_solver.compute( Delta );
+
+  if(Delta_solver.info()!=Eigen::Success) {
+    std::cout << "Failure decomposing Delta " << //minus 1
+      " matrix\n";
+  }
+
+
+
+  
   NN =
     - MMx * inv_vol.asDiagonal() * MMx.transpose()
     - MMy * inv_vol.asDiagonal() * MMy.transpose();
