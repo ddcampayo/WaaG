@@ -40,7 +40,8 @@ class linear {
   void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
   void u_add_s_grad( const FT dt ) ;
-  
+  void u_add_grads( const FT dt ) ;
+
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );  
   VectorXd DD_scalar_vfield(const vfield_list::take from );
   void DD_times_sfield(const sfield_list::take from ,

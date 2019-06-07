@@ -95,3 +95,35 @@ void linear::u_add_press_grad( const FT dt ) {
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
 }
+
+
+
+void linear::u_add_grads( const FT dt ) {
+
+  VectorXd gradPx,gradPy;
+  VectorXd gradsx,gradsy;
+
+  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+
+  MM_times_sfield( sfield_list::s  ,  gradsx, gradsy);
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+  // perhaps mean vol would be just fine
+
+  VectorXd Ustar_x, Ustar_y;
+
+  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  VectorXd U_x, U_y;
+
+  FT ddt = dt;
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+  VectorXd grad_x = gradPx + gradsx ;
+  VectorXd grad_y = gradPy + gradsy ;
+  
+  U_x = Ustar_x.array() - ddt * grad_x.array() / vol.array()  ;
+  U_y = Ustar_y.array() - ddt * grad_y.array() / vol.array() ;
+  
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+
+}

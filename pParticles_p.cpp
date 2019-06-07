@@ -39,7 +39,7 @@ int main() {
 
   // Init loop!
   
-  int iter=0;
+  int iter=1;
 
   for( ; iter < init_iters ; ++iter) {
   
@@ -117,7 +117,6 @@ int main() {
     FT displ = 0; // move( T , dt2 , d0 );
     
     // full-step corrector loop
-
 
     for ( ; iter <= inner_iters ; iter++) {
 

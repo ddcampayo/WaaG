@@ -24,8 +24,8 @@ for n in range(0,2000000+skip,skip):
     x=dt[:,0]; y=dt[:,1];
 #    vol=dt[:,3]; w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
-#    p=dt[:,9]
-    p=dt[:,10]
+    p=dt[:,9]
+#    p=dt[:,10]
 
     p += p - np.min( p )
 

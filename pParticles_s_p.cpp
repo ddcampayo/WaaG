@@ -31,7 +31,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //simu.do_perturb(0.01);
+  simu.do_perturb(0.1);
   create( T , 1.0 );
   number( T );
 
@@ -42,9 +42,9 @@ int main() {
 
   // Init loop!
 
-  int init_iter=1;
+  int init_iter=0;
   
-  for( ; init_iter <= init_max_iters ; ++init_iter) {
+  for( ; init_iter < init_max_iters ; ++init_iter) {
   
     volumes( T ); 
 
@@ -65,7 +65,10 @@ int main() {
   
   set_vels_Gresho( T );
 
-  volumes( T ); 
+  volumes( T );
+
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
   
   FT d0;
   FT dt=0.001;
@@ -78,7 +81,7 @@ int main() {
   //  FT dt2 = dt / 2.0 ;
 
   // whole step
-  FT dt2 = dt  ;
+  FT dt2 = dt / 2.0 ;
 
   //  algebra.solve_for_weights();
 
@@ -93,81 +96,29 @@ int main() {
     simu.next_step();
     simu.advance_time( );
 
-    FT displ;
 
     int in_iter = 1 , s_it = 1 , p_it= 1;
     
-    volumes( T ); 
+    //    volumes( T ); 
     
     backup( T );
 
-    algebra.u_star( );
-    
-    displ = move( T , dt2 , d0 );
+    //   displ = move( T , dt2 , d0 );
 
     algebra.reset_s();
     algebra.reset_p();
 
-    for ( ; in_iter <= inner_max_iters ; in_iter++) {
-
-      //   moment of inertia (s)   iteration
-
-      // volumes( T ); 
-
-      // backup( T );
-
-      // algebra.u_star( );
+    algebra.u_star( );
     
-      // displ = move( T , dt2 , d0 );
-
-      // algebra.reset_s();
-
-      s_it = 1;
-      
-      algebra.u_star( );
-
-      for ( ; s_it <= s_iters ; s_it++) {
-	volumes( T ); 
-
-	algebra.fill_Delta_DD();
-
-	algebra.s_equation( dt2 );
-
-	// whole step, special 1st time
-	if( simu.current_step() == 1 ){
-	  algebra.u_add_s_grad( dt / 2 );
-	}  else 
-	  {
-	    algebra.u_add_s_grad( dt2 );
-	  }
-
-	displ = move( T , dt2 , d0 );
-
-	cout
-	  << "********" << endl
-	  << "S Iter  " << s_it
-	  << " . Moved from previous (rel.): " << displ <<
-	  " ; from original (rel.): " << d0
-	  << endl ;
-
-	if( displ < disp_tol ) break;
-
-      }
-
-      //      displ = move( T , dt2 , d0 );
-
-      ///////////// end   s iter
-
+    FT displ_p = 0 , displ_s = 0 ;
+    
+    for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
       //    //   volume (p)   iteration
     
-
       // volumes( T ); 
-
       // backup( T );
 
-      algebra.u_star( );
-    
       //      displ = move( T , dt2 , d0 );
 
       //algebra.reset_p();
@@ -176,34 +127,97 @@ int main() {
 
       // predictor loop
       for ( ; p_it <= p_iters ; p_it++) {
-	volumes( T ); 
 
-	algebra.fill_Delta_DD();
-
-	algebra.p_equation( dt2 );
-
-	// whole step, special 1st time
-	if( simu.current_step() == 1 ){
-	  algebra.u_add_press_grad( dt / 2 );
-	}  else 
-	  {
-	    algebra.u_add_press_grad( dt2 );
-	  }
-
-	displ = move( T , dt2 , d0 );
+	displ_p = move( T , dt , d0 );
 
 	cout
 	  << "********" << endl
 	  << "P Iter  " << p_it
-	  << " . Moved from previous (rel.): " << displ <<
+	  << " . Moved from previous (rel.): " << displ_p <<
+	  " ; from original (rel.): " << d0
+	  << endl ;
+	
+	volumes( T ); 
+
+	algebra.fill_Delta_DD();
+
+	algebra.p_equation( dt );
+
+	//	algebra.u_add_press_grad( dt2 );
+	algebra.u_add_grads( dt2 );
+
+	// // whole step, special 1st time
+	// if( simu.current_step() == 1 ){
+	//   algebra.u_add_press_grad( dt / 2 );
+	// }  else 
+	//   {
+	//     algebra.u_add_press_grad( dt2 );
+	//   }
+
+	// displ = move( T , dt2 , d0 );
+
+
+	if( displ_p < disp_tol ) break;
+	
+      }
+
+      //   moment of inertia (s)   iteration
+      // volumes( T ); 
+      // backup( T );
+      // algebra.u_star( );
+      // displ = move( T , dt2 , d0 );
+      // algebra.reset_s();
+      
+      s_it = 1;
+
+      //      algebra.u_star( );
+
+      for ( ; s_it <= s_iters ; s_it++) {
+
+	displ_s = move( T , dt , d0 );
+
+	cout
+	  << "********" << endl
+	  << "S Iter  " << s_it
+	  << " . Moved from previous (rel.): " << displ_s <<
 	  " ; from original (rel.): " << d0
 	  << endl ;
 
-	if( displ < disp_tol ) break;
+
+	volumes( T ); 
+
+	algebra.fill_Delta_DD();
+
+	algebra.s_equation( dt );
+
+	//	algebra.u_add_s_grad( dt2 );
+
+	//	algebra.u_add_s_grad( dt2 );
+	algebra.u_add_grads( dt2 );
+
 	
+	// // whole step, special 1st time
+	// if( simu.current_step() == 1 ){
+	//   algebra.u_add_s_grad( dt / 2 );
+	// }  else 
+	//   {
+	//     algebra.u_add_s_grad( dt2 );
+	//   }
+
+	// displ = move( T , dt2 , d0 );
+
+
+	if( displ_s < disp_tol ) break;
+
       }
+
+      //      displ = move( T , dt2 , d0 );
+
+      ///////////// end   s iter
+
+
  
-      if( displ < disp_tol ) break;
+      if( displ_s + displ_p < 2 * disp_tol ) break;
 
       //algebra.w_equation();
       //algebra.solve_for_weights();
@@ -215,7 +229,7 @@ int main() {
     
     cout
       << "Whole step  "
-      << " : disp " << displ << endl ;
+      << " : disp " << displ_s + displ_p << endl ;
 
     volumes( T ); 
 
