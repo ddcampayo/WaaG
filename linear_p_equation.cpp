@@ -25,45 +25,34 @@ void linear::p_equation(const FT dt ) {
 
   // B
   //  Laplacian as div of grad :
-  // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  //  VectorXd p =  LL_solver.solve( divUstar );
-  //  vctr_to_field( p / ddt ,  sfield_list::p ) ;
+   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+    VectorXd p =  LL_solver.solve( divUstar );
+    vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
   // C
   // As B, but Dvol source. This is an _iterative_ procedure,
   // yielding a pressure change
 
-  //  volumes( T );
+//  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
 
-  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+//  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
 
-  //FT target_vol_val =  simu.meanV() ;
+//  VectorXd Dvol = vol.array() - vol0.array()  ;
 
-  //  FT target_vol_val = vol.array().sum() / FT( vol.size() );
-  //VectorXd Dvol = vol.array() - target_vol_val  ;
+//  int N = vol.size();
 
-  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
+//  FT Dvol_sigma =  Dvol.array().square().sum() / N ; // / FT( vol.size() );
+//  FT Dvol_mean  =  vol.array().sum() / N ; // / FT( vol.size() );
 
-  VectorXd Dvol = vol.array() - vol0.array()  ;
+//  cout << "Pressure  "
+//       << " rel Dvol std dev: " << sqrt( Dvol_sigma ) / Dvol_mean 
+//       << endl;
 
-  int N = vol.size();
+//  VectorXd Dp  =  LL_solver.solve( Dvol );
 
-  FT Dvol_sigma =  Dvol.array().square().sum() / N ; // / FT( vol.size() );
-  FT Dvol_mean  =  vol.array().sum() / N ; // / FT( vol.size() );
-
-  cout << "Pressure  "
-       << " rel Dvol std dev: " << sqrt( Dvol_sigma ) / Dvol_mean 
-       << endl;
-
-  VectorXd Dp  =  LL_solver.solve( Dvol );
-
-  VectorXd p0  = field_to_vctr( sfield_list::p ) ;
+//  VectorXd p0  = field_to_vctr( sfield_list::p ) ;
   
-  //vctr_to_field( p0 + Dp / ( ddt * ddt) , sfield_list::p  ) ;
-
-  vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
-
-  //  vctr_to_field( vol , sfield_list::vol0 );
+//  vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
   return;
 }
