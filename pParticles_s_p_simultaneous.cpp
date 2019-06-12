@@ -3,7 +3,6 @@
 // Pressure is used in order to enforce incompressibility
 // An additional field, s, is used to enforce const moments of inertia
 
-#undef PRESSURE_PPE
 #include"pParticles.h"
 #include"linear.h"
 #include"simu.h"
@@ -32,7 +31,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  simu.do_perturb(0.1);
+  //  simu.do_perturb(0.3);
   create( T , 1.0 );
   number( T );
 
@@ -87,7 +86,6 @@ int main() {
   //  algebra.solve_for_weights();
 
   draw( T , particle_file     );
-
   draw_diagram( T , diagram_file );
   
   std::ofstream log_file;
@@ -115,131 +113,38 @@ int main() {
     
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
-      //    //   volume (p)   iteration
-    
-      // volumes( T ); 
-      // backup( T );
+      displ_p = move( T , dt , d0 );
 
-      //      displ = move( T , dt2 , d0 );
-
-      //algebra.reset_p();
-
-      p_it = 1;
-
-      // predictor loop
-      for ( ; p_it <= p_iters ; p_it++) {
-
-	displ_p = move( T , dt , d0 );
-
-	cout
-	  << "********" << endl
-	  << "P Iter  " << p_it
-	  << " . Moved from previous (rel.): " << displ_p <<
-	  " ; from original (rel.): " << d0
-	  << endl ;
+      cout
+	<< "********" << endl
+	<< "P S Iter  " << in_iter
+	<< " . Moved from previous (rel.): " << displ_p <<
+	" ; from original (rel.): " << d0
+	<< endl ;
 	
-	volumes( T ); 
+      volumes( T ); 
 
-	algebra.fill_Delta_DD();
+      algebra.fill_Delta_DD();
 
-	algebra.p_equation( dt );
+      algebra.p_equation( dt );
+      algebra.s_equation( dt );
 
-	//	algebra.u_add_press_grad( dt2 );
-	algebra.u_add_grads( dt2 );
+      algebra.u_add_grads( dt2 );
 
-	// // whole step, special 1st time
-	// if( simu.current_step() == 1 ){
-	//   algebra.u_add_press_grad( dt / 2 );
-	// }  else 
-	//   {
-	//     algebra.u_add_press_grad( dt2 );
-	//   }
-
-	// displ = move( T , dt2 , d0 );
-
-
-	if( displ_p < disp_tol ) break;
-	
-      }
-
-      //   moment of inertia (s)   iteration
-      // volumes( T ); 
-      // backup( T );
-      // algebra.u_star( );
-      // displ = move( T , dt2 , d0 );
-      // algebra.reset_s();
-      
-      s_it = 1;
-
-      //      algebra.u_star( );
-
-      for ( ; s_it <= s_iters ; s_it++) {
-
-	displ_s = move( T , dt , d0 );
-
-	cout
-	  << "********" << endl
-	  << "S Iter  " << s_it
-	  << " . Moved from previous (rel.): " << displ_s <<
-	  " ; from original (rel.): " << d0
-	  << endl ;
-
-
-	volumes( T ); 
-
-	algebra.fill_Delta_DD();
-
-	algebra.s_equation( dt );
-
-	//	algebra.u_add_s_grad( dt2 );
-
-	//	algebra.u_add_s_grad( dt2 );
-	algebra.u_add_grads( dt2 );
-
-	
-	// // whole step, special 1st time
-	// if( simu.current_step() == 1 ){
-	//   algebra.u_add_s_grad( dt / 2 );
-	// }  else 
-	//   {
-	//     algebra.u_add_s_grad( dt2 );
-	//   }
-
-	// displ = move( T , dt2 , d0 );
-
-
-	if( displ_s < disp_tol ) break;
-
-      }
-
-      //      displ = move( T , dt2 , d0 );
-
-      ///////////// end   s iter
-
-
- 
-      if( displ_s + displ_p < 2e-2 * disp_tol ) break;
-
-      //algebra.w_equation();
-      //algebra.solve_for_weights();
-      //      volumes( T ); 
+      if(  displ_p < disp_tol ) break;
 
     }
     ///////////// end   p iter
-
     
     cout
       << "Whole step  "
-      << " : disp " << displ_s + displ_p << endl ;
+      << " : disp " <<  displ_p << endl ;
 
-    volumes( T ); 
-
-    // half-step:
-//    update_full_vel( T );
+    algebra.u_add_grads( dt );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
-
+    
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
@@ -247,8 +152,6 @@ int main() {
       << " T =  " << kinetic_E(T)
       << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;
-
-
 
   } while ( simu.time() < total_time );
 

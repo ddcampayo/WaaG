@@ -37,7 +37,7 @@ int main() {
 
   simu.set_dt( dt );
 
-  FT total_time = 1/( 2 * 3.14 * 0.2) ;
+  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
 
   linear algebra( T );
   algebra.solve_for_weights();

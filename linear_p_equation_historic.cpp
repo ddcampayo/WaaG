@@ -1,5 +1,3 @@
-//#define PRESSURE_PPE
-
 //#include"pParticles.h"
 #include"linear.h"
 #include"fields_enum.h"
@@ -17,30 +15,32 @@ void linear::p_equation(const FT dt ) {
 
   FT ddt = dt;
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-
   
   // A
   // Approximate Laplacian ~ Delta 
-  // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  //  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
   // VectorXd p =  Delta_solver.solve( divUstar );
   // times (-0.5), because the Laplacian is approximated by -2 Delta / V
   // vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
   // B
   //  Laplacian as div of grad :
-#ifdef PRESSURE_PPE
+  // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  //  VectorXd p =  LL_solver.solve( divUstar );
+  //  vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
-  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  VectorXd p =  LL_solver.solve( divUstar );
-  vctr_to_field( p / ddt ,  sfield_list::p ) ;
-
-#else
   // C
-  // As B, but Dvol source.
+  // As B, but Dvol source. This is an _iterative_ procedure,
+  // yielding a pressure change
 
-  // diagnostics on volumes.-
+  //  volumes( T );
 
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+
+  //FT target_vol_val =  simu.meanV() ;
+
+  //  FT target_vol_val = vol.array().sum() / FT( vol.size() );
+  //VectorXd Dvol = vol.array() - target_vol_val  ;
 
   VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
 
@@ -56,9 +56,14 @@ void linear::p_equation(const FT dt ) {
        << endl;
 
   VectorXd Dp  =  LL_solver.solve( Dvol );
+
+  VectorXd p0  = field_to_vctr( sfield_list::p ) ;
+  
+  //vctr_to_field( p0 + Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
   vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
-#endif
+  //  vctr_to_field( vol , sfield_list::vol0 );
 
   return;
 }

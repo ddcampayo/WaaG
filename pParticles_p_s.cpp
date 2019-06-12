@@ -21,8 +21,7 @@ int main() {
 
   const int s_iters= 10;  
   const int p_iters= 4;
-
-  const FT total_time =  1/( 2 * 3.14 * 0.2) ;
+  const FT total_time = 2 * M_PI * 0.2 ; // one whole turn
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");

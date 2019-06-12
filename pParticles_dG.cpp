@@ -69,8 +69,8 @@ int main() {
   std::ofstream log_file;
   log_file.open("main.log");
 
-  FT total_time = 1/( 2 * 3.14 * 0.2) ; // one whole turn
-
+  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
+  
   do {
     simu.next_step();
     simu.advance_time( );
@@ -78,13 +78,15 @@ int main() {
     backup( T );
 
     move_from_centroid( T , dt);
-     
+    //    FT d0;
+    //    FT displ = move( T , dt , d0 );
+
     algebra.solve_for_weights();
 
     copy_weights( T ) ;
 
     volumes( T ); 
-  
+
     algebra.u_star( );
 
     // int iter = 1;
@@ -94,7 +96,7 @@ int main() {
   
     //    FT displ = move( T , dt , d0 );
     //    cout << " : disp " << displ << endl ;
-      
+
     algebra.p_equation( dt );
 
     algebra.u_add_press_grad( dt );
@@ -114,6 +116,9 @@ int main() {
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
+      << " iters = " << iter
+      << " T =  " << kinetic_E(T)
+      << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;
 
     

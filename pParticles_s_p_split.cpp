@@ -3,7 +3,6 @@
 // Pressure is used in order to enforce incompressibility
 // An additional field, s, is used to enforce const moments of inertia
 
-#undef PRESSURE_PPE
 #include"pParticles.h"
 #include"linear.h"
 #include"simu.h"

@@ -126,3 +126,28 @@ FT L2_vel_Gresho( Triangulation& T) {
 
   return L2 / nn;
 }
+
+
+
+
+
+FT kinetic_E( Triangulation& T) {
+
+  FT TT=0;
+
+  for(F_v_it vit=T.finite_vertices_begin();
+      vit != T.finite_vertices_end();
+      vit++) {
+
+    Vector_2 U  = vit->U.val();
+    FT       v  = vit->vol.val();
+    TT += v * U.squared_length();
+  }
+
+  return TT;
+}
+
+
+
+
+
