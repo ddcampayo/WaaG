@@ -98,7 +98,6 @@ int main() {
     //    cout << " : disp " << displ << endl ;
 
     algebra.p_equation( dt );
-
     algebra.u_add_press_grad( dt );
 
     //volumes( T ); 

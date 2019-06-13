@@ -76,10 +76,10 @@ add_executable( pPart
 		lloyds.cpp
 # choice of main file:
 # 		pParticles_other.cpp	
-#		pParticles_dG.cpp
+		pParticles_dG.cpp
 #		pParticles_w.cpp
 #		pParticles_ww.cpp
-		pParticles_p.cpp
+#		pParticles_p.cpp
 #		pParticles_s.cpp
 #		pParticles_s_p.cpp
 )

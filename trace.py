@@ -14,7 +14,7 @@ path='./'
 
 LL= 1
 
-idx = 293
+idx = 126
 
 for n in range(0,2000000+skip,skip):
 

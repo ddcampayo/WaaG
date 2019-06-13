@@ -240,7 +240,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   // special.-
   
-  if( dt > 1e-8) Delta += dt*dt*LL;
+  if( dt > 1e-8) Delta -= dt*dt*LL;
 
   Delta_solver.compute( Delta );
 
