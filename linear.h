@@ -63,6 +63,7 @@ private:
   typedef Eigen::Triplet<double> triplet;
 
   SpMat Delta;
+  SpMat GG;
   SpMat DDx, DDy;
   SpMat LL;
   SpMat MMx, MMy;
@@ -80,6 +81,7 @@ private:
   Eigen::CholmodSupernodalLLT<SpMat> Delta_solver;
 #else
   Eigen::SimplicialLDLT<SpMat> Delta_solver;
+  Eigen::SimplicialLDLT<SpMat> GG_solver;
   Eigen::SimplicialLDLT<SpMat> LL_solver;
   Eigen::SimplicialLDLT<SpMat> NN_solver;
 #endif

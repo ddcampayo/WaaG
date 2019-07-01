@@ -6,10 +6,13 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   //  int n=simu.no_of_points();
 
-  std::vector<triplet> aa, ax, ay, mx, my ; // , bb ;            // list of non-zeros coefficients
+  std::vector<triplet>
+    aa, ax, ay, mx, my,
+    gg ; // , bb ;            // list of non-zeros coefficients
 
   typedef std::map<int,FT> diag_map;
   diag_map   dd; // diagonal
+  diag_map   dd_g;
   diag_map   dd_x, dd_y;
   diag_map   dm_x, dm_y;
 
@@ -75,10 +78,15 @@ void linear::fill_Delta_DD( const FT dt ) {
 				 + ( Aij*Aij / 12 ) * eij
 				 );
 
+    FT gamma_ij = ddelta * ( Aij*Aij / 12 + r2_ij_i  );
+    FT gamma_ji = ddelta * ( Aij*Aij / 12 + r2_ij_j  );
 
     if( (i >= 0 ) && ( j >= 0) ) {
       aa.push_back( triplet( i, j,  ddelta ));
       aa.push_back( triplet( j, i,  ddelta ));
+
+      gg.push_back( triplet( i, j,  gamma_ij ));
+      gg.push_back( triplet( j, i,  gamma_ji ));
 
       ax.push_back( triplet( i, j,  DDij.x() ));
       ay.push_back( triplet( i, j,  DDij.y() ));
@@ -98,6 +106,9 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     if (i >= 0 ) {
       dd[ i ]  -= ddelta;
+
+      dd_g[ i ]  -= gamma_ji ;
+
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
       dd_x[ i ] -= DDji.x();
@@ -111,6 +122,9 @@ void linear::fill_Delta_DD( const FT dt ) {
     }
     if (j >= 0 ) {
       dd[ j ]  -= ddelta;
+
+      dd_g[ j ]  -= gamma_ij ;
+
 //      dd_x[ j ] -= DDji.x();
 //      dd_y[ j ] -= DDji.y();
       dd_x[ j ] -= DDij.x();
@@ -167,6 +181,14 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    cout << i << "  " << i << "  " << diag << endl;
 
   }
+
+  
+  for( auto it : dd_g ) {
+    int i = it.first;
+    FT diag = it.second;
+    gg.push_back( triplet( i, i,  diag ));
+  }
+
   
   for( diag_map::const_iterator it = dd_x.begin(); it != dd_x.end(); ++it ) {
     int i    = it->first;
@@ -204,6 +226,14 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   DDx.resize( N , N );
 
+
+  GG.resize( N , N );
+  GG.setFromTriplets(gg.begin(), gg.end());
+  GG.resize( N , N );
+
+
+  
+
   DDx.setFromTriplets(ax.begin(), ax.end());
   // std::cout << " Filled DDx  matrix" << std::endl;
   // cout << "matrix size " << DDx.rows() << " times " << DDx.cols() << endl;
@@ -238,14 +268,20 @@ void linear::fill_Delta_DD( const FT dt ) {
   }
 
 
-  // special.-
-  
-  if( dt > 1e-8) Delta -= dt*dt*LL;
+  // special.-  experimental
+  //  if( dt > 1e-8) Delta -= dt*dt*LL;
 
   Delta_solver.compute( Delta );
 
   if(Delta_solver.info()!=Eigen::Success) {
     std::cout << "Failure decomposing Delta " << //minus 1
+      " matrix\n";
+  }
+
+  GG_solver.compute( GG );
+
+  if(GG_solver.info()!=Eigen::Success) {
+    std::cout << "Failure decomposing Gamma " << //minus 1
       " matrix\n";
   }
 
