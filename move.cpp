@@ -23,10 +23,10 @@ void backup( Triangulation& T ) {
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++) {
-    //    fv->vol0.set( fv->vol.val()  );
+    //        fv->vol0.set( fv->vol.val()  );
+    //    fv->I0.set(   fv->I()  );
     fv->w0.set(   fv->w()  );
     fv->p0.set(   fv->p()  );
-    fv->I0.set(   fv->I()  );
     fv->U0.set(   fv->U()  );
     fv->r0.set(   fv->point().point() );
   }

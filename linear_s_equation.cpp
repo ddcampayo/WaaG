@@ -13,8 +13,7 @@ void linear::s_equation(const FT dt ) {
   //  fill_Delta_DD(); // This may be important -- or not
 
   FT ddt = dt;
-  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-  
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly  
 
   //  volumes( T );
 

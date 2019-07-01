@@ -5,7 +5,7 @@
 
 
 // Iterative process to adjust weights so that
-// the weighted Voronoi diagram has equal volumes
+// the weighted Voronoi diagram has constant volumes
 
 void linear::solve_for_weights( ) {
 
@@ -15,18 +15,6 @@ void linear::solve_for_weights( ) {
   copy_weights( T );
   //  VectorXd vol0 = field_to_vctr( sfield_list::vol0 ) ;
 
-  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
-
-  FT totV= vol.sum();
-
-  int N = vol.size();
-
-  FT meanV = totV/ FT( N );
-  
-  FT vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
-
-  FT target_vol_val = meanV;
-
   //  VectorXd target_vol( vol ) ;
   //  target_vol.setConstant( target_vol_val );
   
@@ -35,6 +23,19 @@ void linear::solve_for_weights( ) {
   const FT mixing = 1;
   
   for( int iter=0 ; iter< max_iter ; iter++) {
+
+    VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+
+    FT totV= vol.sum();
+
+    int N = vol.size();
+
+    FT meanV = totV/ FT( N );
+  
+    FT vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
+
+    FT target_vol_val = meanV;
+
     cout << "It:  " << iter;
     cout << "  vol mean : " << meanV;
     cout << "  vol variance : " << vol_sigma << endl;

@@ -33,6 +33,7 @@ class linear {
 
   void solve_for_weights( );
   void w_equation( );
+  void w_equation2( );
   void p_equation(const FT dt );
   void s_equation(const FT dt );
   void u_star( void );
@@ -40,6 +41,7 @@ class linear {
   void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
   void u_add_s_grad( const FT dt ) ;
+  void u_add_w_grad( const FT dt ) ;
   void u_add_grads( const FT dt ) ;
 
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );  
