@@ -5,6 +5,16 @@ import numpy as np
 #import matplotlib.cm as cm
 #from matplotlib.colors import Normalize
 
+import sys
+
+#print "This is the name of the script: ", sys.argv[0]
+#print "Number of arguments: ", len(sys.argv)
+#print "The arguments are: " , str(sys.argv)
+
+if(len(sys.argv) == 1) :
+    init_t = 0
+else:
+    init_t = int( sys.argv[1] )
 
 #import pylab as pl
 
@@ -17,7 +27,7 @@ path='./'
 
 LL= 1
 
-for n in range(0,2000000+skip,skip):
+for n in range( init_t ,2000000+skip,skip):
     plt.clf()
     dt=np.loadtxt(path+str(n)+'/particles.dat')
  

@@ -31,7 +31,7 @@ class linear {
   void fill_Delta();
   void fill_Delta_DD( const FT dt = 0);
 
-  void solve_for_weights( );
+  void solve_for_weights(  const FT dt = 0 );
   void solve_for_moments( );
   void w_equation( );
   void w_equation2( );

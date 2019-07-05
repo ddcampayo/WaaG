@@ -110,8 +110,9 @@ int main() {
 
       //      copy_weights( T ) ;
 
-      //      algebra.solve_for_weights();
-      algebra.solve_for_moments();
+      algebra.solve_for_weights( dt );
+
+      //algebra.solve_for_moments();
 
       // algebra.fill_Delta_DD();
       // //      algebra.w_equation2();
@@ -121,16 +122,15 @@ int main() {
       //      algebra.fill_Delta_DD();
       //      copy_weights( T ) ;
 
-      algebra.p_equation( dt );
+      //      algebra.p_equation( dt );
       //      algebra.s_equation( dt ); 
 
 
-      algebra.u_add_press_grad( dt2 );
+      //algebra.u_add_press_grad( dt2 );
       
       // algebra.u_add_grads( dt2 );
 
-      // algebra.u_add_w_grad( dt2 );
-
+      algebra.u_add_w_grad( dt2 );
 
       if( displ < inner_tol ) break;
 
@@ -151,9 +151,9 @@ int main() {
     
     //    algebra.u_add_grads( dt );
 
-    algebra.u_add_press_grad( dt );
+    //algebra.u_add_press_grad( dt );
 
-    //algebra.u_add_w_grad( dt );
+    algebra.u_add_w_grad( dt );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );

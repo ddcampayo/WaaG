@@ -7,7 +7,7 @@
 // Iterative process to adjust weights so that
 // the weighted Voronoi diagram has constant volumes
 
-void linear::solve_for_weights( ) {
+void linear::solve_for_weights( const FT dt ) {
 
   cout << "Equalizing volumes " << endl;
   
@@ -44,7 +44,7 @@ void linear::solve_for_weights( ) {
 
     VectorXd Dvol = mixing * ( target_vol_val  - vol.array()  ) ;
 
-    fill_Delta_DD();
+    fill_Delta_DD( dt );
 
     VectorXd Dw = Delta_solver.solve( Dvol );
 
