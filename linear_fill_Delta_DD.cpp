@@ -182,7 +182,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   }
 
-  
+
   for( auto it : dd_g ) {
     int i = it.first;
     FT diag = it.second;
@@ -219,27 +219,20 @@ void linear::fill_Delta_DD( const FT dt ) {
     
   
   Delta.resize( N , N );
-
   Delta.setFromTriplets(aa.begin(), aa.end());
   // std::cout << " Filled Delta  matrix" << std::endl;
   // cout << "matrix size " << Delta.rows() << " times " << Delta.cols() << endl;
 
-  DDx.resize( N , N );
-
-
   GG.resize( N , N );
   GG.setFromTriplets(gg.begin(), gg.end());
-  GG.resize( N , N );
-
 
   
-
+  DDx.resize( N , N );
   DDx.setFromTriplets(ax.begin(), ax.end());
   // std::cout << " Filled DDx  matrix" << std::endl;
   // cout << "matrix size " << DDx.rows() << " times " << DDx.cols() << endl;
 
   DDy.resize( N , N );
-
   DDy.setFromTriplets(ay.begin(), ay.end());
   // std::cout << " Filled DDy  matrix" << std::endl;
   // cout << "matrix size " << DDy.rows() << " times " << DDy.cols() << endl;
@@ -278,13 +271,13 @@ void linear::fill_Delta_DD( const FT dt ) {
       " matrix\n";
   }
 
+  
   GG_solver.compute( GG );
 
   if(GG_solver.info()!=Eigen::Success) {
     std::cout << "Failure decomposing Gamma " << //minus 1
       " matrix\n";
   }
-
 
 
   

@@ -350,6 +350,33 @@ linear_s_equation.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_s_equation.cpp.s
 .PHONY : linear_s_equation.cpp.s
 
+linear_solve_for_moments.o: linear_solve_for_moments.cpp.o
+
+.PHONY : linear_solve_for_moments.o
+
+# target to build an object file
+linear_solve_for_moments.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_moments.cpp.o
+.PHONY : linear_solve_for_moments.cpp.o
+
+linear_solve_for_moments.i: linear_solve_for_moments.cpp.i
+
+.PHONY : linear_solve_for_moments.i
+
+# target to preprocess a source file
+linear_solve_for_moments.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_moments.cpp.i
+.PHONY : linear_solve_for_moments.cpp.i
+
+linear_solve_for_moments.s: linear_solve_for_moments.cpp.s
+
+.PHONY : linear_solve_for_moments.s
+
+# target to generate assembly for a file
+linear_solve_for_moments.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_moments.cpp.s
+.PHONY : linear_solve_for_moments.cpp.s
+
 linear_solve_for_weights.o: linear_solve_for_weights.cpp.o
 
 .PHONY : linear_solve_for_weights.o
@@ -457,6 +484,33 @@ linear_w_equation2.s: linear_w_equation2.cpp.s
 linear_w_equation2.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_w_equation2.cpp.s
 .PHONY : linear_w_equation2.cpp.s
+
+linear_w_equation3.o: linear_w_equation3.cpp.o
+
+.PHONY : linear_w_equation3.o
+
+# target to build an object file
+linear_w_equation3.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_w_equation3.cpp.o
+.PHONY : linear_w_equation3.cpp.o
+
+linear_w_equation3.i: linear_w_equation3.cpp.i
+
+.PHONY : linear_w_equation3.i
+
+# target to preprocess a source file
+linear_w_equation3.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_w_equation3.cpp.i
+.PHONY : linear_w_equation3.cpp.i
+
+linear_w_equation3.s: linear_w_equation3.cpp.s
+
+.PHONY : linear_w_equation3.s
+
+# target to generate assembly for a file
+linear_w_equation3.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_w_equation3.cpp.s
+.PHONY : linear_w_equation3.cpp.s
 
 lloyds.o: lloyds.cpp.o
 
@@ -627,6 +681,9 @@ help:
 	@echo "... linear_s_equation.o"
 	@echo "... linear_s_equation.i"
 	@echo "... linear_s_equation.s"
+	@echo "... linear_solve_for_moments.o"
+	@echo "... linear_solve_for_moments.i"
+	@echo "... linear_solve_for_moments.s"
 	@echo "... linear_solve_for_weights.o"
 	@echo "... linear_solve_for_weights.i"
 	@echo "... linear_solve_for_weights.s"
@@ -639,6 +696,9 @@ help:
 	@echo "... linear_w_equation2.o"
 	@echo "... linear_w_equation2.i"
 	@echo "... linear_w_equation2.s"
+	@echo "... linear_w_equation3.o"
+	@echo "... linear_w_equation3.i"
+	@echo "... linear_w_equation3.s"
 	@echo "... lloyds.o"
 	@echo "... lloyds.i"
 	@echo "... lloyds.s"

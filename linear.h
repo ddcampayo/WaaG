@@ -32,8 +32,10 @@ class linear {
   void fill_Delta_DD( const FT dt = 0);
 
   void solve_for_weights( );
+  void solve_for_moments( );
   void w_equation( );
   void w_equation2( );
+  void w_equation3( );
   void p_equation(const FT dt );
   void s_equation(const FT dt );
   void u_star( void );

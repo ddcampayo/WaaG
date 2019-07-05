@@ -17,7 +17,7 @@ int main() {
   
   cout << "Creating point cloud" << endl;
 
-  //ysimu.do_perturb(0.01);
+//  simu.do_perturb(0.1);
   create( T , 1.0 );
   number( T );
 
@@ -29,7 +29,7 @@ int main() {
 
   // Init loop!
   
-  const int max_iter = 200;
+  const int max_iter = 00;
   const FT tol2 = 1e-6;
   int iter=0;
 
@@ -110,24 +110,24 @@ int main() {
 
       //      copy_weights( T ) ;
 
-      algebra.solve_for_weights();
+      //      algebra.solve_for_weights();
+      algebra.solve_for_moments();
 
-      algebra.fill_Delta_DD();
-      //      algebra.w_equation2(); 
-      //      move_weights( T );
-      //      volumes( T ); 
+      // algebra.fill_Delta_DD();
+      // //      algebra.w_equation2();
+      // algebra.w_equation3(); 
+      // move_weights( T );
+      // volumes( T ); 
       //      algebra.fill_Delta_DD();
-      
-
       //      copy_weights( T ) ;
 
       algebra.p_equation( dt );
-      algebra.s_equation( dt ); 
+      //      algebra.s_equation( dt ); 
 
 
-      //      algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad( dt2 );
       
-      algebra.u_add_grads( dt2 );
+      // algebra.u_add_grads( dt2 );
 
       // algebra.u_add_w_grad( dt2 );
 
@@ -149,9 +149,9 @@ int main() {
       
     //    algebra.fill_Delta_DD();
     
-    algebra.u_add_grads( dt );
+    //    algebra.u_add_grads( dt );
 
-    //    algebra.u_add_press_grad( dt );
+    algebra.u_add_press_grad( dt );
 
     //algebra.u_add_w_grad( dt );
 

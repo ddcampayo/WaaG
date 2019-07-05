@@ -62,6 +62,7 @@ add_executable( pPart
 		create.cpp
 		linear_aux.cpp
 		linear_solve_for_weights.cpp
+		linear_solve_for_moments.cpp
 		move.cpp
 		volumes.cpp
 		draw.cpp
@@ -73,6 +74,7 @@ add_executable( pPart
 		linear_p_equation.cpp
 		linear_w_equation.cpp
 		linear_w_equation2.cpp
+		linear_w_equation3.cpp
 		linear_s_equation.cpp
 		lloyds.cpp
 # choice of main file:
