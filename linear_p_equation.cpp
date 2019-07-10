@@ -1,4 +1,4 @@
-#define PRESSURE_PPE
+//#define PRESSURE_PPE
 
 //#include"pParticles.h"
 #include"linear.h"
@@ -84,6 +84,11 @@ void linear::u_add_press_grad( const FT dt ) {
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
+
+  // There's a (-1) x (-1) for historical reasons:
+  // (-1) in the  definition of grad_ij as -(1/V) D_ij,
+  // (-1) in -grad(p) in the Euler equation
+
   U_x = Ustar_x.array() - ddt * gradPx.array() / vol.array()  ;
   U_y = Ustar_y.array() - ddt * gradPy.array() / vol.array() ;
   
@@ -115,7 +120,7 @@ void linear::u_add_grads( const FT dt ) {
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
   VectorXd grad_x = gradPx + gradsx ;
   VectorXd grad_y = gradPy + gradsy ;
-  
+
   U_x = Ustar_x.array() - ddt * grad_x.array() / vol.array()  ;
   U_y = Ustar_y.array() - ddt * grad_y.array() / vol.array() ;
   

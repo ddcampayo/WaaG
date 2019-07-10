@@ -29,15 +29,16 @@ int main() {
 
   // Init loop!
   
-  const int max_iter = 00;
-  const FT tol2 = 1e-6;
-  int iter=0;
+  const int init_max_iter = 00;
+  const FT init_tol2 = 1e-6;
 
   const int inner_iters= 100;
   const FT  inner_tol  = 1e-6;
 
+  int iter=0;
 
-  for( ; iter < max_iter ; ++iter) {
+
+  for( ; iter < init_max_iter ; ++iter) {
   
     volumes( T ); 
 
@@ -48,9 +49,12 @@ int main() {
     FT dd = lloyds( T ) ;
 
     cout << " init loop , iter " << iter << " dd = " << dd << endl;
-    if( dd < tol2) break;
+
+    if( dd < init_tol2) break;
 
   }
+
+  //algebra.solve_for_moments();
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   
@@ -97,6 +101,7 @@ int main() {
     for ( ; iter <= inner_iters ; iter++) {
 
       displ = move( T , dt , d0 );
+
       //move_from_centroid( T , dt);
 
       cout
@@ -106,36 +111,40 @@ int main() {
 	" ; from original (rel.): " << d0
 	<< endl ;
 
-      volumes( T ); 
+      //      volumes( T ); 
 
       //      copy_weights( T ) ;
 
-      algebra.solve_for_weights( dt );
+      //      algebra.solve_for_weights( dt );
 
-      //algebra.solve_for_moments();
+      //      algebra.solve_for_moments();
 
-      // algebra.fill_Delta_DD();
+      //algebra.fill_Delta_DD();
       // //      algebra.w_equation2();
       // algebra.w_equation3(); 
       // move_weights( T );
-      // volumes( T ); 
-      //      algebra.fill_Delta_DD();
+      volumes( T ); 
+      algebra.fill_Delta_DD();
       //      copy_weights( T ) ;
 
-      //      algebra.p_equation( dt );
-      //      algebra.s_equation( dt ); 
+      algebra.p_equation( dt );
 
+      algebra.s_equation( dt ); 
 
-      //algebra.u_add_press_grad( dt2 );
+      //      algebra.u_add_s_grad( dt2 );
+      //      algebra.u_add_press_grad( dt2 );
+      //      algebra.u_add_press_grad_MM_w( dt2 );
       
-      // algebra.u_add_grads( dt2 );
+      algebra.u_add_grads( dt2 );
 
-      algebra.u_add_w_grad( dt2 );
+      //algebra.u_add_w_grad( dt2 );
 
       if( displ < inner_tol ) break;
 
     }
 
+    //    algebra.solve_for_moments();
+    
     cout
       << " ======= " << endl
       << "Whole step  "
@@ -149,11 +158,13 @@ int main() {
       
     //    algebra.fill_Delta_DD();
     
-    //    algebra.u_add_grads( dt );
+    algebra.u_add_grads( dt );
 
-    //algebra.u_add_press_grad( dt );
+    //    algebra.u_add_press_grad_MM_w( dt );
+    //    algebra.u_add_press_grad( dt );
+    // algebra.u_add_s_grad( dt );
 
-    algebra.u_add_w_grad( dt );
+    //    algebra.u_add_w_grad( dt );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );

@@ -47,9 +47,10 @@ void linear::fill_Delta_DD( const FT dt ) {
     Point pj = vj->point().point();
 
     Vector_2 eij = pj - pi;
-    
-    FT lij = std::sqrt( eij.squared_length() );
-    
+
+    FT lij2 =  eij.squared_length() ;
+    FT lij = std::sqrt( lij2 );
+  
     FT ddelta = - 0.5 * Aij / lij;
 
     Point bij = CGAL::midpoint( Vor_segment->source() , Vor_segment->target() );
@@ -65,19 +66,36 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     FT r2_ij_j = rr_ij_j.squared_length();  // (these two are the same on Voronoi)
     FT r2_ij_i = rr_ij_i.squared_length();
+
+    Vector_2 rr_ij_j_perp =   ( ( rr_ij_j * eij  ) / lij2 ) * eij ;
+    Vector_2 rr_ij_j_para =     rr_ij_j  -  rr_ij_j_perp;
+
+    Vector_2 rr_ij_i_perp =   ( ( rr_ij_i * eij  ) / lij2 ) * eij ;
+    Vector_2 rr_ij_i_para =     rr_ij_i  -  rr_ij_i_perp; // ==  rr_ij_j_para, actually !
+ 
     
     // todo: maybe define I = Aij*Aij/12, to ease notation
     Vector_2 MMij = Aij / lij * (
-				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
-				 - ( Aij*Aij / 12 ) * eij
-				 // i.e.  + ( Aij*Aij / 12 ) * eji
+				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_j
+				 + ( Aij*Aij / 6 ) * rr_ij_i_para
 				 );
 
     Vector_2 MMji = Aij / lij * (
-				 ( r2_ij_i +  Aij*Aij / 4 ) * rr_ij_i
-				 + ( Aij*Aij / 12 ) * eij
+				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_i
+				 + ( Aij*Aij / 6 ) * rr_ij_j_para
 				 );
 
+    Vector_2 MMii =-Aij / lij * (
+				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_i
+				 + ( Aij*Aij / 6 ) * rr_ij_i_para
+				 );
+
+    Vector_2 MMjj =-Aij / lij * (
+				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
+				 + ( Aij*Aij / 6 ) * rr_ij_j_para
+				 );
+
+    
     FT gamma_ij = ddelta * ( Aij*Aij / 12 + r2_ij_i  );
     FT gamma_ji = ddelta * ( Aij*Aij / 12 + r2_ij_j  );
 
@@ -116,8 +134,8 @@ void linear::fill_Delta_DD( const FT dt ) {
 
 //      dm_x[ i ] -= MMij.x();
 //      dm_y[ i ] -= MMij.y();
-      dm_x[ i ] -= MMji.x();
-      dm_y[ i ] -= MMji.y();
+      dm_x[ i ] += MMii.x();
+      dm_y[ i ] += MMii.y();
  
     }
     if (j >= 0 ) {
@@ -132,8 +150,8 @@ void linear::fill_Delta_DD( const FT dt ) {
 
 //      dm_x[ j ] -= MMji.x();
 //      dm_y[ j ] -= MMji.y();
-      dm_x[ j ] -= MMij.x();
-      dm_y[ j ] -= MMij.y();
+      dm_x[ j ] += MMjj.x();
+      dm_y[ j ] += MMjj.y();
 
     }
 
