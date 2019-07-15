@@ -75,25 +75,47 @@ void linear::fill_Delta_DD( const FT dt ) {
  
     
     // todo: maybe define I = Aij*Aij/12, to ease notation
+
+    // Voronoi-only:
+    // Vector_2 MMij = Aij / lij * (
+    // 				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
+    // 				 - ( Aij*Aij / 12 ) * eij
+    // 				 );
+    // // debug 
+    // // cout
+    // //   << " MMij :  "
+    // //   <<  Aij*Aij / 4  * rr_ij_j - ( Aij*Aij / 12 ) * eij
+    // //   << "  "
+    // //   <<  Aij*Aij / 12  * rr_ij_j + ( Aij*Aij / 6 ) * rr_ij_i_para
+    // //   << endl;
+
+
+    // Vector_2 MMji = Aij / lij * (
+    // 				 ( r2_ij_i +  Aij*Aij / 4 ) * rr_ij_i
+    // 				 + ( Aij*Aij / 12 ) * eij
+    // 				 );
+
+    
+    // General:
     Vector_2 MMij = Aij / lij * (
-				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_j
-				 + ( Aij*Aij / 6 ) * rr_ij_i_para
-				 );
+    				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_j
+    				 + ( Aij*Aij / 6 ) * rr_ij_i_para
+    				 );
 
     Vector_2 MMji = Aij / lij * (
-				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_i
-				 + ( Aij*Aij / 6 ) * rr_ij_j_para
-				 );
+    				 ( r2_ij_j +  Aij*Aij / 12 ) * rr_ij_i
+    				 + ( Aij*Aij / 6 ) * rr_ij_j_para
+    				 );
 
     Vector_2 MMii =-Aij / lij * (
-				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_i
-				 + ( Aij*Aij / 6 ) * rr_ij_i_para
-				 );
+    				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_i
+    				 + ( Aij*Aij / 6 ) * rr_ij_i_para
+    				 );
 
     Vector_2 MMjj =-Aij / lij * (
-				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
-				 + ( Aij*Aij / 6 ) * rr_ij_j_para
-				 );
+    				 ( r2_ij_j +  Aij*Aij / 12 ) * rr_ij_j
+    				 + ( Aij*Aij / 6 ) * rr_ij_j_para
+    				 );
 
     
     FT gamma_ij = ddelta * ( Aij*Aij / 12 + r2_ij_i  );
@@ -129,15 +151,22 @@ void linear::fill_Delta_DD( const FT dt ) {
 
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
+
       dd_x[ i ] -= DDji.x();
       dd_y[ i ] -= DDji.y();
 
-//      dm_x[ i ] -= MMij.x();
-//      dm_y[ i ] -= MMij.y();
+      // Voronoi-only:
+
+      // dm_x[ i ] -= MMji.x();
+      // dm_y[ i ] -= MMji.y();
+      
+      // General:
+      
       dm_x[ i ] += MMii.x();
       dm_y[ i ] += MMii.y();
  
     }
+
     if (j >= 0 ) {
       dd[ j ]  -= ddelta;
 
@@ -148,8 +177,13 @@ void linear::fill_Delta_DD( const FT dt ) {
       dd_x[ j ] -= DDij.x();
       dd_y[ j ] -= DDij.y();
 
-//      dm_x[ j ] -= MMji.x();
-//      dm_y[ j ] -= MMji.y();
+      // Voronoi-only:
+
+      // dm_x[ j ] -= MMij.x();
+      // dm_y[ j ] -= MMij.y();
+
+      // General:
+
       dm_x[ j ] += MMjj.x();
       dm_y[ j ] += MMjj.y();
 
@@ -267,7 +301,7 @@ void linear::fill_Delta_DD( const FT dt ) {
   
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
   VectorXd inv_vol  = 1.0 / vol.array() ;
-  
+
   LL =
     - DDx * inv_vol.asDiagonal() * DDx.transpose()
     - DDy * inv_vol.asDiagonal() * DDy.transpose();
@@ -297,7 +331,6 @@ void linear::fill_Delta_DD( const FT dt ) {
     std::cout << "Failure decomposing Gamma " << //minus 1
       " matrix\n";
   }
-
 
   
   NN =

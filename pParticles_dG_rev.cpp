@@ -29,7 +29,7 @@ int main() {
 
   // Init loop!
   
-  const int init_max_iter = 00;
+  const int init_max_iter = 100;
   const FT init_tol2 = 1e-6;
 
   const int inner_iters= 100;
@@ -115,7 +115,7 @@ int main() {
 
       //      copy_weights( T ) ;
 
-      //      algebra.solve_for_weights( dt );
+      algebra.solve_for_weights( dt );
 
       //      algebra.solve_for_moments();
 
@@ -123,19 +123,19 @@ int main() {
       // //      algebra.w_equation2();
       // algebra.w_equation3(); 
       // move_weights( T );
-      volumes( T ); 
-      algebra.fill_Delta_DD();
+      //volumes( T ); 
+      //algebra.fill_Delta_DD();
       //      copy_weights( T ) ;
 
-      algebra.p_equation( dt );
+      algebra.s_equation( dt );
 
-      algebra.s_equation( dt ); 
+      //algebra.p_equation( dt );
 
-      //      algebra.u_add_s_grad( dt2 );
+      algebra.u_add_s_grad( dt2 );
       //      algebra.u_add_press_grad( dt2 );
       //      algebra.u_add_press_grad_MM_w( dt2 );
       
-      algebra.u_add_grads( dt2 );
+      //algebra.u_add_grads( dt2 );
 
       //algebra.u_add_w_grad( dt2 );
 
@@ -158,11 +158,11 @@ int main() {
       
     //    algebra.fill_Delta_DD();
     
-    algebra.u_add_grads( dt );
+    //    algebra.u_add_grads( dt );
 
     //    algebra.u_add_press_grad_MM_w( dt );
     //    algebra.u_add_press_grad( dt );
-    // algebra.u_add_s_grad( dt );
+    algebra.u_add_s_grad( dt );
 
     //    algebra.u_add_w_grad( dt );
 
