@@ -73,9 +73,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vector_2 rr_ij_i_perp =   ( ( rr_ij_i * eij  ) / lij2 ) * eij ;
     Vector_2 rr_ij_i_para =     rr_ij_i  -  rr_ij_i_perp; // ==  rr_ij_j_para, actually !
  
+    FT I = Aij*Aij/12 ;
     
-    // todo: maybe define I = Aij*Aij/12, to ease notation
-
     // Voronoi-only:
     // Vector_2 MMij = Aij / lij * (
     // 				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
@@ -98,28 +97,28 @@ void linear::fill_Delta_DD( const FT dt ) {
     
     // General:
     Vector_2 MMij = Aij / lij * (
-    				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_j
-    				 + ( Aij*Aij / 6 ) * rr_ij_i_para
+    				 ( r2_ij_i +  I ) * rr_ij_j
+    				 + 2 *I * rr_ij_i_para
     				 );
 
     Vector_2 MMji = Aij / lij * (
-    				 ( r2_ij_j +  Aij*Aij / 12 ) * rr_ij_i
-    				 + ( Aij*Aij / 6 ) * rr_ij_j_para
+    				 ( r2_ij_j +  I ) * rr_ij_i
+    				 + 2* I * rr_ij_j_para
     				 );
 
     Vector_2 MMii =-Aij / lij * (
-    				 ( r2_ij_i +  Aij*Aij / 12 ) * rr_ij_i
-    				 + ( Aij*Aij / 6 ) * rr_ij_i_para
+    				 ( r2_ij_i +  I ) * rr_ij_i
+    				 + 2 * I * rr_ij_i_para
     				 );
 
     Vector_2 MMjj =-Aij / lij * (
-    				 ( r2_ij_j +  Aij*Aij / 12 ) * rr_ij_j
-    				 + ( Aij*Aij / 6 ) * rr_ij_j_para
+    				 ( r2_ij_j +  I ) * rr_ij_j
+    				 + 2 * I * rr_ij_j_para
     				 );
 
     
-    FT gamma_ij = ddelta * ( Aij*Aij / 12 + r2_ij_i  );
-    FT gamma_ji = ddelta * ( Aij*Aij / 12 + r2_ij_j  );
+    FT gamma_ij = ddelta * ( I + r2_ij_i  );
+    FT gamma_ji = ddelta * ( I + r2_ij_j  );
 
     if( (i >= 0 ) && ( j >= 0) ) {
       aa.push_back( triplet( i, j,  ddelta ));
