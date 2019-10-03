@@ -12,7 +12,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iter = 0;
+  const int init_iter = 10;
   const FT  init_tol2 = 1e-2;
 
   const int inner_iter= 10;
@@ -123,12 +123,13 @@ int main() {
       algebra.w_equation();
       algebra.solve_for_weights();
       volumes( T ); 
-
+      copy_weights( T ) ;
       
     }
+
     //    algebra.u_add_press_grad( dt2 );
 
-    copy_weights( T ) ;
+    //    copy_weights( T ) ;
 
     FT displ = move( T , dt , d0 );
 

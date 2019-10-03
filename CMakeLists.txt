@@ -80,8 +80,8 @@ add_executable( pPart
 # choice of main file:
 # 		pParticles_other.cpp	
 #		pParticles_dG.cpp
-		pParticles_dG_rev.cpp
-#		pParticles_w.cpp
+#		pParticles_dG_rev.cpp
+		pParticles_w.cpp
 #		pParticles_ww.cpp
 #		pParticles_p.cpp
 #		pParticles_s.cpp
