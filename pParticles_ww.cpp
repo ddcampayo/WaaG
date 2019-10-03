@@ -123,11 +123,23 @@ int main() {
       // algebra.solve_for_weights();
       //      copy_weights( T ) ;
 
-      algebra.w_equation();
-
-      algebra.copy( sfield_list::w,  sfield_list::p);
-    
+      algebra.p_equation( dt2 );
       algebra.u_add_press_grad( dt2 );
+
+      //      algebra.w_equation();
+      // algebra.solve_for_weights();
+
+      algebra.copy( sfield_list::p,  sfield_list::w);
+
+      copy_weights( T ) ;
+
+      move_weights( T );
+ 
+      //      algebra.w_equation();
+
+      //      algebra.copy( sfield_list::w,  sfield_list::p);
+    
+      //      algebra.u_add_press_grad( dt2 );
 
       if( displ < inner_tol ) break;
 
@@ -141,8 +153,9 @@ int main() {
     //algebra.w_equation();
     //algebra.solve_for_weights();
     algebra.u_add_press_grad( dt );
+  
 
-    algebra.solve_for_weights();
+    //    algebra.solve_for_weights();
 
     //    volumes( T ); 
     //    update_full_vel( T );

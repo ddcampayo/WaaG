@@ -120,9 +120,9 @@ int main() {
       algebra.p_equation( dt2 );
       algebra.u_add_press_grad( dt2 );
 
-      algebra.w_equation();
-      algebra.solve_for_weights();
-      volumes( T ); 
+      //      algebra.w_equation();
+      // algebra.solve_for_weights();
+
       copy_weights( T ) ;
       
     }
