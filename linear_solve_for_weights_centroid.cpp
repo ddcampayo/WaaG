@@ -7,7 +7,7 @@
 // Iterative process to adjust weights so that
 // the weighted Voronoi diagram has constant volumes
 
-void linear::solve_for_weights( const FT dt ) {
+void linear::solve_for_weights_centroid( const FT dt ) {
 
   cout << "Making centroidal " << endl;
   

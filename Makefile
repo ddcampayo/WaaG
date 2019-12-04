@@ -393,6 +393,33 @@ linear_solve_for_weights.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_weights.cpp.s
 .PHONY : linear_solve_for_weights.cpp.s
 
+linear_solve_for_weights_centroid.o: linear_solve_for_weights_centroid.cpp.o
+
+.PHONY : linear_solve_for_weights_centroid.o
+
+# target to build an object file
+linear_solve_for_weights_centroid.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_weights_centroid.cpp.o
+.PHONY : linear_solve_for_weights_centroid.cpp.o
+
+linear_solve_for_weights_centroid.i: linear_solve_for_weights_centroid.cpp.i
+
+.PHONY : linear_solve_for_weights_centroid.i
+
+# target to preprocess a source file
+linear_solve_for_weights_centroid.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_weights_centroid.cpp.i
+.PHONY : linear_solve_for_weights_centroid.cpp.i
+
+linear_solve_for_weights_centroid.s: linear_solve_for_weights_centroid.cpp.s
+
+.PHONY : linear_solve_for_weights_centroid.s
+
+# target to generate assembly for a file
+linear_solve_for_weights_centroid.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_weights_centroid.cpp.s
+.PHONY : linear_solve_for_weights_centroid.cpp.s
+
 linear_vect_to_field.o: linear_vect_to_field.cpp.o
 
 .PHONY : linear_vect_to_field.o
@@ -675,6 +702,9 @@ help:
 	@echo "... linear_solve_for_weights.o"
 	@echo "... linear_solve_for_weights.i"
 	@echo "... linear_solve_for_weights.s"
+	@echo "... linear_solve_for_weights_centroid.o"
+	@echo "... linear_solve_for_weights_centroid.i"
+	@echo "... linear_solve_for_weights_centroid.s"
 	@echo "... linear_vect_to_field.o"
 	@echo "... linear_vect_to_field.i"
 	@echo "... linear_vect_to_field.s"

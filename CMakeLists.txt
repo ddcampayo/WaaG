@@ -62,6 +62,7 @@ add_executable( pPart
 		create.cpp
 		linear_aux.cpp
 		linear_solve_for_weights.cpp
+		linear_solve_for_weights_centroid.cpp
 		linear_solve_for_moments.cpp
 		move.cpp
 		volumes.cpp
