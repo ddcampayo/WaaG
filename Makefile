@@ -78,17 +78,6 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
 # The main all target
 all: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/WaaG/CMakeFiles /home/daniel/WaaG/CMakeFiles/progress.marks
@@ -593,32 +582,32 @@ number.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles_ww.o: pParticles_ww.cpp.o
+pParticles_d.o: pParticles_d.cpp.o
 
-.PHONY : pParticles_ww.o
+.PHONY : pParticles_d.o
 
 # target to build an object file
-pParticles_ww.cpp.o:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_ww.cpp.o
-.PHONY : pParticles_ww.cpp.o
+pParticles_d.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_d.cpp.o
+.PHONY : pParticles_d.cpp.o
 
-pParticles_ww.i: pParticles_ww.cpp.i
+pParticles_d.i: pParticles_d.cpp.i
 
-.PHONY : pParticles_ww.i
+.PHONY : pParticles_d.i
 
 # target to preprocess a source file
-pParticles_ww.cpp.i:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_ww.cpp.i
-.PHONY : pParticles_ww.cpp.i
+pParticles_d.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_d.cpp.i
+.PHONY : pParticles_d.cpp.i
 
-pParticles_ww.s: pParticles_ww.cpp.s
+pParticles_d.s: pParticles_d.cpp.s
 
-.PHONY : pParticles_ww.s
+.PHONY : pParticles_d.s
 
 # target to generate assembly for a file
-pParticles_ww.cpp.s:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_ww.cpp.s
-.PHONY : pParticles_ww.cpp.s
+pParticles_d.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_d.cpp.s
+.PHONY : pParticles_d.cpp.s
 
 volumes.o: volumes.cpp.o
 
@@ -654,9 +643,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... pPart"
-	@echo "... test"
+	@echo "... edit_cache"
 	@echo "... create.o"
 	@echo "... create.i"
 	@echo "... create.s"
@@ -708,9 +696,9 @@ help:
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles_ww.o"
-	@echo "... pParticles_ww.i"
-	@echo "... pParticles_ww.s"
+	@echo "... pParticles_d.o"
+	@echo "... pParticles_d.i"
+	@echo "... pParticles_d.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"
