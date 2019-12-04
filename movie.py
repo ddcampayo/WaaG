@@ -32,7 +32,8 @@ for n in range( init_t ,2000000+skip,skip):
     dt=np.loadtxt(path+str(n)+'/particles.dat')
  
     x=dt[:,0]; y=dt[:,1];
-#    vol=dt[:,3]; w=dt[:,4];
+#    vol=dt[:,3]
+    w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
     p=dt[:,9]
 #    p=dt[:,10]
@@ -42,7 +43,8 @@ for n in range( init_t ,2000000+skip,skip):
     #    r = np.sqrt( x**2 + y**2 )
     #    plt.plot( r , p , 'o' )
 
-    plt.scatter( x , y , c=p )
+#    plt.scatter( x , y , c=p )
+    plt.scatter( x , y , c=w )
 
     di = np.loadtxt(path+str(n)+'/diagram.dat')
 

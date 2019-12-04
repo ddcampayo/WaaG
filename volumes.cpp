@@ -191,7 +191,9 @@ void volumes(Triangulation& T) {
     totalV += area;
 
     fv->I.set( moi( fv->point().point() ,  poly_vertices2  ) );
-    
+
+    fv->d2.set( area * CGAL::squared_distance( c2 , fv->point().point() ) );
+
   }
 
   cout << "Volumes: total = " << totalV << " ; ";

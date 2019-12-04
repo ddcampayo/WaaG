@@ -29,7 +29,7 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   
-  simu.do_perturb(0.1);
+  simu.do_perturb(0.4);
   create( T , 1.0 );
   number( T );
 
@@ -39,6 +39,9 @@ int main() {
   linear algebra( T );
 
   algebra.solve_for_weights();
+
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
 
   return 0;
 

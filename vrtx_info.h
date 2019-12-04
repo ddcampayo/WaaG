@@ -160,6 +160,8 @@ public:
   scalar_field I;  // second moment of area
   scalar_field I0;
 
+  scalar_field d2;  // V * ( centr - node )**2
+
   //  weight_field w;
 
 //  int idx() const {return idx_; }
