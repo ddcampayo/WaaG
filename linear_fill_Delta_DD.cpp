@@ -8,11 +8,13 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   std::vector<triplet>
     aa, ax, ay, mx, my,
+    ee ,
     gg ; // , bb ;            // list of non-zeros coefficients
 
   typedef std::map<int,FT> diag_map;
   diag_map   dd; // diagonal
   diag_map   dd_g;
+  diag_map   dd_e;
   diag_map   dd_x, dd_y;
   diag_map   dm_x, dm_y;
 
@@ -63,6 +65,10 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     Vector_2 DDij = Aij / lij * rr_ij_j; // ( pj - bij);
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
+
+    FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
+
+    FT Eji = Aij / lij * ( vj->dd.val() * rr_ij_j );
 
     FT r2_ij_j = rr_ij_j.squared_length();  // (these two are the same on Voronoi)
     FT r2_ij_i = rr_ij_i.squared_length();
@@ -139,6 +145,9 @@ void linear::fill_Delta_DD( const FT dt ) {
       mx.push_back( triplet( j, i,  MMji.x() ));
       my.push_back( triplet( j, i,  MMji.y() ));
 
+      ee.push_back( triplet( i, j,  Eij ) );
+      ee.push_back( triplet( j, i,  Eji ) );
+      
     }
 
     // diagonal terms
@@ -148,6 +157,8 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       dd_g[ i ]  -= gamma_ji ;
 
+      dd_e[ i ]  -= Eji;//ij ;
+      
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
 
@@ -171,6 +182,9 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       dd_g[ j ]  -= gamma_ij ;
 
+      dd_e[ j ]  -= Eij; //ji ;
+
+      
 //      dd_x[ j ] -= DDji.x();
 //      dd_y[ j ] -= DDji.y();
       dd_x[ j ] -= DDij.x();
@@ -211,7 +225,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     if( idx < 0 ) continue;
 
-    FT vol = fv->vol();
+    FT vol = fv->vol.val();
     Point ri = fv->point().point();
     Point bi = fv->centroid.val();
 
@@ -238,6 +252,13 @@ void linear::fill_Delta_DD( const FT dt ) {
     int i = it.first;
     FT diag = it.second;
     gg.push_back( triplet( i, i,  diag ));
+  }
+
+
+  for( auto it : dd_e ) {
+    int i = it.first;
+    FT diag = it.second;
+    ee.push_back( triplet( i, i,  diag ));
   }
 
   
@@ -277,7 +298,9 @@ void linear::fill_Delta_DD( const FT dt ) {
   GG.resize( N , N );
   GG.setFromTriplets(gg.begin(), gg.end());
 
-  
+  EE.resize( N , N );
+  EE.setFromTriplets(ee.begin(), ee.end());
+
   DDx.resize( N , N );
   DDx.setFromTriplets(ax.begin(), ax.end());
   // std::cout << " Filled DDx  matrix" << std::endl;
@@ -342,6 +365,14 @@ void linear::fill_Delta_DD( const FT dt ) {
     std::cout << "Failure decomposing NN matrix " << endl;
   }
   
+
+  EE_solver.compute( EE );
+
+  if(EE_solver.info()!=Eigen::Success) {
+    std::cout << "Failure decomposing Epsilon " <<
+      " matrix\n";
+  }
+
   
   return;
 

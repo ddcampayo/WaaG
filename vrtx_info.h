@@ -91,6 +91,7 @@ public:
       case sfield_list::s : return s;
       case sfield_list::I   : return I;
       case sfield_list::I0   : return I0;
+      case sfield_list::dd2 : return dd2;
       default : return vol;
       }
   }
@@ -102,6 +103,7 @@ public:
       case vfield_list::U0  : return U0;
       case vfield_list::Ustar  : return Ustar;
       case vfield_list::Dr : return Dr;
+      case vfield_list::dd : return dd;
       default : return U;
       }
   }
@@ -160,7 +162,8 @@ public:
   scalar_field I;  // second moment of area
   scalar_field I0;
 
-  scalar_field d2;  // V * ( centr - node )**2
+  vector_field dd;   // V * ( centr - node_position )
+  scalar_field dd2;  // dd**2
 
   //  weight_field w;
 

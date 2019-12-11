@@ -72,6 +72,9 @@ private:
   SpMat LL;
   SpMat MMx, MMy;
   SpMat NN;
+
+  SpMat EE;
+
   
   VectorXd field_to_vctr(const sfield_list::take sf );
   void vctr_to_field(const VectorXd& vv, const sfield_list::take sf  );
@@ -85,6 +88,7 @@ private:
   Eigen::CholmodSupernodalLLT<SpMat> Delta_solver;
 #else
   Eigen::SimplicialLDLT<SpMat> Delta_solver;
+  Eigen::SimplicialLDLT<SpMat> EE_solver;
   Eigen::SimplicialLDLT<SpMat> GG_solver;
   Eigen::SimplicialLDLT<SpMat> LL_solver;
   Eigen::SimplicialLDLT<SpMat> NN_solver;

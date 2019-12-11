@@ -157,7 +157,9 @@ int main() {
       ///////////
       
 
-      //algebra.w_equation();
+      algebra.w_equation2();
+      copy_weights( T ) ;
+
       //algebra.solve_for_weights();
       //      volumes( T ); 
 

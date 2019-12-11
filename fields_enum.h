@@ -3,11 +3,11 @@
 
 
 namespace sfield_list {
-  enum take{ vol0 , vol , w , w0, p , p0 , I , I0 , s };
+  enum take{ vol0 , vol , w , w0, p , p0 , I , I0 , s , dd2 };
 }
 
 namespace vfield_list {
-  enum take{ U , Dr , U0, Ustar };
+  enum take{ U , Dr , U0, Ustar , dd };
 }
 
 

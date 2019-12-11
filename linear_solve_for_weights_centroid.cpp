@@ -24,29 +24,30 @@ void linear::solve_for_weights_centroid( const FT dt ) {
   
   for( int iter=0 ; iter< max_iter ; iter++) {
 
-    VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+    VectorXd dd2  = field_to_vctr( sfield_list::dd2 ) ;
 
-    FT totV= vol.sum();
+    FT tot_dd2 = dd2.sum();
 
-    int N = vol.size();
+    int N = dd2.size();
 
-    FT meanV = totV/ FT( N );
+    FT mean_dd2 = tot_dd2/ FT( N );
   
-    FT vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
+    FT dd2_sigma =  ( dd2.array() - mean_dd2 ).square().sum() / FT( N );
 
-    FT target_vol_val = meanV;
+    // 0 target
+    //    FT target_vol_val = meanV; 
 
     cout << "It:  " << iter;
-    cout << "  vol mean : " << meanV;
-    cout << "  vol variance : " << vol_sigma << endl;
+    cout << "  dd2 mean : " << mean_dd2;
+    cout << "  dd2 variance : " << dd2_sigma << endl;
 
     //  FT target_v = simu.meanV();
 
-    VectorXd Dvol = mixing * ( target_vol_val  - vol.array()  ) ;
+    VectorXd D_dd2 = - mixing * dd2.array()  ;
 
     fill_Delta_DD( dt );
 
-    VectorXd Dw = Delta_solver.solve( Dvol );
+    VectorXd Dw = EE_solver.solve( D_dd2 );
 
     //    copy_weights( T ) ;
 
@@ -60,20 +61,20 @@ void linear::solve_for_weights_centroid( const FT dt ) {
 
     volumes( T );
 
-    VectorXd vol0( vol );
+    VectorXd dd2_0( dd2 );
 
-    vol  = field_to_vctr( sfield_list::vol ) ;
+    dd2  = field_to_vctr( sfield_list::dd2 ) ;
 
-    FT diff = (vol - vol0 ).norm();
+    FT diff = (dd2 - dd2_0 ).norm();
 
-    cout << "vol diff: " << diff<< endl;
+    cout << "dd2 diff: " << diff<< endl;
+    
+    tot_dd2 = dd2.sum();
+    mean_dd2 = tot_dd2/ FT( N );  
+    dd2_sigma =  ( dd2.array() - mean_dd2 ).square().sum() / FT( N );
 
-    totV= vol.sum();
-    meanV = totV/ FT( N ); 
-    vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
-
-    cout << "  vol mean : " << meanV;
-    cout << "  vol variance : " << vol_sigma << endl;
+    cout << "  dd2 mean : " << mean_dd2;
+    cout << "  dd2 variance : " << dd2_sigma << endl;
 
     if( diff < threshold ) break;
   }

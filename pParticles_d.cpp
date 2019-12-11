@@ -37,12 +37,21 @@ int main() {
   //  set_vels_Lamb_Oseen( T );
 
   linear algebra( T );
+  
+  algebra.solve_for_weights_centroid();
+
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+
+
+  simu.next_step();
+  simu.advance_time( );
 
   algebra.solve_for_weights();
 
   draw( T , particle_file     );
   draw_diagram( T , diagram_file );
-
+  
   return 0;
 
   // Init loop!

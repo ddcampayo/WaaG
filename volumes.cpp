@@ -192,7 +192,13 @@ void volumes(Triangulation& T) {
 
     fv->I.set( moi( fv->point().point() ,  poly_vertices2  ) );
 
-    fv->d2.set( area * CGAL::squared_distance( c2 , fv->point().point() ) );
+    Vector_2 d1 =  c2 - fv->point().point() ;
+
+    Vector_2 d1A = area * d1;
+    
+    fv->dd.set( d1A );
+
+    fv->dd2.set(  d1A.squared_length()  );
 
   }
 
