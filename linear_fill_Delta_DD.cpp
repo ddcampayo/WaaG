@@ -157,7 +157,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       dd_g[ i ]  -= gamma_ji ;
 
-      dd_e[ i ]  -= Eji;//ij ;
+      dd_e[ i ]  -= Eij ;
       
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
@@ -182,7 +182,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       dd_g[ j ]  -= gamma_ij ;
 
-      dd_e[ j ]  -= Eij; //ji ;
+      dd_e[ j ]  -= Eji ;
 
       
 //      dd_x[ j ] -= DDji.x();

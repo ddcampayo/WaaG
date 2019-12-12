@@ -13,7 +13,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 0;
+  const int init_iters = 100;
   const FT  init_tol2 = 1e-3;
 
   const int inner_iters= 100;
@@ -38,22 +38,6 @@ int main() {
 
   linear algebra( T );
   
-  algebra.solve_for_weights_centroid();
-
-  draw( T , particle_file     );
-  draw_diagram( T , diagram_file );
-
-
-  simu.next_step();
-  simu.advance_time( );
-
-  algebra.solve_for_weights();
-
-  draw( T , particle_file     );
-  draw_diagram( T , diagram_file );
-  
-  return 0;
-
   // Init loop!
   
   int iter=1;
@@ -76,6 +60,33 @@ int main() {
   copy_weights( T ) ;
 
   cout << "Init loop converged in " << iter << " steps " << endl;
+
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+
+
+  simu.next_step();
+  simu.advance_time( );
+
+  
+  algebra.solve_for_weights_centroid();
+
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+
+
+  simu.next_step();
+  simu.advance_time( );
+
+  algebra.solve_for_weights();
+
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+  
+  return 0;
+
+
+
   
   set_vels_Gresho( T );
 
