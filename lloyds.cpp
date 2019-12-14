@@ -4,7 +4,7 @@
 
 
 // Lloyds algorithm
-//
+// Only one step
 //
 FT lloyds(Triangulation& T) {
 
@@ -45,13 +45,15 @@ FT lloyds(Triangulation& T) {
 
     FT rel_disp = sqrt(disp2.squared_length() ) / simu.h();
 
+    //    cout << " rel disp of " << idx << "  :  " << rel_disp << endl ;
+    
     dd2 += rel_disp;
 
     data.pos = rnew;
 
     data.Dr = disp2;
 
-    prev.push_back (data);
+    prev.push_back(data);
 
   }
 

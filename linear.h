@@ -56,6 +56,7 @@ class linear {
 		       VectorXd& Dx,VectorXd& Dy);
   void copy(const sfield_list::take from, sfield_list::take to  );
 
+  void dd2_stats( void ) ;
 
   
 private:

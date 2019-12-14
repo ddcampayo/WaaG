@@ -66,6 +66,9 @@ void volumes(Triangulation& T) {
 
     int nn=1;
 
+
+    // Collecting of Voronoi vertices --- TODO: clearly improvable
+
     do {
       if(T.is_infinite( edge ) ) {
 	++edge;
@@ -156,13 +159,16 @@ void volumes(Triangulation& T) {
     if( NN == 0 ) continue;
 
     vvP poly_vertices2;
-    poly_vertices2.push_back( poly_vertices[0] );
 
-    for( int i= 1 ; i < NN ; i++ ) {
-      Vector_2 dd( poly_vertices[ i ] - poly_vertices[ i-1 ] );
-      if(
-	 dd.squared_length() > threshold2 )
+    //    poly_vertices2.push_back( poly_vertices[0] );
+
+    for( int i= 0 ; i < NN ; i++ ) {
+
+      Vector_2 dd( poly_vertices[ (i + 1) % NN ] - poly_vertices[ i ] );
+
+      if( dd.squared_length() > threshold2 )
 	poly_vertices2.push_back( poly_vertices[i] );
+
     }
     
     Polygon poly( poly_vertices2.begin() , poly_vertices2.end() );
@@ -174,7 +180,9 @@ void volumes(Triangulation& T) {
     //    for( auto pp : poly_vertices2 ) // C++11
     // 	 cout << pp << endl; 
     // }
-       
+
+    //    int idx = fv->idx() ; // debugging
+    
     fv->set_poly( poly );
 
     FT area = poly.area();
@@ -190,12 +198,14 @@ void volumes(Triangulation& T) {
 
     totalV += area;
 
-    fv->I.set( moi( fv->point().point() ,  poly_vertices2  ) );
+    Point p_i = fv->point().point();
+    
+    fv->I.set( moi( p_i  ,  poly_vertices2  ) );
 
-    Vector_2 d1 =  c2 - fv->point().point() ;
+    Vector_2 d1 =  c2 - p_i ;
 
     Vector_2 d1A = area * d1;
-    
+ 
     fv->dd.set( d1A );
 
     fv->dd2.set(  d1A.squared_length()  );

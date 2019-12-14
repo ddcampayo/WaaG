@@ -10,4 +10,5 @@ main_data
 << vit->p.val() << "  "   //  9
 << vit->s.val() << "  "   //  10
 << vit->I.val() << "  "   //  11
+<< vit->dd2.val() << "  "   //  11
 << endl;

@@ -14,7 +14,7 @@ int main() {
   // TODO: read parameter file
   
   const int init_iters = 100;
-  const FT  init_tol2 = 1e-3;
+  const FT  init_tol2 = 1e-4;
 
   const int inner_iters= 100;
   const FT  inner_tol  = 1e-6;
@@ -29,10 +29,18 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   
-  simu.do_perturb(0.4);
+  simu.do_perturb(1e-4);
+  
   create( T , 1.0 );
   number( T );
 
+  draw( T , particle_file     );
+  draw_diagram( T , diagram_file );
+
+  simu.next_step();
+  simu.advance_time( );
+
+  
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
 
@@ -42,17 +50,25 @@ int main() {
   
   int iter=1;
 
+  volumes( T ); 
+    
   for( ; iter < init_iters ; ++iter) {
-  
-    volumes( T ); 
-
-    copy_weights( T ) ;
 
     //    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
     cout << " init loop , iter " << iter << " dd = " << dd << endl;
+
+    //    volumes( T ); 
+
+
+    volumes( T ); 
+
+    copy_weights( T ) ;
+    
+    algebra.dd2_stats( ) ;
+
     if( dd < init_tol2) break;
 
   }
@@ -64,9 +80,10 @@ int main() {
   draw( T , particle_file     );
   draw_diagram( T , diagram_file );
 
-
   simu.next_step();
   simu.advance_time( );
+
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
 
   
   algebra.solve_for_weights_centroid();

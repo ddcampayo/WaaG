@@ -368,11 +368,8 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   EE_solver.compute( EE );
 
-  if(EE_solver.info()!=Eigen::Success) {
-    std::cout << "Failure decomposing Epsilon " <<
-      " matrix\n";
-  }
-
+  if(EE_solver.info()!=Eigen::Success)
+    std::cout << "Failure decomposing Epsilon matrix\n";
   
   return;
 

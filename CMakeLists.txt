@@ -77,6 +77,7 @@ add_executable( pPart
 		linear_w_equation2.cpp
 		linear_w_equation3.cpp
 		linear_s_equation.cpp
+		linear_stats.cpp
 		lloyds.cpp
 # choice of main file:
 # 		pParticles_other.cpp	

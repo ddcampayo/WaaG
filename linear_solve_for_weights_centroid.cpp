@@ -43,7 +43,7 @@ void linear::solve_for_weights_centroid( const FT dt ) {
 
     //  FT target_v = simu.meanV();
 
-    VectorXd D_dd2 = - mixing * dd2.array()  ;
+    VectorXd D_dd2 = - dd2.array()  ;
 
     fill_Delta_DD( dt );
 
@@ -53,7 +53,7 @@ void linear::solve_for_weights_centroid( const FT dt ) {
 
     VectorXd w0  = field_to_vctr( sfield_list::w ) ;
 
-    vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
+    vctr_to_field( w0 + mixing * Dw ,  sfield_list::w ) ;
 
     volumes( T ); // ??
 

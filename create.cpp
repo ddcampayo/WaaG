@@ -8,7 +8,7 @@ void create(Triangulation& T, const FT& LL) {
 
   typedef CGAL::Creator_uniform_2<FT,Point> Creator;
 
-  int Nb = 20; //simu_N_side() ;
+  int Nb = 19; //simu_N_side() ;
   typedef std::vector<Point> vctP;
   vctP points;
 
@@ -19,11 +19,10 @@ void create(Triangulation& T, const FT& LL) {
   points.reserve(N);
   cout << N << " particles placed on square lattice" << endl;
 
-  FT spacing=LL/FT(Nb+0);
-  FT side=LL-2*spacing;
+  FT spacing = LL/FT(Nb+1);
+  FT side    = LL-2*spacing;
 
   points_on_square_grid_2(side/2.0, N, std::back_inserter(points),Creator());;
-
 
   //  Vertex_handle v0 = T.insert( wPoint( Point(0,1) ,  w0 ) );
 
