@@ -15,6 +15,8 @@ struct data_kept {
   FT s;
   FT I0;
 
+  Vector_2 dd;
+  FT dd2;
   
   data_kept(const F_v_it fv) {
     idx = fv->idx();
@@ -35,9 +37,12 @@ struct data_kept {
     p = fv->p.val();
     p0 = fv->p0.val();
 
-    s = fv->s.val();
+    s  = fv->s.val();
     I0 = fv->I0.val();
 
+    dd  =  fv->dd.val();
+    dd2 = fv->dd2.val(); ;
+ 
   }
 
   void restore(Vertex_handle fv) {
@@ -62,6 +67,8 @@ struct data_kept {
     fv->s.set( s );
     fv->I0.set( I0 );
 
+    fv->dd.set( dd ) ;
+    fv->dd2.set( dd2 ); ;
   }
 
 };

@@ -13,7 +13,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 100;
+  const int init_iters = 0;
   const FT  init_tol2 = 1e-4;
 
   const int inner_iters= 100;

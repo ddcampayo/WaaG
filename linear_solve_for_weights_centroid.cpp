@@ -24,7 +24,9 @@ void linear::solve_for_weights_centroid( const FT dt ) {
   
   for( int iter=0 ; iter< max_iter ; iter++) {
 
-    VectorXd dd2  = field_to_vctr( sfield_list::dd2 ) ;
+    //    VectorXd dd2  = field_to_vctr( sfield_list::dd2 ) ;
+    VectorXd dd2, ddy;
+    vfield_to_vctrs( vfield_list::dd , dd2, ddy ) ;
 
     FT tot_dd2 = dd2.sum();
 
@@ -54,6 +56,7 @@ void linear::solve_for_weights_centroid( const FT dt ) {
     VectorXd w0  = field_to_vctr( sfield_list::w ) ;
 
     vctr_to_field( w0 + mixing * Dw ,  sfield_list::w ) ;
+    //vctr_to_field( Dw ,  sfield_list::w ) ;
 
     volumes( T ); // ??
 
