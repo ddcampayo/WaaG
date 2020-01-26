@@ -29,7 +29,7 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   
-  simu.do_perturb(1e-4);
+  simu.do_perturb(1e-2);
   
   create( T , 1.0 );
   number( T );

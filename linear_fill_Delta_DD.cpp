@@ -67,12 +67,12 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
 
     // dd**2
-    // FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
-    // FT Eji = Aij / lij * ( vj->dd.val() * rr_ij_j );
+    FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
+    FT Eji = Aij / lij * ( vj->dd.val() * rr_ij_j );
 
     // dd.x only:
-    FT Eij = Aij / lij * rr_ij_i.x() / 2.0 ;
-    FT Eji = Aij / lij * rr_ij_j.x() / 2.0;
+    //    FT Eij = Aij / lij * rr_ij_i.x() / 2.0 ;
+    //    FT Eji = Aij / lij * rr_ij_j.x() / 2.0 ;
     
     FT r2_ij_j = rr_ij_j.squared_length();  // (these two are the same on Voronoi)
     FT r2_ij_i = rr_ij_i.squared_length();

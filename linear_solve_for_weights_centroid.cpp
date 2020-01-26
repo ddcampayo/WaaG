@@ -24,9 +24,11 @@ void linear::solve_for_weights_centroid( const FT dt ) {
   
   for( int iter=0 ; iter< max_iter ; iter++) {
 
-    //    VectorXd dd2  = field_to_vctr( sfield_list::dd2 ) ;
-    VectorXd dd2, ddy;
-    vfield_to_vctrs( vfield_list::dd , dd2, ddy ) ;
+    VectorXd dd2  = field_to_vctr( sfield_list::dd2 ) ;
+
+    // x component only . - 
+    // VectorXd dd2, ddy;
+    // vfield_to_vctrs( vfield_list::dd , dd2, ddy ) ;
 
     FT tot_dd2 = dd2.sum();
 
