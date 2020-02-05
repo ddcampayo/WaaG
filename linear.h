@@ -54,6 +54,8 @@ class linear {
 		       VectorXd& Dx,VectorXd& Dy);
   void MM_times_sfield(const sfield_list::take from ,
 		       VectorXd& Dx,VectorXd& Dy);
+  VectorXd Delta_times_sfield(const sfield_list::take from );
+
   void copy(const sfield_list::take from, sfield_list::take to  );
 
   void dd2_stats( void ) ;

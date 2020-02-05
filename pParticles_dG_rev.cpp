@@ -115,9 +115,9 @@ int main() {
 
       //      copy_weights( T ) ;
 
-      algebra.solve_for_weights( dt );
+      //algebra.solve_for_weights( dt );
 
-      //      algebra.solve_for_moments();
+      algebra.solve_for_moments();
 
       //algebra.fill_Delta_DD();
       // //      algebra.w_equation2();
@@ -143,7 +143,7 @@ int main() {
 
     }
 
-    //    algebra.solve_for_moments();
+    algebra.solve_for_moments();
     
     cout
       << " ======= " << endl

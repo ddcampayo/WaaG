@@ -30,9 +30,23 @@ void linear::p_equation(const FT dt ) {
   //  Laplacian as div of grad :
 #ifdef PRESSURE_PPE
 
+  //  VectorXd p0  = field_to_vctr( sfield_list::p );
+
+  // Possible correction due to w  field .-
+  VectorXd w  = field_to_vctr( sfield_list::w );
+  VectorXd Delta_w = Delta * w;
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  VectorXd p =  LL_solver.solve( divUstar );
+  VectorXd p =  LL_solver.solve( divUstar + Delta_w / ddt );
+
+  
+  //  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  //  VectorXd p =  LL_solver.solve( divUstar  );
+  
   vctr_to_field( p / ddt ,  sfield_list::p ) ;
+
+
+  
+  //  vctr_to_field( p0 + p / ddt ,  sfield_list::p ) ;
 
 #else
   // C

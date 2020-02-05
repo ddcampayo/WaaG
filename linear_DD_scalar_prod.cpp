@@ -60,3 +60,11 @@ void linear::MM_times_sfield(const sfield_list::take from ,
   return;
 }
 
+
+
+VectorXd linear::Delta_times_sfield(const sfield_list::take from )
+{
+  VectorXd p = field_to_vctr( from );
+
+  return Delta * p;
+}
