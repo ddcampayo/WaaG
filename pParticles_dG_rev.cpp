@@ -115,9 +115,9 @@ int main() {
 
       //      copy_weights( T ) ;
 
-      //algebra.solve_for_weights( dt );
+      algebra.solve_for_weights( dt );
 
-      algebra.solve_for_moments();
+      //      algebra.solve_for_moments();
 
       //algebra.fill_Delta_DD();
       // //      algebra.w_equation2();
@@ -127,11 +127,11 @@ int main() {
       //algebra.fill_Delta_DD();
       //      copy_weights( T ) ;
 
-      algebra.s_equation( dt );
+      //      algebra.s_equation( dt );
 
-      //algebra.p_equation( dt );
+      algebra.p_equation( dt );
 
-      algebra.u_add_s_grad( dt2 );
+      //      algebra.u_add_s_grad( dt2 );
       //      algebra.u_add_press_grad( dt2 );
       //      algebra.u_add_press_grad_MM_w( dt2 );
       

@@ -16,7 +16,7 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 100;
+  const int inner_iters= 10;
   const FT  inner_tol  = 1e-6;
 
   const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
@@ -157,10 +157,10 @@ int main() {
       ///////////
       
 
-      algebra.w_equation2();
+      //      algebra.w_equation2();
       copy_weights( T ) ;
 
-      //algebra.solve_for_weights();
+      algebra.solve_for_weights();
       //      volumes( T ); 
 
       
