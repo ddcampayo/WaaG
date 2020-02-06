@@ -31,15 +31,17 @@ void linear::p_equation(const FT dt ) {
 #ifdef PRESSURE_PPE
 
 
-  // // Possible correction due to w  field .-
+  // Possible correction due to w  field .-
    VectorXd w  = field_to_vctr( sfield_list::w );
-   VectorXd Delta_w = Delta * w;
+   VectorXd w0 = field_to_vctr( sfield_list::w0 );
+
+   VectorXd Delta_w = Delta * ( w - w0);
    VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
    VectorXd p =  LL_solver.solve( divUstar + Delta_w / ddt );
 
-  
-   //  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-   //  VectorXd p =  LL_solver.solve( divUstar  );
+  // //  // No w field contribution .-
+  // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  // VectorXd p =  LL_solver.solve( divUstar  );
   
   vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
