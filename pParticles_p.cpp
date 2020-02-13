@@ -144,8 +144,9 @@ int main() {
       // 	algebra.u_add_press_grad( dt2 );
       // }
 
-      algebra.solve_for_weights();
+//      algebra.solve_for_weights();
 
+//      algebra.p_equation( dt , true ); 
       algebra.p_equation( dt ); 
 
       algebra.u_add_press_grad( dt2 );
