@@ -77,6 +77,7 @@ add_executable( pPart
 		linear_w_equation2.cpp
 		linear_w_equation3.cpp
 		linear_s_equation.cpp
+		linear_u_add_spring_force.cpp
 #		linear_stats.cpp
 		lloyds.cpp
 # choice of main file:
@@ -86,10 +87,11 @@ add_executable( pPart
 #		pParticles_w.cpp
 #		pParticles_ww.cpp
 #		pParticles_d.cpp
-		pParticles_p.cpp
+#		pParticles_p.cpp
 #		pParticles_dG_I_thru_w.cpp
 #		pParticles_s.cpp
 #		pParticles_s_p.cpp
+		pParticles_GM.cpp
 )
 
 add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart )

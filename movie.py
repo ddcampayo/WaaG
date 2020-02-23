@@ -21,7 +21,7 @@ else:
 
 plt.figure(figsize=(8,8))
 
-skip=1
+skip=10
 #path='timings_full/'
 path='./'
 
@@ -45,8 +45,8 @@ for n in range( init_t ,2000000+skip,skip):
     #    r = np.sqrt( x**2 + y**2 )
     #    plt.plot( r , p , 'o' )
 
-    plt.scatter( x , y , c=p )
-#   plt.scatter( x , y , c=w )
+#    plt.scatter( x , y , c=p )
+    plt.scatter( x , y , c=w )
 
     di = np.loadtxt(path+str(n)+'/diagram.dat')
 

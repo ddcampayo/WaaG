@@ -122,9 +122,8 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
-      displ = move( T , dt , d0 );
-      // frog
-      //      displ = move( T , dt2 , d0 );
+      //      displ = move( T , dt , d0 );
+      displ = move( T , dt2 , d0 );
 
       cout
 	<< "********" << endl
@@ -151,13 +150,9 @@ int main() {
 //      algebra.solve_for_weights();
 
 //      algebra.p_equation( dt , true ); 
+      algebra.p_equation( dt2 ); 
 
-      algebra.p_equation( dt ); 
-
-      //frog
-      //      algebra.p_equation( dt2 ); 
-
-      //      algebra.u_add_press_grad( dt2 );//2 );
+      algebra.u_add_press_grad( dt2 );//2 );
 
       if( displ < inner_tol ) break;
 
@@ -181,9 +176,7 @@ int main() {
 //    copy_weights( T ) ;
     algebra.u_add_press_grad( dt );
 
-    // frog
-    //    displ = move( T , dt , d0 );
-    
+    displ = move( T , dt , d0 );
     volumes( T ); 
       
     //    algebra.fill_Delta_DD();

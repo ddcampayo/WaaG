@@ -220,7 +220,7 @@ void volumes(Triangulation& T) {
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++)
-    if (fv->idx() > 0 ) {
+    if (fv->idx() > -1 ) {
       inner_V +=  fv->vol.val();
       ++inner;
     }

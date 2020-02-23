@@ -431,6 +431,33 @@ linear_solve_for_weights_centroid.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_solve_for_weights_centroid.cpp.s
 .PHONY : linear_solve_for_weights_centroid.cpp.s
 
+linear_u_add_spring_force.o: linear_u_add_spring_force.cpp.o
+
+.PHONY : linear_u_add_spring_force.o
+
+# target to build an object file
+linear_u_add_spring_force.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_u_add_spring_force.cpp.o
+.PHONY : linear_u_add_spring_force.cpp.o
+
+linear_u_add_spring_force.i: linear_u_add_spring_force.cpp.i
+
+.PHONY : linear_u_add_spring_force.i
+
+# target to preprocess a source file
+linear_u_add_spring_force.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_u_add_spring_force.cpp.i
+.PHONY : linear_u_add_spring_force.cpp.i
+
+linear_u_add_spring_force.s: linear_u_add_spring_force.cpp.s
+
+.PHONY : linear_u_add_spring_force.s
+
+# target to generate assembly for a file
+linear_u_add_spring_force.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_u_add_spring_force.cpp.s
+.PHONY : linear_u_add_spring_force.cpp.s
+
 linear_vect_to_field.o: linear_vect_to_field.cpp.o
 
 .PHONY : linear_vect_to_field.o
@@ -620,32 +647,32 @@ number.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles_p.o: pParticles_p.cpp.o
+pParticles_GM.o: pParticles_GM.cpp.o
 
-.PHONY : pParticles_p.o
+.PHONY : pParticles_GM.o
 
 # target to build an object file
-pParticles_p.cpp.o:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p.cpp.o
-.PHONY : pParticles_p.cpp.o
+pParticles_GM.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.o
+.PHONY : pParticles_GM.cpp.o
 
-pParticles_p.i: pParticles_p.cpp.i
+pParticles_GM.i: pParticles_GM.cpp.i
 
-.PHONY : pParticles_p.i
+.PHONY : pParticles_GM.i
 
 # target to preprocess a source file
-pParticles_p.cpp.i:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p.cpp.i
-.PHONY : pParticles_p.cpp.i
+pParticles_GM.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.i
+.PHONY : pParticles_GM.cpp.i
 
-pParticles_p.s: pParticles_p.cpp.s
+pParticles_GM.s: pParticles_GM.cpp.s
 
-.PHONY : pParticles_p.s
+.PHONY : pParticles_GM.s
 
 # target to generate assembly for a file
-pParticles_p.cpp.s:
-	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p.cpp.s
-.PHONY : pParticles_p.cpp.s
+pParticles_GM.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.s
+.PHONY : pParticles_GM.cpp.s
 
 volumes.o: volumes.cpp.o
 
@@ -717,6 +744,9 @@ help:
 	@echo "... linear_solve_for_weights_centroid.o"
 	@echo "... linear_solve_for_weights_centroid.i"
 	@echo "... linear_solve_for_weights_centroid.s"
+	@echo "... linear_u_add_spring_force.o"
+	@echo "... linear_u_add_spring_force.i"
+	@echo "... linear_u_add_spring_force.s"
 	@echo "... linear_vect_to_field.o"
 	@echo "... linear_vect_to_field.i"
 	@echo "... linear_vect_to_field.s"
@@ -738,9 +768,9 @@ help:
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles_p.o"
-	@echo "... pParticles_p.i"
-	@echo "... pParticles_p.s"
+	@echo "... pParticles_GM.o"
+	@echo "... pParticles_GM.i"
+	@echo "... pParticles_GM.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"
