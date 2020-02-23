@@ -89,17 +89,21 @@ int main() {
 
     backup( T );
 
-    algebra.u_star( );
-
-    FT displ = move( T , dt , d0 );
-
     algebra.solve_for_weights();
 
     copy_weights( T ) ;
 
     volumes( T ); 
 
+    algebra.u_star( );
+
+    //  d^2 r / dt^2 = - omega^2 x
+    //  d v / dt = - omega^2 x
+    //  v_1 = v_0 - dt*omega^2 x
+
     algebra.u_add_spring_force( spring*dt );
+
+    FT displ = move( T , dt , d0 );
 
     //    algebra.p_equation( dt );
     
