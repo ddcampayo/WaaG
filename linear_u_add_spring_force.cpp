@@ -34,7 +34,7 @@ void linear::u_add_spring_force( const FT kdt ) {
 
   for(int nn=0; nn < N ; nn++)  {
     disp_x( idx_vals_x[nn].first ) = idx_vals_x[nn].second;
-    disp_y( idx_vals_x[nn].first ) = idx_vals_y[nn].second;
+    disp_y( idx_vals_y[nn].first ) = idx_vals_y[nn].second;
   }
 
   VectorXd Ustar_x, Ustar_y;
