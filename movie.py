@@ -21,7 +21,7 @@ else:
 
 plt.figure(figsize=(8,8))
 
-skip=10
+skip=1
 #path='timings_full/'
 path='./'
 

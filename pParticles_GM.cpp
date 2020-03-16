@@ -68,7 +68,11 @@ int main() {
   // Setting a spring period that includes several Dt, in
   // order spring forces be properly sampled
   
-  FT spring_period = 10 * dt;
+  //  FT spring_period = 10 * dt;
+
+  // 31 dt is the value for G&M first simulation,
+  // "Beltrami flow in the square"
+  FT spring_period = 31 * dt;
   FT omega = 2 * M_PI /  spring_period ;
 
   FT spring = omega*omega; // factor that appears in the spring force
