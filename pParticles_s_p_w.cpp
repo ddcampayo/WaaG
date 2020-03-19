@@ -20,9 +20,6 @@ int main() {
   int inner_max_iters; cin >> inner_max_iters; // = 10; 
   FT  disp_tol; cin >> disp_tol; //  = 1e-6;
 
-  int s_iters; cin >> s_iters; //= 10;
-  int p_iters; cin >> p_iters; //= 10;
-
   FT total_time =  1/( 2 * 3.14 * 0.2) ;
 
   const std::string particle_file("particles.dat");
@@ -98,8 +95,6 @@ int main() {
     simu.advance_time( );
 
 
-    int in_iter = 1 , s_it = 1 , p_it= 1;
-    
     //    volumes( T ); 
     
     backup( T );
@@ -113,9 +108,9 @@ int main() {
     
     FT displ = 0 ;
 
-    
+    int in_iter = 1;
+        
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
-
 
       algebra.solve_for_weights();
 
@@ -133,13 +128,17 @@ int main() {
 
       cout
 	<< "********" << endl
-	<< "Inner Iter  " << p_it
+	<< "Inner Iter  " << in_iter
 	<< " . Moved from previous (rel.): " << displ <<
 	" ; from original (rel.): " << d0
 	<< endl ;
 	
 	//	algebra.u_add_grads( dt2 );
-	
+
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
+
       algebra.s_equation( dt );	
 
       algebra.u_add_s_grad( dt2 );

@@ -29,13 +29,13 @@ dt=np.loadtxt(path + n +'/particles.dat')
 
 x=dt[:,0]; y=dt[:,1];
 #    vol=dt[:,3]
-w=dt[:,4];
+#w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
 p=dt[:,9]
 #  s=dt[:,10]
 #  I=dt[:,11];
 
-p = 0.5*omega**2 * w
+#p = 0.5*omega**2 * w
 
 r = np.sqrt( x**2 + y**2 )
 

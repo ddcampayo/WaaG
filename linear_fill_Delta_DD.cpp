@@ -22,7 +22,7 @@
 
 void linear::fill_Delta_DD( const FT dt ) {
 
-  std::cout << " Filling Delta _and_ capital D matrices" << std::endl;
+  //  std::cout << " Filling Delta _and_ capital D matrices" << std::endl;
 
   //  int n=simu.no_of_points();
 

@@ -9,7 +9,7 @@
 
 void linear::solve_for_weights( const FT dt ) {
 
-  cout << "Equalizing volumes " << endl;
+  //  cout << "Equalizing volumes " << endl;
   
   volumes( T );
   copy_weights( T );
@@ -20,9 +20,13 @@ void linear::solve_for_weights( const FT dt ) {
   
   const int max_iter = 100;
   const FT threshold = 1e-16;
-  const FT mixing = 1;
-  
-  for( int iter=0 ; iter< max_iter ; iter++) {
+  const FT mixing = 1; // 1: only new iter; 0: only old
+
+  FT diff , vol_sigma  , meanV ;
+
+  int iter=0;
+
+  for( ; iter< max_iter ; iter++) {
 
     VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
 
@@ -30,15 +34,15 @@ void linear::solve_for_weights( const FT dt ) {
 
     int N = vol.size();
 
-    FT meanV = totV/ FT( N );
+    meanV = totV/ FT( N );
   
-    FT vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
+    vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
 
     FT target_vol_val = meanV;
 
-    cout << "It:  " << iter;
-    cout << "  vol mean : " << meanV;
-    cout << "  vol variance : " << vol_sigma << endl;
+    // cout << "It:  " << iter;
+    // cout << "  vol mean : " << meanV;
+    // cout << "  vol variance : " << vol_sigma << endl;
 
     //  FT target_v = simu.meanV();
 
@@ -64,19 +68,25 @@ void linear::solve_for_weights( const FT dt ) {
 
     vol  = field_to_vctr( sfield_list::vol ) ;
 
-    FT diff = (vol - vol0 ).norm();
+    diff = (vol - vol0 ).norm();
 
-    cout << "vol diff: " << diff<< endl;
+    //    cout << "vol diff: " << diff<< endl;
 
     totV= vol.sum();
     meanV = totV/ FT( N ); 
     vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
 
-    cout << "  vol mean : " << meanV;
-    cout << "  vol variance : " << vol_sigma << endl;
+    //    cout << "  vol mean : " << meanV;
+    //    cout << "  vol variance : " << vol_sigma << endl;
 
     if( diff < threshold ) break;
   }
 
+  cout << "Volumes equalized after " << iter << " iterations " << endl;
+
+  cout << "vol diff: " << diff<< "   ";
+  cout << "  vol mean : " << meanV << "    ";
+  cout << "  vol variance : " << vol_sigma << endl;
+ 
   return;
 }

@@ -1,4 +1,4 @@
-//#define PRESSURE_PPE
+#define PRESSURE_PPE
 
 //#include"pParticles.h"
 #include"linear.h"
