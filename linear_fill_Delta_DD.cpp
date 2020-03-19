@@ -1,4 +1,24 @@
+// Function to fill the various matrices involved. All of
+// them. May be split in the future
+
+
+// Glossary:
+
+// Delta_ij = d V_i / d w_j   (inf.  change of volume of cell i due to change in weight of cell j)
+
+// DD_ij =  d V_i / d r_j  (inf.  change of volume of cell i due to change in position of cell j)  , a matrix of vectors, thus stored as DD_ij_x and DD_ij_y
+
+// LL =  DD (1/V) DD^t, involved in Ralphson-Newton methods
+
+// Gamma_ij = d I_i / d w_j   (inf.  change of moment of inertia of cell i due to change in weight of cell j)
+
+// MM_ij = d I_i / d r_j   (inf.  change of moment of inertia of cell i due to change in position of cell j)
+
+// NN =  MM (1/V) MM^t, involved in Ralphson-Newton methods
+
+
 #include"linear.h"
+
 
 void linear::fill_Delta_DD( const FT dt ) {
 

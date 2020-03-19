@@ -113,30 +113,37 @@ int main() {
     
     FT displ = 0 ;
 
-    volumes( T ); 
-
-    algebra.fill_Delta_DD();
-
     
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
+
+
+      algebra.solve_for_weights();
+
+      copy_weights( T ) ;
+
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
 
       algebra.p_equation( dt );
 
       algebra.u_add_press_grad( dt2 );
 	
-      displ_p = move( T , dt , d0 );
+      displ = move( T , dt , d0 );
 
       cout
 	<< "********" << endl
 	<< "Inner Iter  " << p_it
-	<< " . Moved from previous (rel.): " << displ_p <<
+	<< " . Moved from previous (rel.): " << displ <<
 	" ; from original (rel.): " << d0
 	<< endl ;
 	
 	//	algebra.u_add_grads( dt2 );
 	
       algebra.s_equation( dt );	
-	
+
+      algebra.u_add_s_grad( dt2 );
+
       if( displ < disp_tol ) break;
  
     }
@@ -144,7 +151,7 @@ int main() {
     
     cout
       << "Whole step  "
-      << " : disp " << displ_s + displ_p << endl ;
+      << " : disp " << displ << endl ;
 
     volumes( T ); 
 
