@@ -120,7 +120,7 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      algebra.p_equation( dt );
+      algebra.p_equation_from_s( );
 
       algebra.u_add_press_grad( dt2 );
 	
@@ -146,7 +146,6 @@ int main() {
       if( displ < disp_tol ) break;
  
     }
-
     
     cout
       << "Whole step  "

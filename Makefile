@@ -323,6 +323,33 @@ linear_p_equation.cpp.s:
 	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_p_equation.cpp.s
 .PHONY : linear_p_equation.cpp.s
 
+linear_p_equation_from_s.o: linear_p_equation_from_s.cpp.o
+
+.PHONY : linear_p_equation_from_s.o
+
+# target to build an object file
+linear_p_equation_from_s.cpp.o:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_p_equation_from_s.cpp.o
+.PHONY : linear_p_equation_from_s.cpp.o
+
+linear_p_equation_from_s.i: linear_p_equation_from_s.cpp.i
+
+.PHONY : linear_p_equation_from_s.i
+
+# target to preprocess a source file
+linear_p_equation_from_s.cpp.i:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_p_equation_from_s.cpp.i
+.PHONY : linear_p_equation_from_s.cpp.i
+
+linear_p_equation_from_s.s: linear_p_equation_from_s.cpp.s
+
+.PHONY : linear_p_equation_from_s.s
+
+# target to generate assembly for a file
+linear_p_equation_from_s.cpp.s:
+	$(MAKE) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_p_equation_from_s.cpp.s
+.PHONY : linear_p_equation_from_s.cpp.s
+
 linear_s_equation.o: linear_s_equation.cpp.o
 
 .PHONY : linear_s_equation.o
@@ -732,6 +759,9 @@ help:
 	@echo "... linear_p_equation.o"
 	@echo "... linear_p_equation.i"
 	@echo "... linear_p_equation.s"
+	@echo "... linear_p_equation_from_s.o"
+	@echo "... linear_p_equation_from_s.i"
+	@echo "... linear_p_equation_from_s.s"
 	@echo "... linear_s_equation.o"
 	@echo "... linear_s_equation.i"
 	@echo "... linear_s_equation.s"
