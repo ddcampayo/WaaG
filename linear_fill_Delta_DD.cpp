@@ -254,8 +254,10 @@ void linear::fill_Delta_DD( const FT dt ) {
     Point bi = fv->centroid.val();
 
     Vector_2 dd = 2 * vol * ( bi - ri ) ;
-    dm_x[ idx ] -= dd.x();
-    dm_y[ idx ] -= dd.y();
+
+    // signs ???
+    dm_x[ idx ] += dd.x();
+    dm_y[ idx ] += dd.y();
 
   }
 

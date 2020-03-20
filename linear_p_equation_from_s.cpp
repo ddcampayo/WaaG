@@ -15,7 +15,7 @@ void linear::p_equation_from_s( ) {
 
   VectorXd p;
 
-  p =  Delta_solver.solve( -gamma_s );
+  p =  Delta_solver.solve( gamma_s );
 
   vctr_to_field( p  ,  sfield_list::p ) ;
 

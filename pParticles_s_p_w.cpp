@@ -112,6 +112,12 @@ int main() {
         
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
+      displ = move( T , dt , d0 );
+
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
+
       algebra.solve_for_weights();
 
       copy_weights( T ) ;
@@ -120,11 +126,13 @@ int main() {
 
       algebra.fill_Delta_DD();
 
+      algebra.s_equation( dt );	
+
       algebra.p_equation_from_s( );
 
-      algebra.u_add_press_grad( dt2 );
-	
-      displ = move( T , dt , d0 );
+      algebra.u_add_grads( dt2 );
+
+//      algebra.u_add_press_grad( dt2 );
 
       cout
 	<< "********" << endl
@@ -134,14 +142,6 @@ int main() {
 	<< endl ;
 	
 	//	algebra.u_add_grads( dt2 );
-
-      volumes( T ); 
-
-      algebra.fill_Delta_DD();
-
-      algebra.s_equation( dt );	
-
-      algebra.u_add_s_grad( dt2 );
 
       if( displ < disp_tol ) break;
  
