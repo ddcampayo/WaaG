@@ -112,7 +112,7 @@ int main() {
         
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
-      displ = move( T , dt , d0 );
+      displ = move( T , dt2 , d0 );
 
       volumes( T ); 
 
@@ -128,7 +128,7 @@ int main() {
 
       algebra.s_equation( dt );	
 
-      algebra.p_equation_from_s( );
+//      algebra.p_equation_from_s( );
 
       algebra.u_add_grads( dt2 );
 
@@ -147,6 +147,12 @@ int main() {
  
     }
     
+    algebra.u_star( );
+    algebra.p_equation_from_s( );
+
+    algebra.u_add_press_grad( dt2 );
+    displ = move( T , dt2 , d0 );
+
     cout
       << "Whole step  "
       << " : disp " << displ << endl ;
@@ -166,7 +172,6 @@ int main() {
       << " T =  " << kinetic_E(T)
       << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;
-
 
 
   } while ( simu.time() < total_time );
