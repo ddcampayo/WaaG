@@ -64,8 +64,8 @@ void linear::u_add_s_grad( const FT dt ) {
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
-  U_x = Ustar_x.array() - ddt * gradsx.array() / vol.array()  ;
-  U_y = Ustar_y.array() - ddt * gradsy.array() / vol.array() ;
+  U_x = Ustar_x.array() + ddt * gradsx.array() / vol.array()  ;
+  U_y = Ustar_y.array() + ddt * gradsy.array() / vol.array() ;
 
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 

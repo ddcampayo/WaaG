@@ -20,7 +20,7 @@ int main() {
   int inner_max_iters; cin >> inner_max_iters; // = 10; 
   FT  disp_tol; cin >> disp_tol; //  = 1e-6;
 
-  FT total_time =  1/( 2 * 3.14 * 0.2) ;
+  FT total_time =   2 * 3.14 * 0.2 ;
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -29,7 +29,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  simu.do_perturb(0.1);
+//  simu.do_perturb(0.1);
   create( T , 1.0 );
   number( T );
 
@@ -95,6 +95,7 @@ int main() {
     simu.advance_time( );
 
 
+    cout << "Time  " << simu.time() << endl;
     //    volumes( T ); 
     
     backup( T );
@@ -129,8 +130,10 @@ int main() {
       algebra.s_equation( dt);	
 
 //      algebra.p_equation_from_s( );
+//      algebra.p_equation( dt );
 
-      algebra.u_add_grads( dt );
+      algebra.u_add_s_grad( dt );
+//	algebra.u_add_grads( dt );
 
 //      algebra.u_add_press_grad( dt2 );
 
@@ -141,18 +144,17 @@ int main() {
 	" ; from original (rel.): " << d0
 	<< endl ;
 	
-	//	algebra.u_add_grads( dt2 );
 
       if( displ < disp_tol ) break;
  
     }
     
     algebra.u_star( );
-    algebra.p_equation_from_s( );
+//    algebra.p_equation_from_s( );
 
     algebra.p_equation( dt );
 
-    algebra.u_add_press_grad( dt2 );
+    algebra.u_add_press_grad( dt );
     displ = move( T , dt2 , d0 );
 
     cout
@@ -168,8 +170,9 @@ int main() {
     draw_diagram( T , diagram_file );
 
     log_file
-      << simu.current_step() << "  "
+      << simu.current_step() << " t=   "
       << simu.time() << "  "
+      << simu.time()/total_time << " % "
       << " iters = " << in_iter
       << " T =  " << kinetic_E(T)
       << " L2_vel =  " << L2_vel_Gresho(T)

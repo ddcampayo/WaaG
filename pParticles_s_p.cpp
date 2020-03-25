@@ -23,7 +23,7 @@ int main() {
   int s_iters; cin >> s_iters; //= 10;
   int p_iters; cin >> p_iters; //= 10;
 
-  FT total_time =  1/( 2 * 3.14 * 0.2) ;
+  FT total_time =   2 * 3.14 * 0.2 ;
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
