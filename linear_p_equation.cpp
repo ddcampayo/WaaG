@@ -131,8 +131,8 @@ void linear::u_add_grads( const FT dt ) {
 
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-  VectorXd grad_x = gradPx + gradsx ;
-  VectorXd grad_y = gradPy + gradsy ;
+  VectorXd grad_x = gradPx - gradsx ;
+  VectorXd grad_y = gradPy - gradsy ;
 
   U_x = Ustar_x.array() - ddt * grad_x.array() / vol.array()  ;
   U_y = Ustar_y.array() - ddt * grad_y.array() / vol.array() ;
