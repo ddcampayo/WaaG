@@ -150,6 +150,8 @@ int main() {
     algebra.u_star( );
     algebra.p_equation_from_s( );
 
+    algebra.p_equation( dt );
+
     algebra.u_add_press_grad( dt2 );
     displ = move( T , dt2 , d0 );
 
