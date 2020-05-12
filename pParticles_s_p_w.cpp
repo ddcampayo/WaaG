@@ -127,15 +127,16 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      algebra.s_equation( dt);	
-
+      //      algebra.s_equation( dt);	
 //      algebra.p_equation_from_s( );
-//      algebra.p_equation( dt );
 
-      algebra.u_add_s_grad( dt );
-//	algebra.u_add_grads( dt );
+      algebra.p_equation( dt );
 
-//      algebra.u_add_press_grad( dt2 );
+      //      algebra.u_add_s_grad( dt );
+
+      //	algebra.u_add_grads( dt );
+
+      algebra.u_add_press_grad( dt );
 
       cout
 	<< "********" << endl
@@ -149,13 +150,14 @@ int main() {
  
     }
     
-    algebra.u_star( );
+    //    algebra.u_star( );
 //    algebra.p_equation_from_s( );
 
-    algebra.p_equation( dt );
+//    algebra.p_equation( dt );
 
-    algebra.u_add_press_grad( dt );
-    displ = move( T , dt2 , d0 );
+//    algebra.u_add_press_grad( dt );
+
+    displ = move( T , dt , d0 );
 
     cout
       << "Whole step  "

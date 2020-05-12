@@ -61,7 +61,9 @@ int main() {
   FT d0;
   FT dt=0.001;
 
+  cout << "Time step, dt = ";
   cin >> dt ;
+  cout << endl << dt << endl;
 
   simu.set_dt( dt );
 
@@ -70,10 +72,16 @@ int main() {
   
   //  FT spring_period = 10 * dt;
 
+  FT spring_to_dt;
+  cout << "Spring period / dt  = ";
+  cin >> spring_to_dt;
+  cout << endl << spring_to_dt << endl;
+
+  
   // 31 dt is the value for G&M first simulation,
   // "Beltrami flow in the square"
-//  FT spring_period = 31 * dt;
-  FT spring_period = 80 * dt;
+  FT spring_period = spring_to_dt * dt;
+//  FT spring_period = 80 * dt;
   FT omega = 2 * M_PI /  spring_period ;
 
   FT spring = omega*omega; // factor that appears in the spring force
@@ -110,8 +118,9 @@ int main() {
 
     algebra.u_add_spring_force( spring*dt );
 
-    //    algebra.p_equation( dt );
-    
+    algebra.p_equation( dt );
+    algebra.u_add_press_grad( dt );
+
     //volumes( T ); 
 
     //   if( displ < 1e-8) break;
