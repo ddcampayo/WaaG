@@ -113,7 +113,7 @@ int main() {
         
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
-      displ = move( T , dt2 , d0 );
+      displ = move( T , dt , d0 );
 
       volumes( T ); 
 
@@ -127,16 +127,16 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      //      algebra.s_equation( dt);	
-//      algebra.p_equation_from_s( );
+      algebra.s_equation( dt );	
+      algebra.p_equation_from_s( );
 
-      algebra.p_equation( dt );
+//      algebra.p_equation( dt );
 
       //      algebra.u_add_s_grad( dt );
 
-      //	algebra.u_add_grads( dt );
+      algebra.u_add_grads( dt2 );
 
-      algebra.u_add_press_grad( dt );
+      //      algebra.u_add_press_grad( dt );
 
       cout
 	<< "********" << endl
@@ -157,8 +157,10 @@ int main() {
 
 //    algebra.u_add_press_grad( dt );
 
-    displ = move( T , dt , d0 );
+//    displ = move( T , dt , d0 );
 
+    algebra.u_add_grads( dt );
+   
     cout
       << "Whole step  "
       << " : disp " << displ << endl ;

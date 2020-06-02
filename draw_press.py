@@ -25,13 +25,15 @@ LL= 1
 omega = 2 * np.pi / (31 * 0.01)
 print('omega = ' , omega)
 
+Delta_t = 1  #optional prefactor
+
 dt=np.loadtxt(path + n +'/particles.dat')
 
 x=dt[:,0]; y=dt[:,1];
 #    vol=dt[:,3]
 #w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
-p=dt[:,9]
+p=dt[:,9] / Delta_t**2
 #  s=dt[:,10]
 #  I=dt[:,11];
 
@@ -61,7 +63,6 @@ v_pp = np.vectorize( pp )
 rr = np.linspace( 0 , max(r) , 200 )
 plt.plot( rr , v_pp(rr)  )
 
-
 #plt.plot( r , w , 'x' )
    
 #plt.xlim([-LL/2.0 , LL/2.0 ])
@@ -73,4 +74,3 @@ plt.plot( rr , v_pp(rr)  )
 plt.savefig( 'pressure_' + n)
 plt.show()
 
-    

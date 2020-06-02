@@ -47,6 +47,32 @@ void linear::fill_Delta_DD( const FT dt ) {
     Face_handle f =  eit -> first ;
     int i0 = eit -> second;
 
+#ifdef FEM
+    int i3 = i0 ;
+    Vertex_handle v3  = f->vertex( i3 );
+
+    Vertex_handle v1 = f->vertex( (i3+1) % 3);
+
+    Vertex_handle v3p = T.mirror_vertex( f , i3 );
+
+    Vector_2 v33 = v3p->point().point() - v3->point().point() ;
+
+    Vector_2 v33_perp = Vector_2( -v33.y() , v33.x() );
+
+    Triangle_2 tr( v1 , v3p , v3);
+
+    CGAL::Orientation or= tr.orientation();
+
+    FT turn = 1;
+    
+    if( or == CGAL::NEGATIVE ) turn = -1;
+
+    Vector_2 DDij = turn * v33_perp;
+    Vector_2 DDji = .........
+    
+    
+#else
+    
     Vertex_handle vi = f->vertex( (i0+1) % 3);
     Vertex_handle vj = f->vertex( (i0+2) % 3);
 
@@ -70,6 +96,9 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     Vector_2 eij = pj - pi;
 
+    // experimental
+    //    Point mij = pi + 0.5 * eij;  // mid-point between i and j
+    
     FT lij2 =  eij.squared_length() ;
     FT lij = std::sqrt( lij2 );
   
@@ -83,9 +112,15 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vector_2 rr_ij_j = pj - bij;
     Vector_2 rr_ij_i = pi - bij;
 
+
+    // regular
     Vector_2 DDij = Aij / lij * rr_ij_j; // ( pj - bij);
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
+    //    //experimental
+    //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
+    //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
 
+    
     // dd**2
     FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
     FT Eji = Aij / lij * ( vj->dd.val() * rr_ij_j );
@@ -238,6 +273,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    cout << i << "  " << j << "  " << ddelta << endl;
   }
 
+
+#endif
 
 
   // include "spring" term in M

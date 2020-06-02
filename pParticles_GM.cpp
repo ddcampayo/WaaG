@@ -21,7 +21,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //  simu.do_perturb(0.01);
+  simu.do_perturb(0.01);
   create( T , 1.0 );
   number( T );
 
@@ -33,7 +33,7 @@ int main() {
 
   // Init loop!
   
-  const int max_iter = 0;
+  const int max_iter = 100;
   const FT tol2 = 1e-3;
   int iter=0;
 
@@ -118,8 +118,8 @@ int main() {
 
     algebra.u_add_spring_force( spring*dt );
 
-    algebra.p_equation( dt );
-    algebra.u_add_press_grad( dt );
+    //    algebra.p_equation( dt );
+    //algebra.u_add_press_grad( dt );
 
     //volumes( T ); 
 
