@@ -57,21 +57,19 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     Vector_2 v33 = v3p->point().point() - v3->point().point() ;
 
+    // positive right angle turn
     Vector_2 v33_perp = Vector_2( -v33.y() , v33.x() );
 
     Triangle_2 tr( v1 , v3p , v3);
 
     CGAL::Orientation or= tr.orientation();
 
-    FT turn = 1;
-    
-    if( or == CGAL::NEGATIVE ) turn = -1;
+    if( or == CGAL::NEGATIVE ) v33_perp = -v33_perp;
 
-    Vector_2 DDij = turn * v33_perp;
-    Vector_2 DDji = .........
+    Vector_2 DDij = 0.5 * v33_perp;
+    Vector_2 DDji = -Vector_2 DDij;
     
-    
-#else
+#endif
     
     Vertex_handle vi = f->vertex( (i0+1) % 3);
     Vertex_handle vj = f->vertex( (i0+2) % 3);
@@ -113,13 +111,14 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vector_2 rr_ij_i = pi - bij;
 
 
+#ifndef FEM
     // regular
     Vector_2 DDij = Aij / lij * rr_ij_j; // ( pj - bij);
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
     //    //experimental
     //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
     //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
-
+#endif
     
     // dd**2
     FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
