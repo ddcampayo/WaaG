@@ -42,13 +42,88 @@ FT moi( const Point& p , const vvP& vs ) {
 }
 
 // Compute Voronoi volumes (i.e. areas, in 2D)
-//
-//
+// This is a combination of "naive" (for areas)
+// and "abstruse" (for moments of area)
+
 void volumes(Triangulation& T) {
 
   const FT threshold=1e-10;
   const FT threshold2= threshold*threshold;
   FT totalV = 0;
+
+  for(F_v_it fv=T.finite_vertices_begin();
+      fv!=T.finite_vertices_end();
+      fv++)  
+    fv->vol.reset();
+
+
+#ifdef FEM
+
+  // Volumes, FEM shape functions (Delaunay areas)
+  
+  for(F_f_it ff=T.finite_faces_begin();
+      ff!=T.finite_faces_end();
+      ff++)    {
+
+    Vertex_handle v0 = ff->vertex(0);
+    Vertex_handle v1 = ff->vertex(1);
+    Vertex_handle v2 = ff->vertex(2);
+
+    Point p0 = v0->point().point();
+    Point p1 = v1->point().point();
+    Point p2 = v2->point().point();
+
+    Triangle tr( p0 ,  p1 , p2 );
+
+    FT area = std::fabs( tr.area() );
+
+    v0->vol += area / 3.0;
+    v1->vol += area / 3.0;
+    v2->vol += area / 3.0;
+  }
+
+#else
+
+  // Volumes, Voronoi cells
+
+  for(F_e_it fe=T.finite_edges_begin();
+      fe!=T.finite_edges_end();
+      fe++)    {
+
+    Face_handle f =  fe -> first ;
+    int i0 = fe -> second;
+
+    Vertex_handle vi = f->vertex( (i0+1) % 3);
+    Point pi = vi->point().point();
+
+    Vertex_handle vj = f->vertex( (i0+2) % 3);
+    Point pj = vj->point().point();
+    
+    CGAL::Object o = T.dual(fe);
+
+    const Segment * Vor_segment = CGAL::object_cast<Segment>( &o );
+
+    if (! Vor_segment ) continue;
+
+    Point p1 = Vor_segment->source() ;
+    Point p2 = Vor_segment->target() ;
+      
+    Triangle tri( pi ,  p1 , p2 );
+    Triangle trj( pj ,  p1 , p2 );
+
+    FT ar_i = tri.area();
+    FT ar_j = trj.area();
+
+    vi->vol += std::fabs( ar_i );
+    vj->vol += std::fabs( ar_j );
+
+    totalV += ar_i;
+    totalV += ar_j;
+
+  }
+     
+
+  // Other: polygons, barycenters ...
   
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
@@ -60,16 +135,17 @@ void volumes(Triangulation& T) {
     Edge_circulator first = edge;
 
     first--; // avoid last one entirely
-    
-
+ 
     vvP poly_vertices;
 
     int nn=1;
 
-
     // Collecting of Voronoi vertices --- TODO: clearly improvable
 
+    Point p0 = fv->point().point();
+
     do {
+
       if(T.is_infinite( edge ) ) {
 	++edge;
 	continue;
@@ -86,6 +162,12 @@ void volumes(Triangulation& T) {
 
       Point p1 = Vor_segment->source() ;
       Point p2 = Vor_segment->target() ;
+      
+      //Triangle tr( p0 ,  p1 , p2 );
+      //FT tr_area = std::fabs( tr.area() );
+      //area += tr_area;
+
+      //      totalV += tr_area;
 
       if( nn == 1 ) {
 	poly_vertices.push_back( p1 ) ;
@@ -185,10 +267,12 @@ void volumes(Triangulation& T) {
     
     fv->set_poly( poly );
 
-    FT area = poly.area();
+   //    FT
+    //area = poly.area();
+    //fv->vol.set( area );
 
-    fv->vol.set( area );
-
+    FT area = fv->vol.val();
+    
     if( area < threshold2 ) continue;
     
     Point c2 = CGAL::centroid(poly_vertices2.begin() , poly_vertices2.end(),
@@ -211,7 +295,9 @@ void volumes(Triangulation& T) {
     fv->dd2.set(  d1A.squared_length()  );
 
   }
+#endif
 
+  
   //  cout << "Volumes: total = " << totalV << " ; ";
 
   FT  inner_V = 0;

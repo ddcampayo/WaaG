@@ -50,25 +50,33 @@ void linear::fill_Delta_DD( const FT dt ) {
 #ifdef FEM
     int i3 = i0 ;
     Vertex_handle v3  = f->vertex( i3 );
-
+    Point p3 = v3->point().point() ;
+    
     Vertex_handle v1 = f->vertex( (i3+1) % 3);
+    Point p1 = v1->point().point() ;
 
     Vertex_handle v3p = T.mirror_vertex( f , i3 );
+    Point p3p = v3p->point().point() ;
 
-    Vector_2 v33 = v3p->point().point() - v3->point().point() ;
+    Vector_2 v_3p_3 = p3 - p3p ;
 
-    // positive right angle turn
-    Vector_2 v33_perp = Vector_2( -v33.y() , v33.x() );
+    // negative right angle turn
+    Vector_2 v_3p_3_perp = Vector_2( v_3p_3.y() , -v_3p_3.x() );
 
-    Triangle_2 tr( v1 , v3p , v3);
+    //    Triangle tr( v1->point().point() , v3p->point().point() , v3->point().point() );
 
-    CGAL::Orientation or= tr.orientation();
+    //    CGAL::Orientation ori = tr.orientation();
+    //    if( ori == CGAL::NEGATIVE ) v33_perp = -v33_perp;
 
-    if( or == CGAL::NEGATIVE ) v33_perp = -v33_perp;
+    Vector_2 v_1_3p = p3p - p1 ;
 
-    Vector_2 DDij = 0.5 * v33_perp;
-    Vector_2 DDji = -Vector_2 DDij;
     
+    CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
+    if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
+
+    Vector_2 DDij = v_3p_3_perp / 6.0 ;
+    Vector_2 DDji = -DDij;
+
 #endif
     
     Vertex_handle vi = f->vertex( (i0+1) % 3);
@@ -109,7 +117,6 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     Vector_2 rr_ij_j = pj - bij;
     Vector_2 rr_ij_i = pi - bij;
-
 
 #ifndef FEM
     // regular
@@ -242,7 +249,6 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       dd_e[ j ]  -= Eji ;
 
-      
 //      dd_x[ j ] -= DDji.x();
 //      dd_y[ j ] -= DDji.y();
       dd_x[ j ] -= DDij.x();
@@ -272,8 +278,6 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    cout << i << "  " << j << "  " << ddelta << endl;
   }
 
-
-#endif
 
 
   // include "spring" term in M
@@ -381,7 +385,6 @@ void linear::fill_Delta_DD( const FT dt ) {
   
 
   // set up solvers .-
-  
   
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
   VectorXd inv_vol  = 1.0 / vol.array() ;

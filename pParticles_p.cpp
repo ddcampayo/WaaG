@@ -19,8 +19,8 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 100;
-  const FT  inner_tol  = 1e-6;
+  const int inner_iters= 20;
+  const FT  inner_tol  = 1e-5;
 
   const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
 
@@ -31,7 +31,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //simu.do_perturb(0.01);
+  //  simu.do_perturb(0.01);
   create( T , 1.0 );
   number( T );
 
@@ -40,6 +40,13 @@ int main() {
 
   linear algebra( T );
 
+  // // testing .-
+  // set_pressure( T );
+  // volumes( T );
+  // algebra.test_operators();
+  // draw( T , particle_file     );
+  // return 0;
+  
   // Init loop!
   
   int iter=1;
@@ -109,7 +116,7 @@ int main() {
     //  volumes( T );
     //  algebra.fill_Delta();
 
-    algebra.reset_s();
+    //    algebra.reset_s();
   
     int iter = 1;
 
@@ -124,6 +131,7 @@ int main() {
     for ( ; iter <= inner_iters ; iter++) {
 
       displ = move( T , dt , d0 );
+
       // frog
       //      displ = move( T , dt2 , d0 );
 
@@ -153,12 +161,12 @@ int main() {
 
 //      algebra.p_equation( dt , true ); 
 
-      algebra.p_equation( dt ); 
+//      algebra.p_equation( dt ); 
 
       //frog
-      //      algebra.p_equation( dt2 ); 
+      algebra.p_equation( dt ); 
 
-      //      algebra.u_add_press_grad( dt2 );//2 );
+      algebra.u_add_press_grad( dt2 );//2 );
 
       if( displ < inner_tol ) break;
 
@@ -180,10 +188,11 @@ int main() {
 //    return 0;
 
 //    copy_weights( T ) ;
+//    algebra.u_add_press_grad( dt );
+
     algebra.u_add_press_grad( dt );
 
-    // frog
-    //    displ = move( T , dt , d0 );
+    //displ = move( T , dt , d0 );
     
     volumes( T ); 
       

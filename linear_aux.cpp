@@ -4,6 +4,29 @@
 #include"simu.h"
 
 
+void linear::test_operators( void ) {
+
+  // this makes u = grad p, for debugging purposes
+
+  fill_Delta_DD();
+
+  VectorXd gradPx,gradPy;
+
+  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+
+  VectorXd U_x, U_y;
+
+  U_x = gradPx.array() / vol.array()  ;
+  U_y = gradPy.array() / vol.array() ;
+
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+  
+}
+
+
+
 void linear::u_star( void ) {
   VectorXd usx, usy;
   

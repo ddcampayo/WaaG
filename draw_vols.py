@@ -1,4 +1,7 @@
+#!/usr/bin/python
+
 import sys
+
 
 #print ("This is the name of the script: " ,sys.argv[0] )
 #print ("Number of arguments: ", len(sys.argv) )
@@ -9,6 +12,9 @@ if ( len(sys.argv) != 2) :
     sys.exit()
 
 file = sys.argv[1]
+
+
+file = sys.argv[1] + '/particles.dat'
 
 print("From file " , file)
 
@@ -23,6 +29,7 @@ y=dt[:,1]
 vol=dt[:,3]
 w=dt[:,4] 
 
+#plt.scatter(x,y, 100*np.sqrt(vol) , c= w)
 plt.scatter(x,y, 100*np.sqrt(vol) , c= w)
 
 ll = 0.6

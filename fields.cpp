@@ -3,6 +3,44 @@
 
 const double pi = M_PI;
 
+FT parabolla(const FT x,const FT y ) {
+
+  const FT cut = 0.4;
+  const FT pre = 1;
+
+  FT r2= x*x + y*y;
+
+  FT r = std::sqrt(r2);
+
+  if(  r > cut  )
+    return 0 ;
+  else {
+
+    return pre * r2  ;
+
+  }
+
+}
+
+
+void set_pressure(Triangulation& T) {
+
+  for(F_v_it vit=T.finite_vertices_begin();
+      vit != T.finite_vertices_end();
+      vit++) {
+
+    FT x=vit->point().x();
+    FT y=vit->point().y();
+
+    vit->p.set( parabolla(x,y) );
+
+  }
+
+  return;
+}
+
+
+
 Vector_2 field_rotation(const FT x,const FT y ) {
 
   const FT cut   = 0.4;

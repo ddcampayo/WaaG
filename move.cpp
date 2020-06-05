@@ -98,9 +98,9 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
     Vector_2 disp2 = rnew - rnow;
 
-    FT rel_disp = sqrt(disp2.squared_length() ) / simu.h();
+    FT rel_disp2 = sqrt(disp2.squared_length() );// / simu.h();
 
-    FT rel_disp0= sqrt( disp.squared_length() ) / simu.h();
+    FT rel_disp0= sqrt( disp.squared_length() );// / simu.h();
 
     // if(first) {
     //  cout
@@ -114,7 +114,7 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
     //  first=false;
     // }
 
-    dd2 += rel_disp;
+    dd2 += rel_disp2;
 
     dd0 += rel_disp0;
 
@@ -142,7 +142,7 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
     //    cout << "Inserting back at " << data->pos << endl ;
     
-    Vertex_handle fv=T.insert(   wPoint( data->pos , data->w )  );
+    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
 
     data->restore(fv);
 

@@ -2,6 +2,9 @@
 #define _PPARTICLES_H_
 
 
+// completely experimental research of FEM-like shape functions for
+// the volume and spatial differential operators
+//#define FEM
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Regular_triangulation_2.h>
@@ -12,7 +15,6 @@
 
 #include <CGAL/Polygon_2.h>
 #include <CGAL/centroid.h>
-
 
 //#include <CGAL/spatial_sort.h>
 
@@ -95,6 +97,7 @@ FT move_from_centroid(Triangulation& T, const FT dt );
 void set_vels_rotating(Triangulation& T);
 void set_vels_Lamb_Oseen(Triangulation& T) ;
 void set_vels_Gresho(Triangulation& T) ;
+void set_pressure(Triangulation& T) ;
 FT L2_vel_Gresho( Triangulation& T) ;
 FT kinetic_E( Triangulation& T) ;
 

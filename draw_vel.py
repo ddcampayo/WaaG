@@ -1,46 +1,77 @@
-import sys
+#!/usr/bin/python
 
-#print ("This is the name of the script: " ,sys.argv[0] )
-#print ("Number of arguments: ", len(sys.argv) )
-#print "The arguments are: " , str(sys.argv)
-
-if ( len(sys.argv) != 2) :
-    print('Usage: ' , sys.argv[0] , '  file_name ' )
-    sys.exit()
-
-file = sys.argv[1]
-
-print("From file " , file)
-
-#import pylab as pl
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.cm as cm
-from matplotlib.colors import Normalize
+#import matplotlib.cm as cm
+#from matplotlib.colors import Normalize
 
-dt = np.loadtxt( file )
+import sys
 
-x=dt[:,0]
-y=dt[:,1]
-vol=dt[:,3]
-w=dt[:,4]
-ux=dt[:,5]
-uy=dt[:,6] 
+#print "This is the name of the script: ", sys.argv[0]
+#print "Number of arguments: ", len(sys.argv)
+#print "The arguments are: " , str(sys.argv)
 
-colors = w
-norm = Normalize()
-norm.autoscale(colors)
+if(len(sys.argv) == 1) :
+    n = str(0)
+else:
+    n = sys.argv[1]
 
-colormap = cm.inferno
+plt.figure(figsize=(8,8))
 
-plt.figure(figsize=(6, 6))
+path='./'
 
-plt.quiver(x,y, ux, uy , color=colormap(norm(colors)) ,angles='xy', 
-           scale_units='xy', scale=10, pivot='mid' )
-#plt.xlim(-.4,.4)
-#plt.ylim(-.4,.4)
+LL= 1
 
-#plt.colorbar()
+omega = 2 * np.pi / (31 * 0.01)
+print('omega = ' , omega)
 
+Delta_t = 1  #optional prefactor
+
+dt=np.loadtxt(path + n +'/particles.dat')
+
+x=dt[:,0]; y=dt[:,1];
+#    vol=dt[:,3]
+#w=dt[:,4];
+vx=dt[:,5]; vy=dt[:,6];
+#p=dt[:,9] / Delta_t**2
+#  s=dt[:,10]
+#  I=dt[:,11];
+
+#p = 0.5*omega**2 * w
+
+r = np.sqrt( x**2 + y**2 )
+v = np.sqrt( vx**2 + vy**2 )
+
+#make furthest pressure value 0
+
+rm = np.argmax(r)
+
+# p -= p[ rm ] #  np.min( p )
+
+plt.plot( r , v , 'o' )
+
+def vel(r) : # analytic solution for Gresho's vortex velocity
+    r0 = 0.2
+
+    x = r/r0
+
+    if( x < 1)  : return x
+    if( x < 2)  : return 2-x
+
+    return 0;
+
+v_vel = np.vectorize( vel )
+rr = np.linspace( 0 , max(r) , 200 )
+plt.plot( rr , v_vel(rr)  )
+
+#plt.plot( r , w , 'x' )
+   
+#plt.xlim([-LL/2.0 , LL/2.0 ])
+#plt.ylim([-LL/2.0 , LL/2.0 ])
+    #    pl.colorbar(ticks=[0.45,0.55])
+
+#print( 'step no ' + n )
+
+plt.savefig( 'velocity_' + n)
 plt.show()
 
