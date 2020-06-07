@@ -7,43 +7,7 @@
 typedef vector<Point> vvP;
 
 
-// second moment of area wrt p -- Ix + Iy
-// https://en.wikipedia.org/wiki/Second_moment_of_area#Any_polygon
-FT moi( const Point& p , const vvP& vs ) {
-
-  FT mm = 0;
-  int N = vs.size();
-  for(int i=0 ; i < N ; i++ ) {
-    Vector_2 pi = vs[  i         ] - p ;
-    Vector_2 pj = vs[ (i+1 ) % N ] - p ;
-
-    FT xi= pi.x();
-    FT yi= pi.y();
-
-    FT xj= pj.x();
-    FT yj= pj.y();
-
-    // ugly.-
-    mm += std::fabs(
-		    (  xi * xi + yi * yi +
-		       xj * xj + yj * yj +
-		       xi * xj + yi * yj  ) *
-		    ( xi * yj - xj * yi ) / 12  );
-
-    // elegant.-
-    //    FT area =  ( xi * yj - xj * yi ) / 2 ;    
-    // mm += std::fabs(
-    // 		    ( pi.squared_length() +
-    // 		      pj.squared_length() +
-    // 		      pi * pj ) * area / 6  );
-  }
-
-  return mm;
-}
-
 // Compute Voronoi volumes (i.e. areas, in 2D)
-// This is a combination of "naive" (for areas)
-// and "abstruse" (for moments of area)
 
 void volumes(Triangulation& T) {
 
@@ -53,9 +17,11 @@ void volumes(Triangulation& T) {
 
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
-      fv++)  
+      fv++)  {
     fv->vol.reset();
-
+    fv->I.reset();
+    fv->centroid.reset( );
+  }
 
 #ifdef FEM
 
@@ -111,190 +77,64 @@ void volumes(Triangulation& T) {
     Triangle tri( pi ,  p1 , p2 );
     Triangle trj( pj ,  p1 , p2 );
 
-    FT ar_i = tri.area();
-    FT ar_j = trj.area();
+    FT ar_i = std::fabs( tri.area() );
+    FT ar_j = std::fabs( trj.area() );
 
-    vi->vol += std::fabs( ar_i );
-    vj->vol += std::fabs( ar_j );
+    vi->vol +=  ar_i ;
+    vj->vol +=  ar_j ;
 
     totalV += ar_i;
     totalV += ar_j;
+    {
+      Vector_2 vi1 = p1 - pi ;
+      Vector_2 vi2 = p2 - pi ;
+
+      vi->I += ar_i / 6 * 
+	( vi1.squared_length() +
+	  vi2.squared_length() +
+	  vi1 * vi2 );
+    }
+
+    {
+      Vector_2 vj1 = p1 - pj ;
+      Vector_2 vj2 = p2 - pj ;
+    
+      vj->I += ar_j / 6 * 
+	( vj1.squared_length() +
+	  vj2.squared_length() +
+	  vj1 * vj2 );
+    }
+
+    // CGAL::ORIGIN needed because points cannot be added, or multiplied
+    Vector_2 tri_ctr_v = CGAL::centroid( tri ) - CGAL::ORIGIN;
+    Vector_2 trj_ctr_v = CGAL::centroid( trj ) - CGAL::ORIGIN;
+
+    vi->centroid =  vi->centroid.val() + ar_i * tri_ctr_v;
+    vj->centroid =  vj->centroid.val() + ar_j * trj_ctr_v;
 
   }
-     
 
-  // Other: polygons, barycenters ...
-  
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
-      fv++)    {
-    //    fv->vol.reset();
+      fv++)  {
 
-    Edge_circulator edge  = T.incident_edges( fv );
+    FT a = fv->vol.val();
 
-    Edge_circulator first = edge;
+    Vector_2 ctr_v = fv->centroid.val() - CGAL::ORIGIN;
 
-    first--; // avoid last one entirely
- 
-    vvP poly_vertices;
+    fv->centroid = CGAL::ORIGIN + ctr_v/a;
 
-    int nn=1;
+    Point cc = fv->centroid.val();
+    Point p  = fv->point().point();
 
-    // Collecting of Voronoi vertices --- TODO: clearly improvable
+    Vector_2 dA =  a *( cc - p );
 
-    Point p0 = fv->point().point();
+    fv->dd.set( dA );
 
-    do {
-
-      if(T.is_infinite( edge ) ) {
-	++edge;
-	continue;
-      }
-	
-      CGAL::Object o = T.dual(edge);
-
-      const Segment * Vor_segment = CGAL::object_cast<Segment>( &o );
-
-      if (! Vor_segment ) {
-	++edge;
-	continue;
-      }
-
-      Point p1 = Vor_segment->source() ;
-      Point p2 = Vor_segment->target() ;
-      
-      //Triangle tr( p0 ,  p1 , p2 );
-      //FT tr_area = std::fabs( tr.area() );
-      //area += tr_area;
-
-      //      totalV += tr_area;
-
-      if( nn == 1 ) {
-	poly_vertices.push_back( p1 ) ;
-	poly_vertices.push_back( p2 ) ;
-      }
-      else if( nn == 2) {
-	Point p_new;
-	if ( p1 == poly_vertices[1] )  p_new = p2;
-	else if ( p2 == poly_vertices[1] ) p_new = p1;
-	else if ( p1 == poly_vertices[0] ) {
-	  poly_vertices[0] = poly_vertices[1];
-	  poly_vertices[1] = p1;
-	  p_new = p2;
-	}
-	else if ( p2 == poly_vertices[0] ) {
-	  poly_vertices[0] = poly_vertices[1];
-	  poly_vertices[1] = p2;
-	  p_new = p1;
-	}
-	else{
-	  // cout << "WARNING: conflict in polygon building, at n="
-	  // 	   << nn <<endl;
-	  // cout << fv->point().point() << endl ;
-	  // cout << p1 << endl ;
-	  // cout << p2 << endl ;
-
-	  // cout  << endl ;
-	  
-	  // for( auto pp : poly_vertices )
-	  //   cout << pp << endl; 
-
-	  // cout  << endl ;
-	  // //	  cout << poly_vertices << endl ;
-	  
-	  ++edge;
-	  continue;
-	} 
-	poly_vertices.push_back( p_new ) ;
-      }
-      else if ( p2 == poly_vertices[nn-1] ) 
-	poly_vertices.push_back( p1 ) ;
-      else if ( p1 == poly_vertices[nn-1] )
-	poly_vertices.push_back( p2 ) ;
-      else{
-	// cout << "WARNING: conflict in polygon building, at n="
-	// 	   << nn <<endl;
-	//   cout << fv->point().point() << endl ;
-	//   cout << p1 << endl ;
-	//   cout << p2 << endl ;
-	//   //	  cout << poly_vertices << endl ;
-
-	  ++edge;
-	  continue;
-      }
-
-      // else {
-      // 	if( p1 == poly_vertices[nn-1] ) 
-      // 	  poly_vertices.push_back( p2 ) ;
-      // 	else   if( p2 == poly_vertices[nn-1] ) 
-      // 	  poly_vertices.push_back( p1 ) ;
-      // 	else{ cout << "WARNING: conflict in polygon building, at n="
-      // 		   << nn <<endl; }
-
-      
-      ++nn;
-      ++edge;
-    } while ( edge != first);
-
-
-    int NN = poly_vertices.size();
-    if( NN == 0 ) continue;
-
-    vvP poly_vertices2;
-
-    //    poly_vertices2.push_back( poly_vertices[0] );
-
-    for( int i= 0 ; i < NN ; i++ ) {
-
-      Vector_2 dd( poly_vertices[ (i + 1) % NN ] - poly_vertices[ i ] );
-
-      if( dd.squared_length() > threshold2 )
-	poly_vertices2.push_back( poly_vertices[i] );
-
-    }
-    
-    Polygon poly( poly_vertices2.begin() , poly_vertices2.end() );
-
-    // if (!poly.is_convex() ) {
-    //    cout << "WARNING: non-convex polygon" <<endl;
-    //    cout << fv->point().point() << endl ;
-       
-    //    for( auto pp : poly_vertices2 ) // C++11
-    // 	 cout << pp << endl; 
-    // }
-
-    //    int idx = fv->idx() ; // debugging
-    
-    fv->set_poly( poly );
-
-   //    FT
-    //area = poly.area();
-    //fv->vol.set( area );
-
-    FT area = fv->vol.val();
-    
-    if( area < threshold2 ) continue;
-    
-    Point c2 = CGAL::centroid(poly_vertices2.begin() , poly_vertices2.end(),
-				CGAL::Dimension_tag<0>());
-    
-    fv->centroid.set( c2 );
-
-    totalV += area;
-
-    Point p_i = fv->point().point();
-    
-    fv->I.set( moi( p_i  ,  poly_vertices2  ) );
-
-    Vector_2 d1 =  c2 - p_i ;
-
-    Vector_2 d1A = area * d1;
- 
-    fv->dd.set( d1A );
-
-    fv->dd2.set(  d1A.squared_length()  );
+    fv->dd2.set(  dA.squared_length()  );
 
   }
+
 #endif
 
   

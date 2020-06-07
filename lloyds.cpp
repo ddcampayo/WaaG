@@ -37,9 +37,9 @@ FT lloyds(Triangulation& T) {
 
     }
 
-    Point rnow=fv->point().point(); // current point
+    Point rnow = fv->point().point(); // current point
 
-    Point rnew= fv->centroid.val();
+    Point rnew = fv->centroid.val();
 
     Vector_2 disp2 = rnew - rnow;
 

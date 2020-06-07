@@ -189,7 +189,7 @@ FT move_from_centroid(Triangulation& T, const FT dt ) {
 
     Point r0 = fv->centroid.val();
 
-    Point rnew= r0 + disp;
+    Point rnew = r0 + disp;
 
     FT rel_disp = sqrt(disp.squared_length() ) / simu.h();
 
