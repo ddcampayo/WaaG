@@ -10,7 +10,7 @@
 
 // LL =  DD (1/V) DD^t, involved in Ralphson-Newton methods
 
-// Gamma_ij = d I_i / d w_j   (inf.  change of moment of inertia of cell i due to change in weight of cell j)
+// Gamma_ij = d I_i / d w_j , aka GG  (inf.  change of moment of inertia of cell i due to change in weight of cell j)
 
 // MM_ij = d I_i / d r_j   (inf.  change of moment of inertia of cell i due to change in position of cell j)
 
@@ -187,7 +187,6 @@ void linear::fill_Delta_DD( const FT dt ) {
     				 + 2 * I * rr_ij_j_para
     				 );
 
-    
     FT gamma_ij = ddelta * ( I + r2_ij_i  );
     FT gamma_ji = ddelta * ( I + r2_ij_j  );
 
@@ -399,7 +398,6 @@ void linear::fill_Delta_DD( const FT dt ) {
     std::cout << "Failure decomposing LL matrix " << endl;
   }
 
-
   // special.-  experimental
 
   if( dt > 1e-8) Delta -= dt*dt*LL;
@@ -411,7 +409,8 @@ void linear::fill_Delta_DD( const FT dt ) {
       " matrix\n";
   }
 
-  
+  GG = GG.transpose();
+
   GG_solver.compute( GG );
 
   if(GG_solver.info()!=Eigen::Success) {

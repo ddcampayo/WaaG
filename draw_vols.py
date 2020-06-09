@@ -11,10 +11,9 @@ if ( len(sys.argv) != 2) :
     print('Usage: ' , sys.argv[0] , '  file_name ' )
     sys.exit()
 
-file = sys.argv[1]
+path = sys.argv[1]
 
-
-file = sys.argv[1] + '/particles.dat'
+file = path + '/particles.dat'
 
 print("From file " , file)
 
@@ -29,10 +28,12 @@ y=dt[:,1]
 vol=dt[:,3]
 w=dt[:,4] 
 I=dt[:,11] 
+dd2=dt[:,12] 
 
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= w)
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= I)
-plt.scatter(x,y, c= I)
+#plt.scatter(x,y, c= I)
+#plt.scatter(x,y, c= np.sqrt( dd2 ) )
 
 ll = 0.6
 
@@ -40,6 +41,16 @@ plt.xlim(-ll,ll)
 plt.ylim(-ll,ll)
 
 plt.colorbar()
+
+
+
+di = np.loadtxt(path+'/diagram.dat')
+
+xd=di[:,0]; yd=di[:,1];
+
+for i in range( 0 , xd.size , 2) :
+    plt.plot( [ xd[i] , xd[i+1] ] , [ yd[i] , yd[i+1] ] , c='k')
+
 
 
 plt.show()

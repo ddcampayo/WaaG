@@ -86,9 +86,13 @@ void volumes(Triangulation& T) {
     totalV += ar_i;
     totalV += ar_j;
     {
+
+      // https://pdfs.semanticscholar.org/b561/d4242952bce7bf986ed670c43532739809d4.pdf
+
+
       Vector_2 vi1 = p1 - pi ;
       Vector_2 vi2 = p2 - pi ;
-
+      
       vi->I += ar_i / 6 * 
 	( vi1.squared_length() +
 	  vi2.squared_length() +

@@ -39,6 +39,7 @@ class linear {
   void w_equation3( );
   void p_equation(const FT dt , const bool ws = false );
   void p_equation_from_s( );
+  void s_equation_from_p( );
   void s_equation(const FT dt );
   void u_star( void );
   void reset_p( void );

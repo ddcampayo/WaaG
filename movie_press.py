@@ -27,7 +27,7 @@ path='./'
 
 LL= 1
 
-omega = 2 * np.pi / (31 * 0.01)
+omega = 2 * np.pi / (10 * 0.005)
 print('omega = ' , omega)
 
 def pp(r) : # analytic solution for Gresho's vortex pressure

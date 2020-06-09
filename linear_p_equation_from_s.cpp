@@ -22,3 +22,24 @@ void linear::p_equation_from_s( ) {
   return;
 }
 
+
+
+// Solve for s from the pressure field
+
+void linear::s_equation_from_p( ) {
+
+  cout << "Solving pressure equation " << endl;
+  
+  VectorXd p  = field_to_vctr( sfield_list::p );
+
+  VectorXd Delta_p  = Delta.transpose() * p;
+
+  VectorXd s;
+
+  s =  GG_solver.solve( Delta_p );
+
+  vctr_to_field( s  ,  sfield_list::s ) ;
+
+  return;
+}
+
