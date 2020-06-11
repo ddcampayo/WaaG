@@ -5,7 +5,7 @@
 
 // Solve for pressure from the s field
 
-void linear::p_equation_from_s( ) {
+void linear::p_equation_from_s( const FT dt ) {
 
   cout << "Solving pressure equation " << endl;
   
@@ -17,7 +17,8 @@ void linear::p_equation_from_s( ) {
 
   p =  Delta_solver.solve( gamma_s );
 
-  vctr_to_field( p  ,  sfield_list::p ) ;
+  //  vctr_to_field( p / (dt*dt)  ,  sfield_list::p ) ;
+  vctr_to_field( p ,  sfield_list::p ) ;
 
   return;
 }
@@ -26,13 +27,13 @@ void linear::p_equation_from_s( ) {
 
 // Solve for s from the pressure field
 
-void linear::s_equation_from_p( ) {
+void linear::s_equation_from_p( const FT dt ) {
 
   cout << "Solving pressure equation " << endl;
   
   VectorXd p  = field_to_vctr( sfield_list::p );
 
-  VectorXd Delta_p  = Delta.transpose() * p;
+  VectorXd Delta_p  = Delta.transpose() * p; // Delta is symmetric anyway ...
 
   VectorXd s;
 

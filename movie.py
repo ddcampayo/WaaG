@@ -38,7 +38,7 @@ for n in range( init_t ,2000000+skip,skip):
     p=dt[:,9]
 #    p=dt[:,10]
 
-    w=dt[:,11];  #  I
+    I=dt[:,11];  #  I
 
     p += p - np.min( p )
 
@@ -46,7 +46,8 @@ for n in range( init_t ,2000000+skip,skip):
     #    plt.plot( r , p , 'o' )
 
 #    plt.scatter( x , y , c=p )
-    plt.scatter( x , y , 10, c=w )
+#    plt.scatter( x , y , 10, c=w )
+    plt.scatter( x , y , 10, c=I )
 
     di = np.loadtxt(path+str(n)+'/diagram.dat')
 

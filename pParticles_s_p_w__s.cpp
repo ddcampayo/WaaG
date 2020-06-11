@@ -3,7 +3,7 @@
 // Pressure is determined some other way...
 // An additional field, s, is used to enforce const moments of inertia
 
-// p is obtained from s here
+// s is obtained from p here
 
 #undef PRESSURE_PPE
 #include"pParticles.h"
@@ -121,8 +121,8 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      algebra.solve_for_weights();
-      //algebra.solve_for_moments();
+      //      algebra.solve_for_weights();
+      algebra.solve_for_moments();
 
       copy_weights( T ) ;
 
@@ -130,9 +130,9 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      algebra.p_equation_from_s( dt );
+      algebra.s_equation_from_p( dt );
 
-      algebra.s_equation_p( dt );	
+      algebra.p_equation_s( dt );	
     
 //      algebra.p_equation( dt );
 

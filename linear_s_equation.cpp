@@ -44,6 +44,28 @@ void linear::s_equation(const FT dt ) {
 }
 
 
+void linear::s_equation_p(const FT dt ) {
+
+  cout << "Solving s equation " << endl;
+  
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  VectorXd MMUstar  =  MM_scalar_vfield( vfield_list::Ustar );
+  
+  VectorXd p  = field_to_vctr( sfield_list::p );
+
+  VectorXd NLp = NL * p;
+
+  VectorXd s =  NN_solver.solve( - MMUstar / dt + NLp );
+  
+  vctr_to_field( s ,  sfield_list::s ) ;
+
+  return;
+}
+
+
+
 
 // Not a "gradient" at all, but named so in parallel with the p
 // counterpart

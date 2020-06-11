@@ -6,15 +6,19 @@
 
 // Delta_ij = d V_i / d w_j   (inf.  change of volume of cell i due to change in weight of cell j)
 
-// DD_ij =  d V_i / d r_j  (inf.  change of volume of cell i due to change in position of cell j)  , a matrix of vectors, thus stored as DD_ij_x and DD_ij_y
+// DD_ij =  d V_i / d r_j, aka "L"  (inf.  change of volume of cell i due to change in position of cell j)  , a matrix of vectors, thus stored as DD_ij_x and DD_ij_y
 
-// LL =  DD (1/V) DD^t, involved in Ralphson-Newton methods
+// LL = - DD (1/V) DD^t, involved in Ralphson-Newton methods ( notice sign )
 
-// Gamma_ij = d I_i / d w_j , aka GG  (inf.  change of moment of inertia of cell i due to change in weight of cell j)
+// Gamma_ij = d I_i / d w_j , aka "GG"  (inf.  change of moment of inertia of cell i due to change in weight of cell j)
 
-// MM_ij = d I_i / d r_j   (inf.  change of moment of inertia of cell i due to change in position of cell j)
+// MM_ij = d I_i / d r_j , aka "N"  (inf.  change of moment of inertia of cell i due to change in position of cell j)
 
-// NN =  MM (1/V) MM^t, involved in Ralphson-Newton methods
+// NN =  - MM (1/V) MM^t, involved in Ralphson-Newton methods
+
+// LN = -  DD (1/V) MM^t, involved in Ralphson-Newton methods
+
+// NL = -  MM (1/V) DD^t, involved in Ralphson-Newton methods
 
 
 #include"linear.h"
@@ -409,9 +413,7 @@ void linear::fill_Delta_DD( const FT dt ) {
       " matrix\n";
   }
 
-  GG = GG.transpose();
-
-  GG_solver.compute( GG );
+  GG_solver.compute(  GG.transpose() );
 
   if(GG_solver.info()!=Eigen::Success) {
     std::cout << "Failure decomposing Gamma " << //minus 1
@@ -434,7 +436,15 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   if(EE_solver.info()!=Eigen::Success)
     std::cout << "Failure decomposing Epsilon matrix\n";
-  
+
+  LN =
+    - DDx * inv_vol.asDiagonal() * MMx.transpose()
+    - DDy * inv_vol.asDiagonal() * MMy.transpose();
+
+  NL =
+    - MMx * inv_vol.asDiagonal() * DDx.transpose()
+    - MMy * inv_vol.asDiagonal() * DDy.transpose();
+
   return;
 
 }

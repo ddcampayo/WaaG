@@ -79,6 +79,30 @@ void linear::p_equation(const FT dt , const bool ws ) {
 
 
 
+void linear::p_equation_s(const FT dt ) {
+
+  cout << "Solving pressure equation " << endl;
+  
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  VectorXd p;
+
+  VectorXd s  = field_to_vctr( sfield_list::s );
+
+  VectorXd LNs = LN * s;
+
+  p =  LL_solver.solve( divUstar / dt + LNs );
+  
+  vctr_to_field( p ,  sfield_list::p ) ;
+
+  return;
+}
+
+
+
+
 
 void linear::u_add_press_grad( const FT dt ) {
 
@@ -132,11 +156,11 @@ void linear::u_add_grads( const FT dt ) {
 
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-  VectorXd grad_x = gradPx - gradsx ;
-  VectorXd grad_y = gradPy - gradsy ;
+  VectorXd grad_x = - gradPx + gradsx ;
+  VectorXd grad_y = - gradPy + gradsy ;
 
-  U_x = Ustar_x.array() - ddt * grad_x.array() / vol.array()  ;
-  U_y = Ustar_y.array() - ddt * grad_y.array() / vol.array() ;
+  U_x = Ustar_x.array() + ddt * grad_x.array() / vol.array()  ;
+  U_y = Ustar_y.array() + ddt * grad_y.array() / vol.array() ;
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 

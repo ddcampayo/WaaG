@@ -62,6 +62,18 @@ void linear::MM_times_sfield(const sfield_list::take from ,
 
 
 
+VectorXd linear::MM_scalar_vfield(const vfield_list::take from )
+{
+
+  VectorXd vx, vy;
+
+  vfield_to_vctrs( from , vx, vy );
+
+  return MMx * vx  + MMy * vy ;
+}
+
+
+
 VectorXd linear::Delta_times_sfield(const sfield_list::take from )
 {
   VectorXd p = field_to_vctr( from );

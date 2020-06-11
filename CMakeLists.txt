@@ -93,7 +93,7 @@ add_executable( pPart
 #		pParticles_s.cpp
 #		pParticles_s_p.cpp
 #		pParticles_GM.cpp
-#		pParticles_s_p_w.cpp
+		pParticles_s_p_w.cpp
 )
 
 add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart )

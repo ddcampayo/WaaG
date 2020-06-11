@@ -7,6 +7,8 @@
 // Iterative process to adjust moments so that
 // the weighted Voronoi diagram has constant moment
 
+// TODO: badly named
+
 void linear::solve_for_moments( ) {
 
   cout << "Equalizing moments " << endl;
@@ -18,8 +20,8 @@ void linear::solve_for_moments( ) {
   //  VectorXd target_vol( vol ) ;
   //  target_vol.setConstant( target_vol_val );
   
-  const int max_iter = 1;
-  const FT threshold = 1e-2;
+  const int max_iter = 10;
+  const FT threshold = 1e-4;
   const FT mixing = 1;
   int iter=0;
 
@@ -27,6 +29,12 @@ void linear::solve_for_moments( ) {
 
     VectorXd I  = field_to_vctr( sfield_list::I ) ;
 
+    FT diff = (I - I0 ).norm() / I.norm(); // relative!
+
+    cout << "I rel diff: " << diff<< endl;
+
+    cout << "  solving for  ws, iter : " << iter << endl;
+    
     // FT totI    = I.sum();
     // int N      = I.size();
     // FT meanI   = totI / FT( N );
@@ -53,15 +61,10 @@ void linear::solve_for_moments( ) {
 
     volumes( T );
 
-    VectorXd I0( I );
+    //    VectorXd I0( I );
 
-    I  = field_to_vctr( sfield_list::I ) ;
+    //    I  = field_to_vctr( sfield_list::I ) ;
 
-    FT diff = (I - I0 ).norm() / I.norm(); // relative!
-
-    cout << "I rel diff: " << diff<< endl;
-
-    cout << "  solving for  I, iter : " << iter << endl;
 
     if( diff < threshold ) break;
   }

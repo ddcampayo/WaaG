@@ -38,9 +38,11 @@ class linear {
   void w_equation2( );
   void w_equation3( );
   void p_equation(const FT dt , const bool ws = false );
-  void p_equation_from_s( );
-  void s_equation_from_p( );
+  void p_equation_s(const FT dt );
+  void p_equation_from_s(  const FT dt );
+  void s_equation_from_p(  const FT dt );
   void s_equation(const FT dt );
+  void s_equation_p(const FT dt );
   void u_star( void );
   void reset_p( void );
   void reset_s( void );
@@ -52,8 +54,9 @@ class linear {
   void u_add_spring_force( const FT kdt );
   void test_operators( void );
 
-  void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );  
+  void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );
   VectorXd DD_scalar_vfield(const vfield_list::take from );
+  VectorXd MM_scalar_vfield(const vfield_list::take from );
   void DD_times_sfield(const sfield_list::take from ,
 		       VectorXd& Dx,VectorXd& Dy);
   void MM_times_sfield(const sfield_list::take from ,
@@ -79,6 +82,7 @@ private:
   SpMat LL;
   SpMat MMx, MMy;
   SpMat NN;
+  SpMat LN , NL;
 
   SpMat EE;
 
