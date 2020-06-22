@@ -392,10 +392,34 @@ void linear::fill_Delta_DD( const FT dt ) {
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
   VectorXd inv_vol  = 1.0 / vol.array() ;
 
+
+  // regular.-
+  // LL =
+  //   - DDx * inv_vol.asDiagonal() * DDx.transpose()
+  //   - DDy * inv_vol.asDiagonal() * DDy.transpose();
+
+  // rotation.-
+
+  VectorXd I  = field_to_vctr( sfield_list::I ) ;
+  VectorXd inv_I  = 1.0 / I.array() ;
+
+  VectorXd x,y;
+  vfield_to_vctrs( vfield_list::dd , x , y ) ;
+
+  VectorXd x2 = x.array()*x.array();
+  VectorXd y2 = y.array()*y.array();
+  VectorXd xy = x.array()*y.array();
+
   LL =
     - DDx * inv_vol.asDiagonal() * DDx.transpose()
-    - DDy * inv_vol.asDiagonal() * DDy.transpose();
-
+    - DDy * inv_vol.asDiagonal() * DDy.transpose()
+    - DDx * inv_I.asDiagonal() * (
+				  y2.asDiagonal() * DDx.transpose()
+				  -xy.asDiagonal() * DDy.transpose() )
+    - DDy * inv_I.asDiagonal() * (
+				  x2.asDiagonal() * DDy.transpose()
+				  -xy.asDiagonal() * DDx.transpose() );
+  
   LL_solver.compute( LL );
 
   if( LL_solver.info() != Eigen::Success ) {

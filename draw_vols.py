@@ -29,11 +29,13 @@ vol=dt[:,3]
 w=dt[:,4] 
 I=dt[:,11] 
 dd2=dt[:,12] 
+om=dt[:,13] 
 
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= w)
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= I)
 #plt.scatter(x,y, c= I)
 #plt.scatter(x,y, c= np.sqrt( dd2 ) )
+plt.scatter(x,y, 10,  c= om)
 
 ll = 0.6
 

@@ -19,8 +19,11 @@ void volumes(Triangulation& T) {
       fv!=T.finite_vertices_end();
       fv++)  {
     fv->vol.reset();
-    fv->I.reset();
     fv->centroid.reset( );
+    fv->I.reset();
+    fv->I_xx.reset();
+    fv->I_yy.reset();
+    fv->I_xy.reset();
   }
 
 #ifdef FEM
@@ -85,6 +88,7 @@ void volumes(Triangulation& T) {
 
     totalV += ar_i;
     totalV += ar_j;
+
     {
 
       // https://pdfs.semanticscholar.org/b561/d4242952bce7bf986ed670c43532739809d4.pdf
@@ -97,6 +101,25 @@ void volumes(Triangulation& T) {
 	( vi1.squared_length() +
 	  vi2.squared_length() +
 	  vi1 * vi2 );
+
+      vi->I_xx += ar_i / 6 * 
+	( vi1.x() * vi1.x() +
+	  vi2.x() * vi2.x() +
+	  vi1.x() * vi2.x() );
+
+      vi->I_yy += ar_i / 6 * 
+	( vi1.y() * vi1.y() +
+	  vi2.y() * vi2.y() +
+	  vi1.y() * vi2.y() );
+
+      // TODO: orientation is important !
+      vi->I_xy += ar_i / 12 * 
+	( 2*vi1.x() * vi1.y() +
+	  2*vi2.x() * vi2.y() +
+	    vi1.x() * vi2.y() +
+	    vi1.y() * vi2.x() );
+
+
     }
 
     {
@@ -107,6 +130,24 @@ void volumes(Triangulation& T) {
 	( vj1.squared_length() +
 	  vj2.squared_length() +
 	  vj1 * vj2 );
+
+      vj->I_xx += ar_j / 6 * 
+	( vj1.x() * vj1.x() +
+	  vj2.x() * vj2.x() +
+	  vj1.x() * vj2.x() );
+
+      vj->I_yy += ar_j / 6 * 
+	( vj1.y() * vj1.y() +
+	  vj2.y() * vj2.y() +
+	  vj1.y() * vj2.y() );
+
+      // TODO: orientation is important !
+      vj->I_xy += ar_j / 12 * 
+	( 2*vj1.x() * vj1.y() +
+	  2*vj2.x() * vj2.y() +
+	    vj1.x() * vj2.y() +
+	    vj1.y() * vj2.x() );
+
     }
 
     // CGAL::ORIGIN needed because points cannot be added, or multiplied
@@ -122,20 +163,37 @@ void volumes(Triangulation& T) {
       fv!=T.finite_vertices_end();
       fv++)  {
 
+    FT I_xx = fv->I_xx.val();
+    FT I_yy = fv->I_yy.val();
+    FT I_xy = fv->I_xy.val();
+
+    fv->I_4 = 4 * I_xy * I_xy + (I_xx - I_yy) * (I_xx - I_yy);
+    //     fv->I = I_xx + I_yy ;
+
     FT a = fv->vol.val();
 
     Vector_2 ctr_v = fv->centroid.val() - CGAL::ORIGIN;
 
-    fv->centroid = CGAL::ORIGIN + ctr_v/a;
+    Point cc = CGAL::ORIGIN + ctr_v/a;
 
-    Point cc = fv->centroid.val();
+    fv->centroid = cc;
+
     Point p  = fv->point().point();
 
-    Vector_2 dA =  a *( cc - p );
+    //    Vector_2 dA =  a *( cc - p );
+    //   fv->dd.set( dA );
+    //    fv->dd2.set(  dA.squared_length()  );
 
-    fv->dd.set( dA );
+    Vector_2 cp =  p - cc ;
+    fv->dd.set( cp );
 
-    fv->dd2.set(  dA.squared_length()  );
+    FT cp_l2 = cp.squared_length() ;
+
+    fv->dd2.set( cp_l2  );
+
+    // Moment of inertia at CM. Steiner's (aka parallel axis) theorem :
+    //    fv->I -= a * cp_l2;
+
 
   }
 

@@ -47,6 +47,8 @@ class linear {
   void reset_p( void );
   void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
+  void om_add_press_grad( const FT dt ) ;
+  void u_add_angular();
   void u_add_s_grad( const FT dt ) ;
   void u_add_w_grad( const FT dt ) ;
   void u_add_grads( const FT dt ) ;

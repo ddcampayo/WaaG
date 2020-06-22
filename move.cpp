@@ -29,6 +29,7 @@ void backup( Triangulation& T ) {
     fv->p0.set(   fv->p()  );
     fv->U0.set(   fv->U()  );
     fv->r0.set(   fv->point().point() );
+    fv->om0.set(   fv->om()  );
   }
 }
 

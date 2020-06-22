@@ -3,6 +3,9 @@
 
 void linear::u_add_spring_force( const FT kdt ) {
 
+  // TODO: this can be done through .dd, a vrtx member function
+  // calculated in volumes.cpp
+  
   // first, build a displacement vector
   
   typedef std::pair<int,FT> idx_val;
@@ -22,7 +25,7 @@ void linear::u_add_spring_force( const FT kdt ) {
     Point r_i = fv->point().point();
 
     Vector_2 d_i = r_i - b_i ; //displacement from center-of-mass
-    
+
     idx_vals_x.push_back( idx_val( idx , d_i.x()  ) );
     idx_vals_y.push_back( idx_val( idx , d_i.y()  ) );
 

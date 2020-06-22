@@ -38,7 +38,10 @@ for n in range( init_t ,2000000+skip,skip):
     p=dt[:,9]
 #    p=dt[:,10]
 
-    I=dt[:,11];  #  I
+#    I=dt[:,11];  #  I
+    om=dt[:,13];  #  ang velocity
+
+    I=dt[:,14];  #  eccentricity
 
     p += p - np.min( p )
 
@@ -48,6 +51,7 @@ for n in range( init_t ,2000000+skip,skip):
 #    plt.scatter( x , y , c=p )
 #    plt.scatter( x , y , 10, c=w )
     plt.scatter( x , y , 10, c=I )
+#    plt.scatter( x , y , 10, c=om )
 
     di = np.loadtxt(path+str(n)+'/diagram.dat')
 

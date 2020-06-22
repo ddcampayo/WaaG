@@ -683,32 +683,32 @@ number.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles_s_p_w.o: pParticles_s_p_w.cpp.o
+pParticles_p_om.o: pParticles_p_om.cpp.o
 
-.PHONY : pParticles_s_p_w.o
+.PHONY : pParticles_p_om.o
 
 # target to build an object file
-pParticles_s_p_w.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_s_p_w.cpp.o
-.PHONY : pParticles_s_p_w.cpp.o
+pParticles_p_om.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_om.cpp.o
+.PHONY : pParticles_p_om.cpp.o
 
-pParticles_s_p_w.i: pParticles_s_p_w.cpp.i
+pParticles_p_om.i: pParticles_p_om.cpp.i
 
-.PHONY : pParticles_s_p_w.i
+.PHONY : pParticles_p_om.i
 
 # target to preprocess a source file
-pParticles_s_p_w.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_s_p_w.cpp.i
-.PHONY : pParticles_s_p_w.cpp.i
+pParticles_p_om.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_om.cpp.i
+.PHONY : pParticles_p_om.cpp.i
 
-pParticles_s_p_w.s: pParticles_s_p_w.cpp.s
+pParticles_p_om.s: pParticles_p_om.cpp.s
 
-.PHONY : pParticles_s_p_w.s
+.PHONY : pParticles_p_om.s
 
 # target to generate assembly for a file
-pParticles_s_p_w.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_s_p_w.cpp.s
-.PHONY : pParticles_s_p_w.cpp.s
+pParticles_p_om.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_om.cpp.s
+.PHONY : pParticles_p_om.cpp.s
 
 volumes.o: volumes.cpp.o
 
@@ -806,9 +806,9 @@ help:
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles_s_p_w.o"
-	@echo "... pParticles_s_p_w.i"
-	@echo "... pParticles_s_p_w.s"
+	@echo "... pParticles_p_om.o"
+	@echo "... pParticles_p_om.i"
+	@echo "... pParticles_p_om.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"

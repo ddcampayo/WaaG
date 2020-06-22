@@ -91,7 +91,13 @@ public:
       case sfield_list::s : return s;
       case sfield_list::I   : return I;
       case sfield_list::I0   : return I0;
+      case sfield_list::I_xx   : return I_xx;
+      case sfield_list::I_yy   : return I_yy;
+      case sfield_list::I_xy   : return I_xy;
+      case sfield_list::I_4    : return I_4;
       case sfield_list::dd2 : return dd2;
+      case sfield_list::om : return om;
+      case sfield_list::om0 : return om0;
       default : return vol;
       }
   }
@@ -162,8 +168,16 @@ public:
   scalar_field I;  // second moment of area
   scalar_field I0;
 
-  vector_field dd;   // V * ( centr - node_position )
+  scalar_field I_xx , I_yy, I_xy;  // second moments of area
+  scalar_field I_4;  // eccentricity
+
+  vector_field dd;
+  // V * ( centroid - node_position )
+  // OR ( centr - node_position )
   scalar_field dd2;  // dd**2
+
+  scalar_field om;  // omega, angular velocity
+  scalar_field om0;  // omega, angular velocity
 
   //  weight_field w;
 

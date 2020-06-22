@@ -2,21 +2,20 @@ struct data_kept {
   int idx;
   Point pos;  // some position
   Point r0;
-  weight w;
-  weight w0;
+  weight w, w0;
   FT vol0;
   Vector_2 Dr;
-  Vector_2 U;
-  Vector_2 U0;
+  Vector_2 U, U0;
   Vector_2 Ustar;
-  FT p;
-  FT p0;
+  FT p, p0;
 
   FT s;
   FT I0;
 
   Vector_2 dd;
   FT dd2;
+
+  FT om, om0;
   
   data_kept(const F_v_it fv) {
     idx = fv->idx();
@@ -42,7 +41,10 @@ struct data_kept {
 
     dd  =  fv->dd.val();
     dd2 = fv->dd2.val(); ;
- 
+
+    om = fv->om.val();
+    om0 = fv->om0.val();
+
   }
 
   void restore(Vertex_handle fv) {
@@ -69,6 +71,10 @@ struct data_kept {
 
     fv->dd.set( dd ) ;
     fv->dd2.set( dd2 ); ;
+
+    fv->om.set( om );
+    fv->om0.set( om0 );
+
   }
 
 };

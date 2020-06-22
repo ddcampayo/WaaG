@@ -165,3 +165,55 @@ void linear::u_add_grads( const FT dt ) {
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
 }
+
+
+
+
+void linear::om_add_press_grad( const FT dt ) {
+
+  //  cout << "Omega equation \n";
+  
+  VectorXd gradPx,gradPy;
+
+  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+
+  VectorXd r_x, r_y;
+
+  vfield_to_vctrs(  vfield_list::dd , r_x , r_y );
+
+  VectorXd I  = field_to_vctr( sfield_list::I );
+
+  VectorXd tau =
+      r_x.array() * gradPy.array()
+    - r_y.array() * gradPx.array() ; // torque of V grad p
+
+  VectorXd om0  = field_to_vctr( sfield_list::om0 );
+
+  FT ddt = dt;
+  
+  VectorXd om = om0.array() - ddt * tau.array() / I.array()  ;
+
+  vctr_to_field( om ,  sfield_list::om ) ;
+
+}
+
+void linear::u_add_angular( void ) {
+
+  //  cout << "adding angular velocity \n";
+
+  VectorXd U_x, U_y;
+
+  vfield_to_vctrs(  vfield_list::U , U_x, U_y );
+
+  VectorXd r_x, r_y;
+
+  vfield_to_vctrs(  vfield_list::dd , r_x , r_y );
+
+  VectorXd om  = field_to_vctr( sfield_list::om );
+
+  U_x = U_x.array() - om.array() * r_y.array() ;
+  U_y = U_y.array() + om.array() * r_x.array() ;
+
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+
+}
