@@ -96,7 +96,8 @@ int main() {
     simu.next_step();
     simu.advance_time( );
 
-
+    algebra.copy( sfield_list::I,  sfield_list::I0);
+    
     cout << "Time  " << simu.time() << endl;
     //    volumes( T ); 
     
@@ -121,8 +122,8 @@ int main() {
 
       algebra.fill_Delta_DD();
 
-      algebra.solve_for_weights();
-      //algebra.solve_for_moments();
+      //      algebra.solve_for_weights();
+      algebra.solve_for_moments();
 
       copy_weights( T ) ;
 

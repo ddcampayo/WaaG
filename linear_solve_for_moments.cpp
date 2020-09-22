@@ -21,7 +21,7 @@ void linear::solve_for_moments( ) {
   //  target_vol.setConstant( target_vol_val );
   
   const int max_iter = 10;
-  const FT threshold = 1e-4;
+  const FT threshold = 1e-2;
   const FT mixing = 1;
   int iter=0;
 

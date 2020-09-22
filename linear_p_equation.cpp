@@ -1,4 +1,4 @@
-#define PRESSURE_PPE
+//#define PRESSURE_PPE
 
 
 //#include"pParticles.h"
@@ -21,12 +21,14 @@ void linear::p_equation(const FT dt , const bool ws ) {
 
   
   // A
-  // Approximate Laplacian ~ Delta 
+  // Approximate Laplacian ~ Delta / V
   // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
   // VectorXd p =  Delta_solver.solve( divUstar );
   // times (-0.5), because the Laplacian is approximated by -2 Delta / V
   // vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
+  
+  
   // B
   //  Laplacian as div of grad :
 #ifdef PRESSURE_PPE
@@ -69,9 +71,18 @@ void linear::p_equation(const FT dt , const bool ws ) {
        << " rel Dvol std dev: " << sqrt( Dvol_sigma ) / Dvol_mean 
        << endl;
 
-  VectorXd Dp  =  LL_solver.solve( Dvol );
-  vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
+  // C1: LL Laplacian
+  //  VectorXd Dp  =  LL_solver.solve( Dvol );
 
+  // C2: Delta Laplacian
+  VectorXd Dp =  Delta_solver.solve( Dvol );
+
+  vctr_to_field( Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
+  // C2 ???
+  // vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+
+  
 #endif
 
   return;

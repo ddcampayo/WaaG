@@ -42,7 +42,11 @@ void linear::u_add_spring_force( const FT kdt ) {
 
   VectorXd Ustar_x, Ustar_y;
 
-  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+  // add spring force to u^star
+  //  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  // add force to u
+  vfield_to_vctrs(  vfield_list::U , Ustar_x, Ustar_y );
 
   VectorXd U_x, U_y;
 
@@ -52,4 +56,3 @@ void linear::u_add_spring_force( const FT kdt ) {
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
 }
-

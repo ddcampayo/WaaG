@@ -19,7 +19,7 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 20;
+  const int inner_iters= 6;
   const FT  inner_tol  = 1e-5;
 
   const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
@@ -157,17 +157,22 @@ int main() {
       // 	algebra.u_add_press_grad( dt2 );
       // }
 
-//      algebra.solve_for_weights();
-
 //      algebra.p_equation( dt , true ); 
 
 //      algebra.p_equation( dt ); 
 
       //frog
+
       algebra.p_equation( dt ); 
 
       algebra.u_add_press_grad( dt2 );//2 );
 
+//      algebra.solve_for_weights();
+//      copy_weights( T ) ;
+
+//      algebra.u_add_spring_force( 0.0 / dt2 );
+      
+      
       if( displ < inner_tol ) break;
 
       ////// testing ...
@@ -188,9 +193,11 @@ int main() {
 //    return 0;
 
 //    copy_weights( T ) ;
-//    algebra.u_add_press_grad( dt );
 
     algebra.u_add_press_grad( dt );
+//    algebra.u_add_press_grad( 0 );
+
+//    algebra.u_add_spring_force( 0.0 / dt );
 
     //displ = move( T , dt , d0 );
     
@@ -218,7 +225,7 @@ int main() {
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
-      << " iters = " << iter
+      << " iters = " << iter-1
       << " T =  " << kinetic_E(T)
       << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;

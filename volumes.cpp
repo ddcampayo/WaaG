@@ -76,18 +76,18 @@ void volumes(Triangulation& T) {
 
     Point p1 = Vor_segment->source() ;
     Point p2 = Vor_segment->target() ;
-      
-    Triangle tri( pi ,  p1 , p2 );
-    Triangle trj( pj ,  p1 , p2 );
 
-    FT ar_i = std::fabs( tri.area() );
-    FT ar_j = std::fabs( trj.area() );
+    // Triangle tri( pi ,  p1 , p2 );
+    // Triangle trj( pj ,  p1 , p2 );
 
-    vi->vol +=  ar_i ;
-    vj->vol +=  ar_j ;
+    // FT ar_i = std::fabs( tri.area() );
+    // FT ar_j = std::fabs( trj.area() );
 
-    totalV += ar_i;
-    totalV += ar_j;
+    // vi->vol +=  ar_i ;
+    // vj->vol +=  ar_j ;
+
+    // totalV += ar_i;
+    // totalV += ar_j;
 
     {
 
@@ -96,7 +96,11 @@ void volumes(Triangulation& T) {
 
       Vector_2 vi1 = p1 - pi ;
       Vector_2 vi2 = p2 - pi ;
-      
+
+      FT ar_i = std::fabs( vi1.x() * vi2.y() - vi1.y() * vi2.x() ) / 2.0 ;
+      vi->vol +=  ar_i ;
+      totalV += ar_i;
+
       vi->I += ar_i / 6 * 
 	( vi1.squared_length() +
 	  vi2.squared_length() +
@@ -119,13 +123,21 @@ void volumes(Triangulation& T) {
 	    vi1.x() * vi2.y() +
 	    vi1.y() * vi2.x() );
 
+      FT x_cm = ( p1.x() + p2.x() + pi.x() ) / 3.0;
+      FT y_cm = ( p1.y() + p2.y() + pi.y() ) / 3.0;
+ 
+      vi->centroid =  vi->centroid.val() + ar_i * Vector_2( x_cm , y_cm);
 
     }
 
     {
       Vector_2 vj1 = p1 - pj ;
       Vector_2 vj2 = p2 - pj ;
-    
+
+      FT ar_j = std::fabs( vj1.x() * vj2.y() - vj1.y() * vj2.x() ) / 2.0 ;
+      vj->vol +=  ar_j ;
+      totalV += ar_j;
+      
       vj->I += ar_j / 6 * 
 	( vj1.squared_length() +
 	  vj2.squared_length() +
@@ -148,14 +160,19 @@ void volumes(Triangulation& T) {
 	    vj1.x() * vj2.y() +
 	    vj1.y() * vj2.x() );
 
+      FT x_cm = ( p1.x() + p2.x() + pj.x() ) / 3.0;
+      FT y_cm = ( p1.y() + p2.y() + pj.y() ) / 3.0;
+ 
+      vj->centroid =  vj->centroid.val() + ar_j * Vector_2( x_cm , y_cm);
+
     }
 
-    // CGAL::ORIGIN needed because points cannot be added, or multiplied
-    Vector_2 tri_ctr_v = CGAL::centroid( tri ) - CGAL::ORIGIN;
-    Vector_2 trj_ctr_v = CGAL::centroid( trj ) - CGAL::ORIGIN;
+    // // CGAL::ORIGIN needed because points cannot be added, or multiplied
+    // Vector_2 tri_ctr_v = CGAL::centroid( tri ) - CGAL::ORIGIN;
+    // Vector_2 trj_ctr_v = CGAL::centroid( trj ) - CGAL::ORIGIN;
 
-    vi->centroid =  vi->centroid.val() + ar_i * tri_ctr_v;
-    vj->centroid =  vj->centroid.val() + ar_j * trj_ctr_v;
+    // vi->centroid =  vi->centroid.val() + ar_i * tri_ctr_v;
+    // vj->centroid =  vj->centroid.val() + ar_j * trj_ctr_v;
 
   }
 
