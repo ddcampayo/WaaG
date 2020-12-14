@@ -19,7 +19,7 @@ void linear::solve_for_weights( const FT dt ) {
   //  target_vol.setConstant( target_vol_val );
   
   const int max_iter = 100;
-  const FT threshold = 1e-5;
+  const FT threshold = 1e-8;
   const FT mixing = 1; // 1: only new iter; 0: only old
 
   FT diff , vol_sigma  , meanV ;
@@ -38,11 +38,6 @@ void linear::solve_for_weights( const FT dt ) {
   
     vol_sigma =  ( vol.array() - meanV ).square().sum() / FT( N );
 
-    FT diff = (vol - vol0 ).norm() / vol.norm(); // relative!
-
-    cout << "Volumes rel diff: " << diff<< endl;
-
-    cout << "   solving for  weights, iter : " << iter << endl;
 
     //    FT target_vol_val = meanV;
 
@@ -50,12 +45,22 @@ void linear::solve_for_weights( const FT dt ) {
     // cout << "  vol mean : " << meanV;
     // cout << "  vol variance : " << vol_sigma << endl;
 
-    //  FT target_v = simu.meanV();
+    // target volume: all cells equal volume
+    // FT target_v = simu.meanV();
+    // VectorXd Dvol = mixing * ( target_v  - vol.array()  ) ;
+    // diff = Dvol.norm() / vol.norm(); // relative!
 
-    //    VectorXd Dvol = mixing * ( target_vol_val  - vol.array()  ) ;
+    
+    // target volume: each cell its own
     VectorXd Dvol = mixing * ( vol0  - vol ) ;
+    diff = (vol - vol0 ).norm() / vol.norm(); // relative!
 
-    fill_Delta_DD( dt );
+    cout << "Volumes rel diff: " << diff<< endl;
+
+    cout << "   solving for  weights, iter : " << iter << endl;
+
+    
+    fill_Delta_DD( );
 
     VectorXd Dw = Delta_solver.solve( Dvol );
 

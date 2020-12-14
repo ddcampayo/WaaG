@@ -8,7 +8,7 @@ import sys
 #print "The arguments are: " , str(sys.argv)
 
 if ( len(sys.argv) != 2) :
-    print('Usage: ' , sys.argv[0] , '  file_name ' )
+    print('Usage: ' , sys.argv[0] , '  directory for particles.dat and diagram.dat' )
     sys.exit()
 
 path = sys.argv[1]
@@ -25,6 +25,7 @@ dt = np.loadtxt( file )
 
 x=dt[:,0]
 y=dt[:,1]
+iid=dt[:,2]
 vol=dt[:,3]
 w=dt[:,4] 
 I=dt[:,11] 
@@ -37,7 +38,9 @@ I4=dt[:,14]
 #plt.scatter(x,y, c= I)
 #plt.scatter(x,y, c= np.sqrt( dd2 ) )
 #plt.scatter(x,y, 10,  c= om)
-plt.scatter(x,y, 10,  c= I4)
+#plt.scatter(x,y, 10,  c= I4)
+plt.scatter(x,y, 20,  c= vol)
+#plt.scatter(x,y, 20,  c= iid)
 
 ll = 0.6
 

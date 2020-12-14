@@ -17,7 +17,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //ysimu.do_perturb(0.01);
+  //simu.do_perturb(0.01);
   create( T , 1.0 );
   number( T );
 
@@ -29,7 +29,7 @@ int main() {
 
   // Init loop!
   
-  const int max_iter = 100;
+  const int max_iter = 0;
   const FT tol2 = 1e-3;
   int iter=0;
 
@@ -39,7 +39,7 @@ int main() {
 
     copy_weights( T ) ;
 
-    algebra.solve_for_weights();
+    //    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
@@ -53,6 +53,7 @@ int main() {
   set_vels_Gresho( T );
 
   volumes( T ); 
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
 
   FT d0;
   FT dt=0.001;
@@ -77,14 +78,6 @@ int main() {
 
     backup( T );
 
-    move_from_centroid( T , dt);
-    //    FT d0;
-    //    FT displ = move( T , dt , d0 );
-
-    algebra.solve_for_weights();
-
-    copy_weights( T ) ;
-
     volumes( T ); 
 
     algebra.u_star( );
@@ -97,8 +90,17 @@ int main() {
     //    FT displ = move( T , dt , d0 );
     //    cout << " : disp " << displ << endl ;
 
+    algebra.fill_Delta_DD();
+
     algebra.p_equation( dt );
     algebra.u_add_press_grad( dt );
+    
+    move_from_centroid( T , dt);
+    //    FT d0;
+    //    FT displ = move( T , dt , d0 );
+
+    algebra.solve_for_weights();
+    copy_weights( T ) ;
 
     //volumes( T ); 
 

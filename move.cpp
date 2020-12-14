@@ -230,8 +230,6 @@ FT move_from_centroid(Triangulation& T, const FT dt ) {
 
 
 
-
-
 void move_weights( Triangulation& T )
 {
 

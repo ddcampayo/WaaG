@@ -37,11 +37,13 @@ int main() {
 
   int iter=0;
 
+  volumes( T ); 
+
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I  ,  sfield_list::I0);
 
   for( ; iter < init_max_iter ; ++iter) {
   
-    volumes( T ); 
-
     copy_weights( T ) ;
 
     algebra.solve_for_weights();
@@ -61,9 +63,6 @@ int main() {
   set_vels_Gresho( T );
 
   volumes( T ); 
-
-  algebra.copy( sfield_list::vol,  sfield_list::vol0);
-  algebra.copy( sfield_list::I  ,  sfield_list::I0);
 
   FT d0;
   FT dt=0.001;
@@ -100,9 +99,9 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
-      displ = move( T , dt , d0 );
+      //displ = move( T , dt , d0 );
 
-      //move_from_centroid( T , dt);
+      displ = move_from_centroid( T , dt);
 
       cout
 	<< "********" << endl
@@ -123,8 +122,8 @@ int main() {
       // //      algebra.w_equation2();
       // algebra.w_equation3(); 
       // move_weights( T );
-      //volumes( T ); 
-      //algebra.fill_Delta_DD();
+      volumes( T ); 
+      algebra.fill_Delta_DD();
       //      copy_weights( T ) ;
 
       //      algebra.s_equation( dt );
@@ -132,7 +131,7 @@ int main() {
       algebra.p_equation( dt );
 
       //      algebra.u_add_s_grad( dt2 );
-      //      algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad( dt );
       //      algebra.u_add_press_grad_MM_w( dt2 );
       
       //algebra.u_add_grads( dt2 );
@@ -143,7 +142,7 @@ int main() {
 
     }
 
-    algebra.solve_for_moments();
+    //    algebra.solve_for_moments();
     
     cout
       << " ======= " << endl
@@ -162,7 +161,7 @@ int main() {
 
     //    algebra.u_add_press_grad_MM_w( dt );
     //    algebra.u_add_press_grad( dt );
-    algebra.u_add_s_grad( dt );
+    //    algebra.u_add_s_grad( dt );
 
     //    algebra.u_add_w_grad( dt );
 

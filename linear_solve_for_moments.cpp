@@ -5,7 +5,8 @@
 
 
 // Iterative process to adjust moments so that
-// the weighted Voronoi diagram has constant moment
+// the weighted Voronoi diagram has cells with
+// fixed moments of inertia (aka second moments of mass)
 
 // TODO: badly named
 
@@ -20,9 +21,10 @@ void linear::solve_for_moments( ) {
   //  VectorXd target_vol( vol ) ;
   //  target_vol.setConstant( target_vol_val );
   
-  const int max_iter = 10;
-  const FT threshold = 1e-2;
-  const FT mixing = 1;
+  const int max_iter = 20;
+  const FT threshold = 1e-6;
+  const FT mixing = 0.5; // 1: only new iter; 0: only old
+
   int iter=0;
 
   for( ; iter< max_iter ; iter++) {

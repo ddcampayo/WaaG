@@ -19,7 +19,7 @@ int main() {
   const int init_iters = 0;
   const FT  init_tol2 = 1e-3;
 
-  const int inner_iters= 6;
+  const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
 
   const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
@@ -31,15 +31,55 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //  simu.do_perturb(0.01);
+  //  simu.do_perturb(0.1);
   create( T , 1.0 );
   number( T );
 
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
-
+  volumes( T ); 
   linear algebra( T );
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
 
+  set_vels_Gresho( T );
+
+  
+
+  // // checking volume equalization:
+
+  // draw( T , particle_file     );
+  // draw_diagram( T , diagram_file );  
+      
+  // FT dd0, dddt;
+
+  // cin >> dddt ;
+
+  // FT ddispl = move( T , dddt , dd0 );
+
+  // simu.next_step();
+
+  // volumes( T ); 
+
+  // draw( T , particle_file     );
+  // draw_diagram( T , diagram_file );  
+
+  // algebra.solve_for_moments();
+  // //algebra.solve_for_weights();
+
+  // copy_weights( T ) ;
+
+  // simu.next_step();
+
+  // draw( T , particle_file     );
+  // draw_diagram( T , diagram_file );  
+  
+  // return 0;
+
+
+
+  
+  
   // // testing .-
   // set_pressure( T );
   // volumes( T );
@@ -47,6 +87,7 @@ int main() {
   // draw( T , particle_file     );
   // return 0;
   
+
   // Init loop!
   
   int iter=1;
@@ -66,6 +107,12 @@ int main() {
 
   }
 
+  // volumes( T ); 
+  // simu.set_dt( 0 );  
+  // draw( T , particle_file     );
+  // draw_diagram( T , diagram_file );  
+  // return 0;
+ 
   copy_weights( T ) ;
 
   cout << "Init loop converged in " << iter << " steps " << endl;
@@ -165,14 +212,18 @@ int main() {
 
       algebra.p_equation( dt ); 
 
-      algebra.u_add_press_grad( dt2 );//2 );
+      algebra.u_add_press_grad( dt );//2 );
+      // algebra.u_add_press_grad( dt2 );//2 );
+      // algebra.u_add_spring_force( 1.0 / dt2 );
 
-//      algebra.solve_for_weights();
-//      copy_weights( T ) ;
+      //      algebra.u_add_spring_force( 1.0 / dt );
+      
+      //      algebra.solve_for_weights();
 
-//      algebra.u_add_spring_force( 0.0 / dt2 );
-      
-      
+      //      algebra.solve_for_moments();
+      //  copy_weights( T ) ;
+
+    
       if( displ < inner_tol ) break;
 
       ////// testing ...
@@ -194,12 +245,19 @@ int main() {
 
 //    copy_weights( T ) ;
 
-    algebra.u_add_press_grad( dt );
-//    algebra.u_add_press_grad( 0 );
 
-//    algebra.u_add_spring_force( 0.0 / dt );
+    
+    // algebra.u_add_press_grad( dt );
+    // algebra.u_add_spring_force( 1.0 / dt );
+
+
+    //    algebra.u_add_press_grad( 0 );
+
 
     //displ = move( T , dt , d0 );
+
+    // set particles at centers of mass
+    move_from_centroid( T , 0);
     
     volumes( T ); 
       
