@@ -40,7 +40,7 @@ int main() {
   FT total_time = 1/( 2 * 3.14 * 0.2) ;
 
   linear algebra( T );
-  algebra.solve_for_weights();
+  //  algebra.solve_for_weights();
 
   std::ofstream log_file;
   log_file.open("main.log");
@@ -67,7 +67,7 @@ int main() {
 
       cout << " : disp " << displ << endl ;
 
-      algebra.w_equation();
+      //      algebra.w_equation();
       //algebra.solve_for_weights();
       //volumes( T ); 
 
@@ -85,7 +85,7 @@ int main() {
     volumes( T ); 
 
     update_full_vel( T );
-    
+
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 

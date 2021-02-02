@@ -1,4 +1,4 @@
-#define PRESSURE_PPE
+#define PRESSURE_PPE_DIV_SOURCE
 
 
 //#include"pParticles.h"
@@ -31,7 +31,7 @@ void linear::p_equation(const FT dt , const bool ws ) {
   
   // B
   //  Laplacian as div of grad :
-#ifdef PRESSURE_PPE
+#ifdef PRESSURE_PPE_DIV_SOURCE
 
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
   VectorXd p;

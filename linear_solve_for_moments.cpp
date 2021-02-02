@@ -21,9 +21,9 @@ void linear::solve_for_moments( ) {
   //  VectorXd target_vol( vol ) ;
   //  target_vol.setConstant( target_vol_val );
   
-  const int max_iter = 20;
+  const int max_iter = 100;
   const FT threshold = 1e-6;
-  const FT mixing = 0.5; // 1: only new iter; 0: only old
+  const FT mixing = 0.75; // 1: only new iter; 0: only old
 
   int iter=0;
 
@@ -45,6 +45,10 @@ void linear::solve_for_moments( ) {
     // FT target_I = meanI;
     // VectorXd DI  =  mixing * ( target_I - I.array() );
 
+    FT iter_cntr = iter-max_iter / 2.0 ;
+    
+    FT mixing_now = mixing*exp(-0.01 * iter_cntr*iter_cntr );
+        
     VectorXd DI = mixing * ( I0  - I ) ;
 
     fill_Delta_DD();

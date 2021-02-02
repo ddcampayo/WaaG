@@ -35,11 +35,11 @@ I4=dt[:,14]
 
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= w)
 #plt.scatter(x,y, 100*np.sqrt(vol) , c= I)
-#plt.scatter(x,y, c= I)
+plt.scatter(x,y, c= I)
 #plt.scatter(x,y, c= np.sqrt( dd2 ) )
 #plt.scatter(x,y, 10,  c= om)
 #plt.scatter(x,y, 10,  c= I4)
-plt.scatter(x,y, 20,  c= vol)
+#plt.scatter(x,y, 20,  c= vol)
 #plt.scatter(x,y, 20,  c= iid)
 
 ll = 0.6

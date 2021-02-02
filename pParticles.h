@@ -2,6 +2,8 @@
 #define _PPARTICLES_H_
 
 
+#define BOOST_BIND_NO_PLACEHOLDERS // disable annoying boost warning
+
 // completely experimental research of FEM-like shape functions for
 // the volume and spatial differential operators
 //#define FEM
@@ -100,5 +102,8 @@ void set_vels_Gresho(Triangulation& T) ;
 void set_pressure(Triangulation& T) ;
 FT L2_vel_Gresho( Triangulation& T) ;
 FT kinetic_E( Triangulation& T) ;
+
+Vector_2 values_at_v(const Triangulation& T , const Point& p0, const vfield_list::take v_field) ;
+
 
 #endif

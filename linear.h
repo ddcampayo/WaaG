@@ -69,7 +69,8 @@ class linear {
 
   void dd2_stats( void ) ;
 
-  
+  //  Vector_2 values_at_v(const Point& p0, const vfield_list::take v_field) ;
+
 private:
 
   

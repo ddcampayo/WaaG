@@ -156,9 +156,39 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
 
 FT move_from_centroid(Triangulation& T, const FT dt ) {
 
+  bool interp = false; // true ;
+  
   cout << "Moving nodes from centroids ... " << endl;
   
   copy_weights( T );
+
+  //////// interpolate velocities at centroids from its three surrounding vertices
+
+  if( interp ) {
+
+    cout << "Interpolating velocity field onto centroids" << endl;
+
+    for(F_v_it fv=T.finite_vertices_begin();
+	fv!=T.finite_vertices_end();
+	fv++) {
+
+      if( fv->idx() < 0) continue;
+
+      Point r0 = fv->centroid.val();
+
+      Vector_2 int_vel = values_at_v( T, r0, vfield_list::U ) ;
+
+      fv->Ustar.set( int_vel ); // temp backup of interpolated velocity
+    }
+
+    for(F_v_it fv=T.finite_vertices_begin();
+	fv!=T.finite_vertices_end();
+	fv++)
+      fv->U.set( fv->Ustar() );
+
+  }
+
+  
   
   vector<data_kept> prev;
 

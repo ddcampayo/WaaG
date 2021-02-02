@@ -45,7 +45,6 @@ int main() {
   set_vels_Gresho( T );
 
   
-
   // // checking volume equalization:
 
   // draw( T , particle_file     );
@@ -117,7 +116,7 @@ int main() {
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   
-  set_vels_Gresho( T );
+  //  set_vels_Gresho( T );
 
   volumes( T ); 
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
@@ -220,9 +219,9 @@ int main() {
       
       //      algebra.solve_for_weights();
 
+      
       //      algebra.solve_for_moments();
-      //  copy_weights( T ) ;
-
+      //      copy_weights( T ) ;
     
       if( displ < inner_tol ) break;
 
@@ -257,7 +256,10 @@ int main() {
     //displ = move( T , dt , d0 );
 
     // set particles at centers of mass
-    move_from_centroid( T , 0);
+
+    volumes( T ); 
+      
+    move_from_centroid( T , dt);
     
     volumes( T ); 
       
@@ -287,8 +289,6 @@ int main() {
       << " T =  " << kinetic_E(T)
       << " L2_vel =  " << L2_vel_Gresho(T)
       << endl ;
-
-
     
   } while ( simu.time() < total_time );
 

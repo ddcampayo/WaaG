@@ -13,6 +13,14 @@
 sim_data simu;
 
 int main() {
+  
+  const int init_iters = 10;
+  const FT  init_tol2 = 1e-3;
+
+  //  const int inner_iters= 10;
+  //  const FT  inner_tol  = 1e-5;
+
+  const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
 
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -28,33 +36,38 @@ int main() {
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
 
+  volumes( T ); 
   linear algebra( T );
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
+
+
+  set_vels_Gresho( T );
 
 
   // Init loop!
-  
-  const int max_iter = 100;
-  const FT tol2 = 1e-3;
-  int iter=0;
 
-  for( ; iter < max_iter ; ++iter) {
+  int iter=1;
+
+  for( ; iter < init_iters ; ++iter) {
   
     volumes( T ); 
 
     copy_weights( T ) ;
 
-    algebra.solve_for_weights();
+    //    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
     cout << " init loop , iter " << iter << " dd = " << dd << endl;
-    if( dd < tol2) break;
+    if( dd < init_tol2) break;
 
   }
 
+  copy_weights( T ) ;
+
   cout << "Init loop converged in " << iter << " steps " << endl;
   
-  set_vels_Gresho( T );
 
   volumes( T ); 
 
@@ -77,12 +90,13 @@ int main() {
   cin >> spring_to_dt;
   cout << endl << spring_to_dt << endl;
 
-  
   // 31 dt is the value for G&M first simulation,
   // "Beltrami flow in the square"
   FT spring_period = spring_to_dt * dt;
 //  FT spring_period = 80 * dt;
   FT omega = 2 * M_PI /  spring_period ;
+
+  cout << " omega  = " << omega << endl ;
 
   FT spring = omega*omega; // factor that appears in the spring force
   
@@ -94,13 +108,13 @@ int main() {
   std::ofstream log_file;
   log_file.open("main.log");
 
-  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
-  
   do {
     simu.next_step();
     simu.advance_time( );
 
     backup( T );
+
+    algebra.u_star( );
 
     FT displ = move( T , dt , d0 );
 
@@ -118,10 +132,11 @@ int main() {
 
     algebra.u_add_spring_force( spring*dt );
 
-    //    algebra.p_equation( dt );
+    algebra.p_equation( dt );
     //algebra.u_add_press_grad( dt );
 
     //volumes( T ); 
+
 
     //   if( displ < 1e-8) break;
     
