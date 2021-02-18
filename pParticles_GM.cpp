@@ -41,10 +41,6 @@ int main() {
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
   algebra.copy( sfield_list::I,  sfield_list::I0);
 
-
-  set_vels_Gresho( T );
-
-
   // Init loop!
 
   int iter=1;
@@ -65,6 +61,8 @@ int main() {
   }
 
   copy_weights( T ) ;
+
+  set_vels_Gresho( T );
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   

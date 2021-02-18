@@ -116,7 +116,7 @@ int main() {
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   
-  //  set_vels_Gresho( T );
+  set_vels_Gresho( T );
 
   volumes( T ); 
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
