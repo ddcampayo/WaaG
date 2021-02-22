@@ -72,10 +72,10 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    CGAL::Orientation ori = tr.orientation();
     //    if( ori == CGAL::NEGATIVE ) v33_perp = -v33_perp;
 
-    Vector_2 v_1_3p = p3p - p1 ;
+    // Vector_2 v_1_3p = p3p - p1 ;
 
-    CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
-    if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
+    // CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
+    // if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
 
     Vector_2 DDij = v_3p_3_perp / 6.0 ;
     Vector_2 DDji = -DDij;
