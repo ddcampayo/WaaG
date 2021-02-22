@@ -141,6 +141,8 @@ int main() {
   
   std::ofstream log_file;
   log_file.open("main.log");
+  log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
+
 
   // special first iter.-
   // cout << " First iter, free ";
@@ -176,7 +178,7 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
-      displ = move( T , dt , d0 );
+      displ = move( T , dt2 , d0 );
 
       // frog
       //      displ = move( T , dt2 , d0 );
@@ -209,9 +211,9 @@ int main() {
 
       //frog
 
-      algebra.p_equation( dt ); 
+      algebra.p_equation( dt2 ); 
 
-      algebra.u_add_press_grad( dt );//2 );
+      algebra.u_add_press_grad( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
@@ -246,20 +248,22 @@ int main() {
 
 
     
-    // algebra.u_add_press_grad( dt );
+//     algebra.u_add_press_grad( dt );
     // algebra.u_add_spring_force( 1.0 / dt );
 
 
     //    algebra.u_add_press_grad( 0 );
 
 
-    //displ = move( T , dt , d0 );
+    displ = move( T , dt , d0 );
 
+    update_half_velocity( T );
+
+    
     // set particles at centers of mass
 
-    volumes( T ); 
-      
-    move_from_centroid( T , dt);
+//    volumes( T ); 
+//    move_from_centroid( T , dt);
     
     volumes( T ); 
       
@@ -285,11 +289,11 @@ int main() {
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
-      << " iters = " << iter-1
-      << " T =  " << kinetic_E(T)
-      << " L2_vel =  " << L2_vel_Gresho(T)
+      << iter-1 << " "
+      << kinetic_E(T) << " "
+      << L2_vel_Gresho(T) << " "
       << endl ;
-    
+
   } while ( simu.time() < total_time );
 
   log_file.close();

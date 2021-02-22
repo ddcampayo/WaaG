@@ -6,7 +6,7 @@
 
 // completely experimental research of FEM-like shape functions for
 // the volume and spatial differential operators
-//#define FEM
+#define FEM
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Regular_triangulation_2.h>
@@ -95,6 +95,7 @@ void copy_weights( Triangulation& Tp );
 void move_weights( Triangulation& Tp );
 void update_full_vel(  Triangulation& Tp );
 FT move_from_centroid(Triangulation& T, const FT dt );
+void update_half_velocity( Triangulation& Tp );
 
 void set_vels_rotating(Triangulation& T);
 void set_vels_Lamb_Oseen(Triangulation& T) ;

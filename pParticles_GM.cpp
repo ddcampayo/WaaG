@@ -105,6 +105,9 @@ int main() {
   
   std::ofstream log_file;
   log_file.open("main.log");
+  log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
+
+
 
   do {
     simu.next_step();
@@ -149,12 +152,12 @@ int main() {
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
-      << " iters = " << iter
-      << " T =  " << kinetic_E(T)
-      << " L2_vel =  " << L2_vel_Gresho(T)
+      << iter-1 << " "
+      << kinetic_E(T) << " "
+      << L2_vel_Gresho(T) << " "
       << endl ;
 
-    
+
   } while ( simu.time() < total_time );
 
   log_file.close();

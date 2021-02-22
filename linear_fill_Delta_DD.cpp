@@ -74,7 +74,6 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     Vector_2 v_1_3p = p3p - p1 ;
 
-    
     CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
     if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
 

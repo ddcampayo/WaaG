@@ -43,7 +43,7 @@ p=dt[:,9] / Delta_t**2
 #  I=dt[:,11];
 
 # Gallouet & Merrigot
-p = 0.5*omega**2 * w
+#p = 0.5*omega**2 * w
 
 r = np.sqrt( x**2 + y**2 )
 

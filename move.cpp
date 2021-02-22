@@ -17,6 +17,25 @@ void copy_weights( Triangulation& T ) {
 }
 
 
+void update_half_velocity( Triangulation& Tp ) {
+
+   for(F_v_it fv=Tp.finite_vertices_begin();
+       fv!=Tp.finite_vertices_end();
+       fv++) {
+
+    Vector_2  v  = fv->U();
+
+    Vector_2  v0 = fv->U0();
+
+    fv->U.set(  2 * v - v0 );
+  }
+
+  return;
+
+}
+
+
+
 
 
 void backup( Triangulation& T ) {
