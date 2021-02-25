@@ -42,9 +42,9 @@ void volumes(Triangulation& T) {
     Point p1 = v1->point().point();
     Point p2 = v2->point().point();
 
-    Triangle tr( p0 ,  p1 , p2 );
+//    Triangle tr( p0 ,  p1 , p2 );
 
-    FT area = std::fabs( tr.area() );
+    FT area = CGAL::area(p0, p1, p2) ; // std::fabs( tr.area() );
 
     v0->vol += area / 3.0;
     v1->vol += area / 3.0;

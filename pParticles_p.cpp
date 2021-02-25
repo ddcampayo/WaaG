@@ -178,7 +178,7 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
-      displ = move( T , dt2 , d0 );
+      displ = move( T , dt , d0 );
 
       // frog
       //      displ = move( T , dt2 , d0 );
@@ -211,9 +211,9 @@ int main() {
 
       //frog
 
-      algebra.p_equation( dt2 ); 
+      algebra.p_equation( dt ); 
 
-      algebra.u_add_press_grad( dt2 );     //2 );
+      algebra.u_add_press_grad( dt );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
@@ -257,7 +257,7 @@ int main() {
 
     displ = move( T , dt , d0 );
 
-    update_half_velocity( T );
+    //    update_half_velocity( T );
 
     
     // set particles at centers of mass

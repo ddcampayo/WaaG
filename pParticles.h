@@ -6,7 +6,7 @@
 
 // completely experimental research of FEM-like shape functions for
 // the volume and spatial differential operators
-#define FEM
+//#define FEM
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Regular_triangulation_2.h>
