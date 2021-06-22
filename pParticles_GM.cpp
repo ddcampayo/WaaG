@@ -14,14 +14,19 @@ sim_data simu;
 
 int main() {
   
-  const int init_iters = 10;
-  const FT  init_tol2 = 1e-3;
+  const int init_iters = 100;
+  const FT  init_tol2 = 1e-5;
 
-  //  const int inner_iters= 10;
-  //  const FT  inner_tol  = 1e-5;
+  const int inner_iters= 10;
+  const FT  inner_tol  = 1e-5;
 
-  const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
+  const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
+  
+  //  const  FT total_time = turn_time; // once
 
+  const  FT total_time = 2 * turn_time; // twice
+
+  
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
 
@@ -29,7 +34,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //  simu.do_perturb(0.01);
+  simu.do_perturb(1e-3);
   create( T , 1.0 );
   number( T );
 
@@ -42,7 +47,7 @@ int main() {
   algebra.copy( sfield_list::I,  sfield_list::I0);
 
   // Init loop!
-
+  
   int iter=1;
 
   for( ; iter < init_iters ; ++iter) {
@@ -51,7 +56,7 @@ int main() {
 
     copy_weights( T ) ;
 
-    //    algebra.solve_for_weights();
+    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
@@ -77,7 +82,8 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
-
+  FT dt2 = dt / 2.0 ;
+  
   // Setting a spring period that includes several Dt, in
   // order spring forces be properly sampled
   
@@ -114,36 +120,51 @@ int main() {
     simu.advance_time( );
 
     backup( T );
+    int iter = 1;
 
     algebra.u_star( );
 
-    FT displ = move( T , dt , d0 );
+    FT displ = 0; // move( T , dt2 , d0 );	
 
-    algebra.solve_for_weights();
+    for ( ; iter <= inner_iters ; iter++) {
 
-    copy_weights( T ) ;
+      FT displ = move( T , dt2 , d0 );
+      cout
+	<< "********" << endl
+	<< "Iter  " << iter
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
+	<< endl ;
+      
+      algebra.solve_for_weights();
+      
+      copy_weights( T ) ;
 
-    volumes( T ); 
+      volumes( T ); 
 
-    algebra.u_star( );
-
-    //  d^2 r / dt^2 = - omega^2 x
+      //  d^2 r / dt^2 = - omega^2 x
     //  d v / dt = - omega^2 x
     //  v_1 = v_0 - dt*omega^2 x
 
-    algebra.u_add_spring_force( spring*dt );
 
-    algebra.p_equation( dt );
+      algebra.fill_Delta_DD();
+
+
+      algebra.u_add_spring_force( spring*dt2 );
+
+
+    //    algebra.p_equation( dt );
     //algebra.u_add_press_grad( dt );
 
     //volumes( T ); 
 
+      if( displ < inner_tol ) break;
 
-    //   if( displ < 1e-8) break;
+    }
+    displ = move( T , dt , d0 );
+
+    update_half_velocity( T );
     
-
-    // }
-
     volumes( T ); 
     
     draw( T , particle_file     );

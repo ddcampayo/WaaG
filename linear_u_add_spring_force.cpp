@@ -40,19 +40,26 @@ void linear::u_add_spring_force( const FT kdt ) {
     disp_y( idx_vals_y[nn].first ) = idx_vals_y[nn].second;
   }
 
-  VectorXd Ustar_x, Ustar_y;
 
-  // add spring force to u^star
-  //  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
 
-  // add force to u
-  vfield_to_vctrs(  vfield_list::U , Ustar_x, Ustar_y );
-
+  // velocity before forces are applied
   VectorXd U_x, U_y;
 
-  U_x = Ustar_x.array() - kdt * disp_x.array();
-  U_y = Ustar_y.array() - kdt * disp_y.array();
+  // add spring force to u^star
+  //  vfield_to_vctrs(  vfield_list::Ustar , U_x, U_y );
 
-  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+  // add spring force to u0  
+  vfield_to_vctrs( vfield_list::U0  , U_x, U_y );
+
+  // add force to u
+  //vfield_to_vctrs(  vfield_list::U , Ustar_x, Ustar_y );
+
+  VectorXd Unew_x, Unew_y;
+
+  Unew_x = U_x.array() - kdt * disp_x.array();
+  Unew_y = U_y.array() - kdt * disp_y.array();
+
+  //  vctrs_to_vfield( Unew_x, Unew_y , vfield_list::Ustar );
+  vctrs_to_vfield( Unew_x, Unew_y , vfield_list::U );
 
 }

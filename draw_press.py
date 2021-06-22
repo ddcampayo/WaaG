@@ -43,7 +43,7 @@ p=dt[:,9] / Delta_t**2
 #  I=dt[:,11];
 
 # Gallouet & Merrigot
-#p = 0.5*omega**2 * w
+p = 0.5*omega**2 * w
 
 r = np.sqrt( x**2 + y**2 )
 
@@ -69,6 +69,10 @@ v_pp = np.vectorize( pp )
 rr = np.linspace( 0 , max(r) , 200 )
 plt.plot( rr , v_pp(rr)  )
 
+plt.xlabel(r'$r$')
+plt.ylabel(r'$p/\rho$')
+
+
 #plt.plot( r , w , 'x' )
    
 #plt.xlim([-LL/2.0 , LL/2.0 ])
@@ -77,6 +81,6 @@ plt.plot( rr , v_pp(rr)  )
 
 #print( 'step no ' + n )
 
-plt.savefig( 'pressure_' + n)
+plt.savefig( 'pressure_' + n + '.png')
 plt.show()
 

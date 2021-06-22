@@ -30,13 +30,19 @@ path='./'
 LL= 1
 
 
+T_spring = 10 * 0.005
+omega = 2 * np.pi / T_spring
 
-list_time = glob.glob('[0-9]*')
-list_part = glob.glob('[0-9]*/particles.dat')
-list_diag = glob.glob('[0-9]*/diagram.dat')
 
-for time,part_file, diag_file in zip(list_time,list_part,list_diag):
+def by_number(elem):
+    return float(elem)
 
+times = sorted(glob.glob('[0-9]*'), key=by_number)
+
+for time in times:
+
+    part_file = time+'/particles.dat'
+    diag_file = time+'/diagram.dat'
 
 #for n in range( init_t ,2000000+skip,skip):
     plt.clf()
@@ -48,21 +54,27 @@ for time,part_file, diag_file in zip(list_time,list_part,list_diag):
     vol=dt[:,3]
     w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
-    p=dt[:,9]
-#    p=dt[:,10]
 
-    I=dt[:,11];  #  I
-    d2=dt[:,12];  #  I
-    om=dt[:,13];  #  ang velocity
+#    p=dt[:,9]
 
-#    I=dt[:,14];  #  eccentricity
+    # Gallouet & Merrigot
+    p = 0.5*omega**2 * w
+
+    
     r = np.sqrt( x**2 + y**2 )
 
-    #make furthest pressure value 0
+#make furthest pressure value 0
 
     rm = np.argmax(r)
 
     p -= p[ rm ] #  np.min( p )
+
+    
+    I=dt[:,11];  #  I
+    d2=dt[:,12];  #  I
+#    om=dt[:,13];  #  ang velocity
+
+#    I=dt[:,14];  #  eccentricity
 
 #    p += p - np.min( p )
 

@@ -63,6 +63,9 @@ def vel(r) : # analytic solution for Gresho's vortex velocity
 v_vel = np.vectorize( vel )
 rr = np.linspace( 0 , max(r) , 200 )
 plt.plot( rr , v_vel(rr)  )
+plt.xlabel(r'$r$')
+plt.ylabel(r'$v$')
+
 
 #plt.plot( r , w , 'x' )
    
@@ -72,6 +75,5 @@ plt.plot( rr , v_vel(rr)  )
 
 #print( 'step no ' + n )
 
-plt.savefig( 'velocity_' + n)
+plt.savefig( 'velocity_' + n + '.png')
 plt.show()
-

@@ -16,14 +16,17 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 0;
-  const FT  init_tol2 = 1e-3;
+  const int init_iters = 5000;
+  const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
+  const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
+  
+  //  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 2 * M_PI * 0.2 ; // one whole turn
-
+  const  FT total_time = 2 * turn_time; // twice
+  
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
 
@@ -31,7 +34,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  //  simu.do_perturb(0.1);
+  simu.do_perturb(1e-3);
   create( T , 1.0 );
   number( T );
 
@@ -42,7 +45,7 @@ int main() {
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
   algebra.copy( sfield_list::I,  sfield_list::I0);
 
-  set_vels_Gresho( T );
+  //  set_vels_Gresho( T );
 
   
   // // checking volume equalization:
@@ -95,7 +98,7 @@ int main() {
   
     volumes( T ); 
 
-    copy_weights( T ) ;
+    //    copy_weights( T ) ;
 
     //    algebra.solve_for_weights();
 
@@ -106,12 +109,18 @@ int main() {
 
   }
 
+  
   // volumes( T ); 
   // simu.set_dt( 0 );  
   // draw( T , particle_file     );
   // draw_diagram( T , diagram_file );  
   // return 0;
- 
+
+  volumes( T ); 
+
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
+
   copy_weights( T ) ;
 
   cout << "Init loop converged in " << iter << " steps " << endl;
@@ -178,7 +187,7 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
-      displ = move( T , dt , d0 );
+      displ = move( T , dt2 , d0 );
 
       // frog
       //      displ = move( T , dt2 , d0 );
@@ -211,9 +220,9 @@ int main() {
 
       //frog
 
-      algebra.p_equation( dt ); 
+      algebra.p_equation( dt2 ); 
 
-      algebra.u_add_press_grad( dt );     //2 );
+      algebra.u_add_press_grad( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
@@ -257,7 +266,7 @@ int main() {
 
     displ = move( T , dt , d0 );
 
-    //    update_half_velocity( T );
+    update_half_velocity( T );
 
     
     // set particles at centers of mass
