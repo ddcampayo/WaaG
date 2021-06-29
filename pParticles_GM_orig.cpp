@@ -15,7 +15,7 @@ sim_data simu;
 
 int main() {
   
-  const int init_iters = 5000;
+  const int init_iters = 200;
   const FT  init_tol2 = 1e-6;
 
   const int inner_iters= 10;
@@ -53,8 +53,9 @@ int main() {
 
   for( ; iter < init_iters ; ++iter) {
   
-    //    volumes( T ); 
-    //    copy_weights( T ) ;
+    volumes( T ); 
+
+    copy_weights( T ) ;
 
     algebra.solve_for_weights();
 
