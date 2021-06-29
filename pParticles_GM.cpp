@@ -5,6 +5,7 @@
 // A Lagrangian Scheme à la Brenier for the Incompressible Euler Equations.
 // Found Comput Math 18, 835–865 (2018).
 // https://doi.org/10.1007/s10208-017-9355-y
+// Simple explicit method
 
 #include"pParticles.h"
 #include"linear.h"
@@ -14,7 +15,7 @@ sim_data simu;
 
 int main() {
   
-  const int init_iters = 100;
+  const int init_iters = 200;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -70,9 +71,9 @@ int main() {
   set_vels_Gresho( T );
 
   cout << "Init loop converged in " << iter << " steps " << endl;
-  
 
   volumes( T ); 
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
 
   FT d0;
   FT dt=0.001;
@@ -82,7 +83,6 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
-  FT dt2 = dt / 2.0 ;
   
   // Setting a spring period that includes several Dt, in
   // order spring forces be properly sampled
@@ -103,8 +103,6 @@ int main() {
   cout << " omega  = " << omega << endl ;
 
   FT spring = omega*omega; // factor that appears in the spring force
-  
-//  move_from_centroid( T , dt);
 
   draw( T , particle_file);
   draw_diagram( T , diagram_file );
@@ -114,7 +112,6 @@ int main() {
   log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
 
 
-
   do {
     simu.next_step();
     simu.advance_time( );
@@ -122,51 +119,27 @@ int main() {
     backup( T );
     int iter = 1;
 
+    volumes( T );
+
     algebra.u_star( );
 
-    FT displ = 0; // move( T , dt2 , d0 );	
+    FT displ = move( T , dt , d0 );
 
-    for ( ; iter <= inner_iters ; iter++) {
+    cout
+      << "********" << endl
+      << "Iter  " << iter
+      << " . Moved from previous (rel.): " << displ <<
+      " ; from original (rel.): " << d0
+      << endl ;
 
-      FT displ = move( T , dt2 , d0 );
-      cout
-	<< "********" << endl
-	<< "Iter  " << iter
-	<< " . Moved from previous (rel.): " << displ <<
-	" ; from original (rel.): " << d0
-	<< endl ;
-      
-      algebra.solve_for_weights();
-      
-      copy_weights( T ) ;
-
-      volumes( T ); 
-
-      //  d^2 r / dt^2 = - omega^2 x
-    //  d v / dt = - omega^2 x
-    //  v_1 = v_0 - dt*omega^2 x
-
-
-      algebra.fill_Delta_DD();
-
-
-      algebra.u_add_spring_force( spring*dt2 );
-
-
-    //    algebra.p_equation( dt );
-    //algebra.u_add_press_grad( dt );
-
-    //volumes( T ); 
-
-      if( displ < inner_tol ) break;
-
-    }
-    displ = move( T , dt , d0 );
-
-    update_half_velocity( T );
     
-    volumes( T ); 
+    algebra.solve_for_weights();
+
+    copy_weights( T ) ;
+    volumes( T );
     
+    algebra.u_add_spring_force( spring*dt );
+
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 

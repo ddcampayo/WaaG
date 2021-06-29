@@ -1,6 +1,10 @@
 // pParticles
-// Attempt to replicate de Goes  et al.
-// Power Particles: An incompressible fluid solver based on power diagrams
+// Attempt to replicate
+
+// Gallouët, T.O., Mérigot, Q.
+// A Lagrangian Scheme à la Brenier for the Incompressible Euler Equations.
+// Found Comput Math 18, 835–865 (2018).
+// https://doi.org/10.1007/s10208-017-9355-y
 
 #include"pParticles.h"
 #include"linear.h"
@@ -9,10 +13,9 @@
 sim_data simu;
 
 int main() {
-
   
-  const int init_iters = 200;
-  const FT  init_tol2 = 5e-5;
+  const int init_iters = 2000;
+  const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
@@ -22,6 +25,7 @@ int main() {
   //  const  FT total_time = turn_time; // once
 
   const  FT total_time = 2 * turn_time; // twice
+
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -37,13 +41,12 @@ int main() {
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
 
-  volumes( T );
+  volumes( T ); 
   linear algebra( T );
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
   algebra.copy( sfield_list::I,  sfield_list::I0);
 
   // Init loop!
-
   
   int iter=1;
 
@@ -66,11 +69,10 @@ int main() {
 
   set_vels_Gresho( T );
 
-   cout << "Init loop converged in " << iter << " steps " << endl;
+  cout << "Init loop converged in " << iter << " steps " << endl;
   
- 
+
   volumes( T ); 
-  algebra.copy( sfield_list::vol,  sfield_list::vol0);
 
   FT d0;
   FT dt=0.001;
@@ -80,42 +82,92 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
+  FT dt2 = dt / 2.0 ;
+  
+  // Setting a spring period that includes several Dt, in
+  // order spring forces be properly sampled
+  
+  //  FT spring_period = 10 * dt;
+
+  FT spring_to_dt;
+  cout << "Spring period / dt  = ";
+  cin >> spring_to_dt;
+  cout << endl << spring_to_dt << endl;
+
+  // 31 dt is the value for G&M first simulation,
+  // "Beltrami flow in the square"
+  FT spring_period = spring_to_dt * dt;
+//  FT spring_period = 80 * dt;
+  FT omega = 2 * M_PI /  spring_period ;
+
+  cout << " omega  = " << omega << endl ;
+
+  FT spring = omega*omega; // factor that appears in the spring force
+  
+//  move_from_centroid( T , dt);
 
   draw( T , particle_file);
   draw_diagram( T , diagram_file );
-
+  
   std::ofstream log_file;
   log_file.open("main.log");
   log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
+
+
 
   do {
     simu.next_step();
     simu.advance_time( );
 
     backup( T );
-    int iter=1;
-
-    volumes( T ); 
+    int iter = 1;
 
     algebra.u_star( );
 
-    FT displ = move_from_centroid( T , dt );
+    FT displ = 0; // move( T , dt2 , d0 );	
 
-    cout
-      << "********" << endl
-      << "Iter  " << iter
-      << " . Moved from previous (rel.): " << displ
-      << " ; from original (rel.): " << d0
-      << endl ;
+    for ( ; iter <= inner_iters ; iter++) {
 
-    algebra.solve_for_weights();
-    copy_weights( T ) ;
-    volumes( T );
+      FT displ = move( T , dt2 , d0 );
+      cout
+	<< "********" << endl
+	<< "Iter  " << iter
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
+	<< endl ;
+      
+      algebra.solve_for_weights();
+      
+      copy_weights( T ) ;
 
-    algebra.fill_Delta_DD();
-    algebra.p_equation( dt );
-    algebra.u_add_press_grad( dt );
+      volumes( T ); 
 
+      //  d^2 r / dt^2 = - omega^2 x
+    //  d v / dt = - omega^2 x
+    //  v_1 = v_0 - dt*omega^2 x
+
+
+      algebra.fill_Delta_DD();
+
+
+      algebra.u_add_spring_force( spring*dt2 );
+
+
+    //    algebra.p_equation( dt );
+    //algebra.u_add_press_grad( dt );
+
+    //volumes( T ); 
+
+      if( displ < inner_tol ) break;
+
+    }
+ 
+    displ = move( T , dt , d0 );
+
+    update_half_velocity( T );
+    
+    volumes( T ); 
+    
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 
@@ -126,7 +178,8 @@ int main() {
       << kinetic_E(T) << " "
       << L2_vel_Gresho(T) << " "
       << endl ;
-    
+
+
   } while ( simu.time() < total_time );
 
   log_file.close();

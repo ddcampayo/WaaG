@@ -1,5 +1,6 @@
 // pParticles
 // Attempt to replicate de Goes  et al.
+// Mid-point predictor-corrector improvement
 // Power Particles: An incompressible fluid solver based on power diagrams
 
 #include"pParticles.h"
@@ -80,10 +81,13 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
+  FT dt2 = dt / 2.0 ;
+  
+//  move_from_centroid( T , dt);
 
   draw( T , particle_file);
   draw_diagram( T , diagram_file );
-
+  
   std::ofstream log_file;
   log_file.open("main.log");
   log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
@@ -99,23 +103,55 @@ int main() {
 
     algebra.u_star( );
 
-    FT displ = move_from_centroid( T , dt );
+    FT displ = 0; // move( T , dt2 , d0 );	
 
-    cout
-      << "********" << endl
-      << "Iter  " << iter
-      << " . Moved from previous (rel.): " << displ
-      << " ; from original (rel.): " << d0
-      << endl ;
+    for ( ; iter <= inner_iters ; iter++) {
 
-    algebra.solve_for_weights();
-    copy_weights( T ) ;
-    volumes( T );
+      FT displ = move( T , dt2 , d0 );
+      //      FT displ = move_from_centroid( T , dt2 );
 
-    algebra.fill_Delta_DD();
-    algebra.p_equation( dt );
-    algebra.u_add_press_grad( dt );
+      cout
+	<< "********" << endl
+	<< "Iter  " << iter
+	<< " . Moved from previous (rel.): " << displ
+	<< " ; from original (rel.): " << d0
+	<< endl ;
 
+      volumes( T );
+      algebra.fill_Delta_DD();
+      algebra.p_equation( dt2 );
+      algebra.u_add_press_grad( dt2 );
+
+      algebra.solve_for_weights();
+      copy_weights( T ) ;
+      volumes( T );
+
+    
+      //      move_from_centroid( T , dt);
+
+
+      if( displ < inner_tol ) break;
+
+    }
+      //    FT d0;
+    //    FT displ = move( T , dt , d0 );
+
+
+    //volumes( T ); 
+
+    //   if( displ < 1e-8) break;
+
+
+    // }
+
+    displ = move_from_centroid( T , dt );
+ 
+    //    displ = move( T , dt , d0 );
+
+    update_half_velocity( T );
+    
+    volumes( T ); 
+    
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 
@@ -126,6 +162,7 @@ int main() {
       << kinetic_E(T) << " "
       << L2_vel_Gresho(T) << " "
       << endl ;
+
     
   } while ( simu.time() < total_time );
 
