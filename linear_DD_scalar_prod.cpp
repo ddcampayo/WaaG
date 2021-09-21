@@ -12,6 +12,7 @@ void linear::DD_scalar_vfield(const vfield_list::take from , const sfield_list::
   return;
 }
 
+// NOTE: this is the "divergence" (but for a 1/V factor)
 VectorXd linear::DD_scalar_vfield(const vfield_list::take from )
 {
 

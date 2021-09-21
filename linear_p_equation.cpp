@@ -1,16 +1,28 @@
 //#define PRESSURE_PPE_DIV_SOURCE
-
+// TODO: better define different PPE functions, independent
 
 //#include"pParticles.h"
 #include"linear.h"
 #include"fields_enum.h"
 #include"simu.h"
 
-
 // Solve for pressure
 // The famous pressure Poisson equation
 
 void linear::p_equation(const FT dt , const bool ws ) {
+
+  // choose!!
+
+  //   p_equation_divgrad_div_source(dt,ws);
+  //   p_equation_lapl_div_source(dt);
+  p_equation_lapl_Dvol_source( dt );
+
+  return;
+}
+
+//  Laplacian = - Delta / (2 V), div v as source
+
+void linear::p_equation_lapl_div_source(const FT dt ){
 
   cout << "Solving pressure equation " << endl;
   
@@ -20,18 +32,48 @@ void linear::p_equation(const FT dt , const bool ws ) {
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
   
-  // A
-  // Approximate Laplacian ~ Delta / V
-  // VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  // VectorXd p =  Delta_solver.solve( divUstar );
+  VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
+  VectorXd p =  Delta_solver.solve( divUstar );
   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
-  // vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+  vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
-  // return;
+  return;
+}
+
+
+//  Laplacian = - Delta / (2 V), Delta vol as source
+
+void linear::p_equation_lapl_Dvol_source(const FT dt ){
+
+  cout << "Solving pressure equation " << endl;
   
-  // B
-  //  Laplacian as div of grad :
-#ifdef PRESSURE_PPE_DIV_SOURCE
+  //  fill_Delta_DD(); // This may be important -- or not
+
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+
+  VectorXd vol0  = field_to_vctr( sfield_list::vol0 ) ;
+
+  VectorXd Dvol = vol.array() - vol0.array()  ;
+
+  VectorXd Dp =  Delta_solver.solve( Dvol );
+
+  // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
+  vctr_to_field( -0.5 * Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
+  
+  return;
+}
+
+
+//  Laplacian = div of grad, div v as source
+
+void linear::p_equation_divgrad_div_source(const FT dt , const bool ws ) {
+
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
   VectorXd p;
@@ -49,11 +91,18 @@ void linear::p_equation(const FT dt , const bool ws ) {
   
   vctr_to_field( p / ddt ,  sfield_list::p ) ;
 
+  return;
+}
 
-#else
-  // C
-  // As B, but Dvol source.
 
+//  Laplacian = div of grad, D vol as source
+
+void linear::p_equation_divgrad_Dvol_source(const FT dt , const bool ws ) {
+
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  
   // diagnostics on volumes.-
 
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
@@ -72,16 +121,10 @@ void linear::p_equation(const FT dt , const bool ws ) {
        << endl;
 
   // C1: LL Laplacian
-  //  VectorXd Dp  =  LL_solver.solve( Dvol );
+  VectorXd Dp  =  LL_solver.solve( Dvol );
 
-  // C2: Delta Laplacian
-  VectorXd Dp =  Delta_solver.solve( Dvol );
+  vctr_to_field( Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
-  vctr_to_field( -0.5 * Dp / ( ddt * ddt) , sfield_list::p  ) ;
-
-
-  
-#endif
 
   return;
 }
@@ -175,12 +218,12 @@ void linear::u_add_press_grad_wdot(  const FT dt ) {
 
   U_x = Ustar_x.array()
     - ( ddt * gradPx.array()
-	-0.5*( gradwx.array()-gradw0x.array() ) / ddt
+	+ 0.5*( gradwx.array()-gradw0x.array() ) / ddt
 	)/ vol.array()  ;
 
   U_y = Ustar_y.array()
     - ( ddt * gradPy.array()
-	-0.5*( gradwy.array()-gradw0y.array() ) / ddt
+	+ 0.5*( gradwy.array()-gradw0y.array() ) / ddt
 	)/ vol.array()  ;
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );

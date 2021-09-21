@@ -219,7 +219,8 @@ int main() {
 
       //frog
 
-      algebra.p_equation( dt2 ); 
+      //      algebra.p_equation( dt2 ); 
+      algebra.p_equation_lapl_div_source( dt2 );
 
       algebra.solve_for_weights();
       

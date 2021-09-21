@@ -219,7 +219,7 @@ int main() {
 
       //frog
 
-      algebra.p_equation( dt2 ); 
+      algebra.p_equation_divgrad_div_source( dt2 );
 
       algebra.u_add_press_grad( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );

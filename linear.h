@@ -38,6 +38,10 @@ class linear {
   void w_equation2( );
   void w_equation3( );
   void p_equation(const FT dt , const bool ws = false );
+  void p_equation_lapl_div_source(const FT dt );
+  void p_equation_lapl_Dvol_source(const FT dt );
+  void p_equation_divgrad_div_source(const FT dt , const bool  = false );
+  void p_equation_divgrad_Dvol_source(const FT dt , const bool  = false );
   void p_equation_s(const FT dt );
   void p_equation_from_s(  const FT dt );
   void s_equation_from_p(  const FT dt );
