@@ -1,4 +1,4 @@
-#define PRESSURE_PPE_DIV_SOURCE
+//#define PRESSURE_PPE_DIV_SOURCE
 
 
 //#include"pParticles.h"
@@ -110,9 +110,6 @@ void linear::p_equation_s(const FT dt ) {
 }
 
 
-
-
-
 void linear::u_add_press_grad( const FT dt ) {
 
   VectorXd gradPx,gradPy;
@@ -143,6 +140,52 @@ void linear::u_add_press_grad( const FT dt ) {
 
 }
 
+
+
+void linear::u_add_press_grad_wdot(  const FT dt ) {
+
+  VectorXd gradPx,gradPy;
+
+  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+
+  VectorXd gradwx,gradwy;
+
+  DD_times_sfield( sfield_list::w  ,  gradwx, gradwy);
+
+  VectorXd gradw0x,gradw0y;
+
+  DD_times_sfield( sfield_list::w0  ,  gradw0x, gradw0y);
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+  // perhaps mean vol would be just fine
+  
+  VectorXd Ustar_x, Ustar_y;
+
+  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  VectorXd U_x, U_y;
+
+  FT ddt = dt;
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+
+  // There's a (-1) x (-1) for historical reasons:
+  // (-1) in the  definition of grad_ij as -(1/V) D_ij,
+  // (-1) in -grad(p) in the Euler equation
+
+  U_x = Ustar_x.array()
+    - ( ddt * gradPx.array()
+	-0.5*( gradwx.array()-gradw0x.array() ) / ddt
+	)/ vol.array()  ;
+
+  U_y = Ustar_y.array()
+    - ( ddt * gradPy.array()
+	-0.5*( gradwy.array()-gradw0y.array() ) / ddt
+	)/ vol.array()  ;
+  
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+
+}
 
 
 void linear::u_add_grads( const FT dt ) {
@@ -205,6 +248,8 @@ void linear::om_add_press_grad( const FT dt ) {
   vctr_to_field( om ,  sfield_list::om ) ;
 
 }
+
+
 
 void linear::u_add_angular( void ) {
 

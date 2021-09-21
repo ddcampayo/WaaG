@@ -24,10 +24,8 @@ path='./'
 LL= 1
 
 
-T_spring = 10 * 0.005
+T_spring = 20 * 0.005
 omega = 2 * np.pi / T_spring
-
-
 
 list_time = glob.glob('[0-9]*')
 
@@ -46,12 +44,12 @@ for time in times:
 
     w=dt[:,4];
     #    vx=dt[:,5]; vym=dt[:,6];
-    p=dt[:,9]
     #  s=dt[:,10]
     #  I=dt[:,11];
 
-    # Gallouet & Merrigot
-    p = 0.5*omega**2 * w
+    p=dt[:,9]
+    # Gallouet & Merrigot only
+    #p = 0.5*omega**2 * w
 
     r = np.sqrt( x**2 + y**2 )
 

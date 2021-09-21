@@ -221,7 +221,10 @@ int main() {
 
       algebra.p_equation( dt2 ); 
 
-      algebra.u_add_press_grad( dt2 );     //2 );
+      algebra.solve_for_weights();
+      
+      //      algebra.u_add_press_grad( dt2 );     //2 );
+      algebra.u_add_press_grad_wdot( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
