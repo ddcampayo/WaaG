@@ -221,18 +221,20 @@ int main() {
 
       algebra.p_equation_divgrad_div_source( dt2 );
 
+      //algebra.p_equation_lapl_div_source( dt2 ) ;
+
       algebra.u_add_press_grad( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
       //      algebra.u_add_spring_force( 1.0 / dt );
       
-      //      algebra.solve_for_weights();
+      // algebra.solve_for_weights();
+      // copy_weights( T ) ;
+
+      //      algebra.solve_for_moments();
 
       
-      //      algebra.solve_for_moments();
-      //      copy_weights( T ) ;
-    
       if( displ < inner_tol ) break;
 
       ////// testing ...

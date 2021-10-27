@@ -55,10 +55,10 @@ for time in times:
     w=dt[:,4];
 #    vx=dt[:,5]; vym=dt[:,6];
 
-#    p=dt[:,9]
+    p=dt[:,9]
 
     # Gallouet & Merrigot
-    p = 0.5*omega**2 * w
+#    p = 0.5*omega**2 * w
 
     
     r = np.sqrt( x**2 + y**2 )

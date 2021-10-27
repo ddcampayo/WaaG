@@ -187,17 +187,18 @@ void linear::u_add_press_grad( const FT dt ) {
 
 void linear::u_add_press_grad_wdot(  const FT dt ) {
 
-  VectorXd gradPx,gradPy;
+  FT ddt = dt;
 
-  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+  VectorXd p = field_to_vctr( sfield_list::p );
+  VectorXd w = field_to_vctr( sfield_list::w );
+  VectorXd w0= field_to_vctr( sfield_list::w0 );
 
-  VectorXd gradwx,gradwy;
-
-  DD_times_sfield( sfield_list::w  ,  gradwx, gradwy);
-
-  VectorXd gradw0x,gradw0y;
-
-  DD_times_sfield( sfield_list::w0  ,  gradw0x, gradw0y);
+  //  VectorXd p_bar = p - ( 1.0 / ( ddt * ddt) ) * ( w - w0 );
+  VectorXd p_bar = p ; //  - ( 0.5 / ( 4 * ddt * ddt) ) * ( w - w0 );
+  //VectorXd p_bar =  0.5*( w - w0 ) / (ddt*ddt);
+  
+  VectorXd gradx = -DDx.transpose() * p_bar;
+  VectorXd grady = -DDy.transpose() * p_bar;
 
   VectorXd vol  = field_to_vctr( sfield_list::vol );
   // perhaps mean vol would be just fine
@@ -208,23 +209,15 @@ void linear::u_add_press_grad_wdot(  const FT dt ) {
 
   VectorXd U_x, U_y;
 
-  FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-
 
   // There's a (-1) x (-1) for historical reasons:
   // (-1) in the  definition of grad_ij as -(1/V) D_ij,
   // (-1) in -grad(p) in the Euler equation
 
-  U_x = Ustar_x.array()
-    - ( ddt * gradPx.array()
-	+ 0.5*( gradwx.array()-gradw0x.array() ) / ddt
-	)/ vol.array()  ;
-
-  U_y = Ustar_y.array()
-    - ( ddt * gradPy.array()
-	+ 0.5*( gradwy.array()-gradw0y.array() ) / ddt
-	)/ vol.array()  ;
+  
+  U_x = Ustar_x.array()  -  ddt * gradx.array() / vol.array()  ;
+  U_y = Ustar_y.array()  -  ddt * grady.array() / vol.array()  ;
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 

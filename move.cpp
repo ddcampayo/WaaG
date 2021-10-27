@@ -35,9 +35,6 @@ void update_half_velocity( Triangulation& Tp ) {
 }
 
 
-
-
-
 void backup( Triangulation& T ) {
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();

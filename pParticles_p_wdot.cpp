@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 5000;
+  const int init_iters = 100;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -98,9 +98,9 @@ int main() {
   
     volumes( T ); 
 
-    //    copy_weights( T ) ;
+    copy_weights( T ) ;
 
-    //    algebra.solve_for_weights();
+    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
@@ -165,9 +165,9 @@ int main() {
     simu.next_step();
     simu.advance_time( );
 
-    backup( T );
+    copy_weights( T ) ;
     
-    //    copy_weights( T ) ;
+    backup( T );
     
     //  volumes( T );
     //  algebra.fill_Delta();
@@ -186,6 +186,8 @@ int main() {
 
     for ( ; iter <= inner_iters ; iter++) {
 
+      cout << "Moving..." << endl;
+      
       displ = move( T , dt2 , d0 );
 
       // frog
@@ -199,7 +201,7 @@ int main() {
 	<< endl ;
 
       volumes( T ); 
-      
+
       algebra.fill_Delta_DD();
 
       // // whole step, special 1st time
@@ -219,13 +221,21 @@ int main() {
 
       //frog
 
+      algebra.solve_for_weights();
+      copy_weights( T ) ;
+      
       //      algebra.p_equation( dt2 ); 
       algebra.p_equation_lapl_div_source( dt2 );
 
-      algebra.solve_for_weights();
+      cout << "PPE solved." << endl;
+
+      cout << "adding grads" << endl;
+
+      // algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad_wdot( dt2 );
+
+      cout << "grads added" << endl;
       
-      //      algebra.u_add_press_grad( dt2 );     //2 );
-      algebra.u_add_press_grad_wdot( dt2 );     //2 );
       // algebra.u_add_press_grad( dt2 );//2 );
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
@@ -276,8 +286,10 @@ int main() {
 //    volumes( T ); 
 //    move_from_centroid( T , dt);
     
-    volumes( T ); 
-      
+    // volumes( T ); 
+    // algebra.solve_for_weights();
+    // copy_weights( T ) ;
+
     //    algebra.fill_Delta_DD();
     //    algebra.p_equation( dt2 );
 
@@ -286,7 +298,7 @@ int main() {
       << " : disp " << displ << endl ;
 
     //algebra.w_equation();
-    //algebra.solve_for_weights();
+
 
     //    volumes( T ); 
 
