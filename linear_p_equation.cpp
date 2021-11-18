@@ -41,6 +41,29 @@ void linear::p_equation_lapl_div_source(const FT dt ){
 }
 
 
+// same as above, but div u calculated as in FEM
+
+void linear::p_equation_lapl_div_source_fem(const FT dt ){
+
+  cout << "Solving pressure equation " << endl;
+  
+  //  fill_Delta_DD(); // This may be important -- or not
+
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  
+  VectorXd divUstar  =  DD_scalar_vfield_fem( vfield_list::Ustar );
+  VectorXd p =  Delta_solver.solve( divUstar );
+  // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
+  vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+
+  return;
+}
+
+
+
+
 //  Laplacian = - Delta / (2 V), Delta vol as source
 
 void linear::p_equation_lapl_Dvol_source(const FT dt ){
@@ -66,6 +89,34 @@ void linear::p_equation_lapl_Dvol_source(const FT dt ){
   
   return;
 }
+
+
+// //  Laplacian = - Delta / (2 V), Delta FEM vol as source
+
+// void linear::p_equation_lapl_Dvol_source_fem(const FT dt ){
+
+//   cout << "Solving pressure equation " << endl;
+  
+//   //  fill_Delta_DD(); // This may be important -- or not
+
+//   FT ddt = dt;
+//   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+//   VectorXd vol  = field_to_vctr( sfield_list::Dvol ) ;
+
+//   VectorXd vol0  = field_to_vctr( sfield_list::Dvol0 ) ;
+
+//   VectorXd Dvol = vol.array() - vol0.array()  ;
+
+//   VectorXd Dp =  Delta_solver.solve( Dvol );
+
+//   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
+//   vctr_to_field( -0.5 * Dp / ( ddt * ddt) , sfield_list::p  ) ;
+
+  
+//   return;
+// }
+
 
 
 //  Laplacian = div of grad, div v as source
@@ -155,12 +206,17 @@ void linear::p_equation_s(const FT dt ) {
 
 void linear::u_add_press_grad( const FT dt ) {
 
-  VectorXd gradPx,gradPy;
+  VectorXd VgradPx, VgradPy;
 
-  DD_times_sfield( sfield_list::p  ,  gradPx, gradPy);
+  DD_times_sfield( sfield_list::p  ,  VgradPx, VgradPy);
 
   VectorXd vol  = field_to_vctr( sfield_list::vol );
   // perhaps mean vol would be just fine
+
+  VectorXd gradPx = gradPx.array() / vol.array()  ;
+  VectorXd gradPy = gradPy.array() / vol.array()  ;
+
+  vctrs_to_vfield( gradPx , gradPy , vfield_list::gradp );
   
   VectorXd Ustar_x, Ustar_y;
 
@@ -176,8 +232,43 @@ void linear::u_add_press_grad( const FT dt ) {
   // (-1) in the  definition of grad_ij as -(1/V) D_ij,
   // (-1) in -grad(p) in the Euler equation
 
-  U_x = Ustar_x.array() - ddt * gradPx.array() / vol.array()  ;
-  U_y = Ustar_y.array() - ddt * gradPy.array() / vol.array() ;
+  U_x = Ustar_x - ddt * gradPx;
+  U_y = Ustar_y - ddt * gradPy;
+  
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+
+}
+
+
+void linear::u_add_press_grad_fem( const FT dt ) {
+
+  VectorXd VgradPx,VgradPy;
+
+  DD_times_sfield_fem( sfield_list::p  ,  VgradPx, VgradPy);
+
+  VectorXd vol  = field_to_vctr( sfield_list::Dvol );
+  // perhaps mean vol would be just fine
+
+  VectorXd gradPx = VgradPx.array() / vol.array()  ;
+  VectorXd gradPy = VgradPy.array() / vol.array()  ;
+
+  vctrs_to_vfield( gradPx , gradPy , vfield_list::gradp );
+  
+  VectorXd Ustar_x, Ustar_y;
+
+  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  VectorXd U_x, U_y;
+
+  FT ddt = dt;
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+
+  // There's a (-1) x (-1) for historical reasons:
+  // (-1) in the  definition of grad_ij as -(1/V) D_ij,
+  // (-1) in -grad(p) in the Euler equation
+  U_x = Ustar_x - ddt * gradPx;
+  U_y = Ustar_y - ddt * gradPy;
   
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
@@ -185,6 +276,9 @@ void linear::u_add_press_grad( const FT dt ) {
 
 
 
+#ifdef ALWAYS_FALSE
+
+// Version A
 void linear::u_add_press_grad_wdot(  const FT dt ) {
 
   FT ddt = dt;
@@ -193,8 +287,8 @@ void linear::u_add_press_grad_wdot(  const FT dt ) {
   VectorXd w = field_to_vctr( sfield_list::w );
   VectorXd w0= field_to_vctr( sfield_list::w0 );
 
-  //  VectorXd p_bar = p - ( 1.0 / ( ddt * ddt) ) * ( w - w0 );
-  VectorXd p_bar = p ; //  - ( 0.5 / ( 4 * ddt * ddt) ) * ( w - w0 );
+  VectorXd p_bar = p - ( 0.5 / ( ddt * ddt) ) * ( w - w0 );
+  //  VectorXd p_bar = p ; //  - ( 0.5 / ( 4 * ddt * ddt) ) * ( w - w0 );
   //VectorXd p_bar =  0.5*( w - w0 ) / (ddt*ddt);
   
   VectorXd gradx = -DDx.transpose() * p_bar;
@@ -222,6 +316,55 @@ void linear::u_add_press_grad_wdot(  const FT dt ) {
   vctrs_to_vfield( U_x, U_y , vfield_list::U );
 
 }
+
+#endif
+
+// Version B
+
+void linear::u_add_press_grad_wdot(  const FT dt ) {
+
+  FT ddt = dt;
+
+  VectorXd p = field_to_vctr( sfield_list::p );
+  VectorXd w = field_to_vctr( sfield_list::w );
+  VectorXd w0= field_to_vctr( sfield_list::w0 );
+
+  VectorXd gradx = -DDx.transpose() * p;
+  VectorXd grady = -DDy.transpose() * p;
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+  // perhaps mean vol would be just fine
+
+  //  VectorXd dwdt =  - ( 0.5 / ( ddt * ddt) ) * ( w - w0 );
+  VectorXd dwdt =  ( 0.5 / ( ddt * ddt) ) *  w ;
+  
+  VectorXd gradwx = -DDx_fem.transpose() * dwdt;
+  VectorXd gradwy = -DDy_fem.transpose() * dwdt;
+
+  VectorXd Ustar_x, Ustar_y;
+
+  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  VectorXd U_x, U_y;
+
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  // There's a (-1) x (-1) for historical reasons:
+  // (-1) in the  definition of grad_ij as -(1/V) D_ij,
+  // (-1) in -grad(p) in the Euler equation
+
+  VectorXd total_gradx = gradx.array() + gradwx.array() ;
+  VectorXd total_grady = grady.array() + gradwy.array() ;
+  
+  U_x = Ustar_x.array()  -  ddt * total_gradx.array()  / vol.array()  ;
+  U_y = Ustar_y.array()  -  ddt * total_grady.array()  / vol.array()  ;
+
+  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+
+}
+
+
+
 
 
 void linear::u_add_grads( const FT dt ) {

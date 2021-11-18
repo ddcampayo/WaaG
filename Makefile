@@ -633,29 +633,29 @@ number.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/number.cpp.s
 .PHONY : number.cpp.s
 
-pParticles_p_wdot.o: pParticles_p_wdot.cpp.o
-.PHONY : pParticles_p_wdot.o
+pParticles_GM.o: pParticles_GM.cpp.o
+.PHONY : pParticles_GM.o
 
 # target to build an object file
-pParticles_p_wdot.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_wdot.cpp.o
-.PHONY : pParticles_p_wdot.cpp.o
+pParticles_GM.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.o
+.PHONY : pParticles_GM.cpp.o
 
-pParticles_p_wdot.i: pParticles_p_wdot.cpp.i
-.PHONY : pParticles_p_wdot.i
+pParticles_GM.i: pParticles_GM.cpp.i
+.PHONY : pParticles_GM.i
 
 # target to preprocess a source file
-pParticles_p_wdot.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_wdot.cpp.i
-.PHONY : pParticles_p_wdot.cpp.i
+pParticles_GM.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.i
+.PHONY : pParticles_GM.cpp.i
 
-pParticles_p_wdot.s: pParticles_p_wdot.cpp.s
-.PHONY : pParticles_p_wdot.s
+pParticles_GM.s: pParticles_GM.cpp.s
+.PHONY : pParticles_GM.s
 
 # target to generate assembly for a file
-pParticles_p_wdot.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_p_wdot.cpp.s
-.PHONY : pParticles_p_wdot.cpp.s
+pParticles_GM.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/pParticles_GM.cpp.s
+.PHONY : pParticles_GM.cpp.s
 
 volumes.o: volumes.cpp.o
 .PHONY : volumes.o
@@ -753,9 +753,9 @@ help:
 	@echo "... number.o"
 	@echo "... number.i"
 	@echo "... number.s"
-	@echo "... pParticles_p_wdot.o"
-	@echo "... pParticles_p_wdot.i"
-	@echo "... pParticles_p_wdot.s"
+	@echo "... pParticles_GM.o"
+	@echo "... pParticles_GM.i"
+	@echo "... pParticles_GM.s"
 	@echo "... volumes.o"
 	@echo "... volumes.i"
 	@echo "... volumes.s"

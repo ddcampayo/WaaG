@@ -32,6 +32,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   std::vector<triplet>
     aa, ax, ay, mx, my,
+    ax_fem, ay_fem,
     ee ,
     gg ; // , bb ;            // list of non-zeros coefficients
 
@@ -40,6 +41,7 @@ void linear::fill_Delta_DD( const FT dt ) {
   diag_map   dd_g;
   diag_map   dd_e;
   diag_map   dd_x, dd_y;
+  diag_map   dd_x_fem, dd_y_fem;
   diag_map   dm_x, dm_y;
 
   int N=1;
@@ -51,36 +53,41 @@ void linear::fill_Delta_DD( const FT dt ) {
     Face_handle f =  eit -> first ;
     int i0 = eit -> second;
 
-#ifdef FEM
-    int i3 = i0 ;
-    Vertex_handle v3  = f->vertex( i3 );
-    Point p3 = v3->point().point() ;
+    //   #ifdef FEM
+
+    Vector_2 DDij_fem, DDji_fem ;
+
+    {
+      int i3 = i0 ;
+      Vertex_handle v3  = f->vertex( i3 );
+      Point p3 = v3->point().point() ;
     
-    Vertex_handle v1 = f->vertex( (i3+1) % 3);
-    Point p1 = v1->point().point() ;
+      Vertex_handle v1 = f->vertex( (i3+1) % 3);
+      Point p1 = v1->point().point() ;
 
-    Vertex_handle v3p = T.mirror_vertex( f , i3 );
-    Point p3p = v3p->point().point() ;
+      Vertex_handle v3p = T.mirror_vertex( f , i3 );
+      Point p3p = v3p->point().point() ;
 
-    Vector_2 v_3p_3 = p3 - p3p ;
+      Vector_2 v_3p_3 = p3 - p3p ;
 
-    // negative right angle turn
-    Vector_2 v_3p_3_perp = Vector_2( v_3p_3.y() , -v_3p_3.x() );
+      // negative right angle turn
+      Vector_2 v_3p_3_perp = Vector_2( v_3p_3.y() , -v_3p_3.x() );
 
-    //    Triangle tr( v1->point().point() , v3p->point().point() , v3->point().point() );
+      //    Triangle tr( v1->point().point() , v3p->point().point() , v3->point().point() );
 
-    //    CGAL::Orientation ori = tr.orientation();
-    //    if( ori == CGAL::NEGATIVE ) v33_perp = -v33_perp;
+      //    CGAL::Orientation ori = tr.orientation();
+      //    if( ori == CGAL::NEGATIVE ) v33_perp = -v33_perp;
 
-    // Vector_2 v_1_3p = p3p - p1 ;
+      // Vector_2 v_1_3p = p3p - p1 ;
 
-    // CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
-    // if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
+      // CGAL::Orientation ori = CGAL::orientation(  v_1_3p , v_3p_3 );
+      // if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
 
-    Vector_2 DDij = v_3p_3_perp / 6.0 ;
-    Vector_2 DDji = -DDij;
-
-#endif
+      DDij_fem = v_3p_3_perp / 6.0 ;
+      DDji_fem = -DDij_fem ;
+    }
+    
+    // #endif
     
     Vertex_handle vi = f->vertex( (i0+1) % 3);
     Vertex_handle vj = f->vertex( (i0+2) % 3);
@@ -121,14 +128,14 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vector_2 rr_ij_j = pj - bij;
     Vector_2 rr_ij_i = pi - bij;
 
-#ifndef FEM
+    //#ifndef FEM
     // regular
     Vector_2 DDij = Aij / lij * rr_ij_j; // ( pj - bij);
     Vector_2 DDji = Aij / lij * rr_ij_i; // ( pi - bij);
     //    //experimental
     //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
     //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
-#endif
+    //#endif
     
     // dd**2
     FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );
@@ -206,6 +213,12 @@ void linear::fill_Delta_DD( const FT dt ) {
       ax.push_back( triplet( j, i,  DDji.x() ));
       ay.push_back( triplet( j, i,  DDji.y() ));
 
+      ax_fem.push_back( triplet( i, j,  DDij_fem.x() ));
+      ay_fem.push_back( triplet( i, j,  DDij_fem.y() ));
+
+      ax_fem.push_back( triplet( j, i,  DDji_fem.x() ));
+      ay_fem.push_back( triplet( j, i,  DDji_fem.y() ));
+      
       mx.push_back( triplet( i, j,  MMij.x() ));
       my.push_back( triplet( i, j,  MMij.y() ));
 
@@ -232,6 +245,10 @@ void linear::fill_Delta_DD( const FT dt ) {
       dd_x[ i ] -= DDji.x();
       dd_y[ i ] -= DDji.y();
 
+      dd_x_fem[ i ] -= DDji_fem.x();
+      dd_y_fem[ i ] -= DDji_fem.y();
+      
+
       // Voronoi-only:
 
       // dm_x[ i ] -= MMji.x();
@@ -253,9 +270,14 @@ void linear::fill_Delta_DD( const FT dt ) {
 
 //      dd_x[ j ] -= DDji.x();
 //      dd_y[ j ] -= DDji.y();
+
       dd_x[ j ] -= DDij.x();
       dd_y[ j ] -= DDij.y();
 
+      dd_x_fem[ j ] -= DDij_fem.x();
+      dd_y_fem[ j ] -= DDij_fem.y();
+
+      
       // Voronoi-only:
 
       // dm_x[ j ] -= MMij.x();
@@ -344,6 +366,20 @@ void linear::fill_Delta_DD( const FT dt ) {
   }
 
 
+  for( diag_map::const_iterator it = dd_x_fem.begin(); it != dd_x_fem.end(); ++it ) {
+    int i    = it->first;
+    FT diagx = it->second;
+    ax_fem.push_back( triplet( i, i,  diagx ));
+  }
+
+  
+  for( diag_map::const_iterator it = dd_y_fem.begin(); it != dd_y_fem.end(); ++it ) {
+    int i    = it->first;
+    FT diagy = it->second;
+    ay_fem.push_back( triplet( i, i,  diagy ));
+  }
+
+  
   for( diag_map::const_iterator it = dm_x.begin(); it != dm_x.end(); ++it ) {
     int i    = it->first;
     FT diagx = it->second;
@@ -379,6 +415,12 @@ void linear::fill_Delta_DD( const FT dt ) {
   // std::cout << " Filled DDy  matrix" << std::endl;
   // cout << "matrix size " << DDy.rows() << " times " << DDy.cols() << endl;
 
+  DDx_fem.resize( N , N );
+  DDx_fem.setFromTriplets(ax_fem.begin(), ax_fem.end());
+
+  DDy_fem.resize( N , N );
+  DDy_fem.setFromTriplets(ay_fem.begin(), ay_fem.end());
+  
   MMx.resize( N , N );
   MMx.setFromTriplets(mx.begin(), mx.end());
 

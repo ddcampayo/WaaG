@@ -19,6 +19,7 @@ void volumes(Triangulation& T) {
       fv!=T.finite_vertices_end();
       fv++)  {
     fv->vol.reset();
+    fv->Dvol.reset();
     fv->centroid.reset( );
     fv->I.reset();
     fv->I_xx.reset();
@@ -26,7 +27,7 @@ void volumes(Triangulation& T) {
     fv->I_xy.reset();
   }
 
-#ifdef FEM
+  //#ifdef FEM
 
   // Volumes, FEM shape functions (Delaunay areas)
   
@@ -46,12 +47,12 @@ void volumes(Triangulation& T) {
 
     FT area = CGAL::area(p0, p1, p2) ; // std::fabs( tr.area() );
 
-    v0->vol += area / 3.0;
-    v1->vol += area / 3.0;
-    v2->vol += area / 3.0;
+    v0->Dvol += area / 3.0;
+    v1->Dvol += area / 3.0;
+    v2->Dvol += area / 3.0;
   }
 
-#else
+  //#else
 
   // Volumes, Voronoi cells
 
@@ -214,7 +215,7 @@ void volumes(Triangulation& T) {
 
   }
 
-#endif
+  //#endif
 
   
   //  cout << "Volumes: total = " << totalV << " ; ";

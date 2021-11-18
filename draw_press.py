@@ -83,4 +83,3 @@ plt.ylabel(r'$p/\rho$')
 
 plt.savefig( 'pressure_' + n + '.png')
 plt.show()
-

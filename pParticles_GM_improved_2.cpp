@@ -51,7 +51,7 @@ int main() {
   
   int iter=1;
 
-  for( ; iter < init_iters ; ++iter) {
+  for( ; iter <= init_iters ; ++iter) {
   
     //    volumes( T ); 
     //    copy_weights( T ) ;
@@ -82,6 +82,7 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
+  FT dt2 = dt / 2.0 ;
   
   // Setting a spring period that includes several Dt, in
   // order spring forces be properly sampled
@@ -122,25 +123,50 @@ int main() {
 
     algebra.u_star( );
 
-    FT displ = move( T , dt , d0 );
+    FT displ = 0;
 
-    cout
-      << "********" << endl
-      << "Iter  " << iter
-      << " . Moved from previous (rel.): " << displ <<
-      " ; from original (rel.): " << d0
+    for ( ; iter <= inner_iters ; iter++) {
+
+      displ = move( T , dt2 , d0 );
+
+      cout
+	<< "********" << endl
+	<< "Iter  " << iter
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
       << endl ;
 
-    algebra.solve_for_weights();
-    algebra.copy( 0.5 * spring ,  sfield_list::w ,  sfield_list::p);
+      algebra.solve_for_weights();
+
+      volumes( T ); 
+
+      algebra.fill_Delta_DD();
+
+    // pressure proportional to weights: p = 1/2 spring w
+    //    algebra.copy( 0.5 * spring ,  sfield_list::w ,  sfield_list::p);
 
     //  copy_weights( T ) ;
     //  volumes( T );
-    
-    algebra.u_add_spring_force( spring*dt );
+ 
+      algebra.u_add_spring_force( spring*dt2 );
 
-    algebra.copy( vfield_list::Ustar ,  vfield_list::U );
+      algebra.copy( vfield_list::Ustar ,  vfield_list::U );
+
+      algebra.p_equation_lapl_div_source_fem( dt2 );
+
+      algebra.u_add_press_grad_fem( dt2 );
     
+      if( displ < inner_tol ) break;
+
+    }
+
+
+    displ = move( T , dt , d0 );
+
+    update_half_velocity( T );
+    
+    volumes( T ); 
+
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 

@@ -10,7 +10,8 @@ main_data
 << vit->p.val() << "  "   //  9
 << vit->s.val() << "  "   //  10
 << vit->I.val() << "  "   //  11
-<< vit->dd2.val() << "  "   //  12
-<< vit->om.val() << "  "   //  13
-<< vit->I_4.val() << "  "   //  14
+<< vit->gradp.val() << "  "   //  12, 13
+<< vit->dd2.val() << "  "   //  14
+<< vit->om.val() << "  "   //  15
+<< vit->I_4.val() << "  "   //  16
 << endl;

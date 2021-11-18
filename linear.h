@@ -39,6 +39,7 @@ class linear {
   void w_equation3( );
   void p_equation(const FT dt , const bool ws = false );
   void p_equation_lapl_div_source(const FT dt );
+  void p_equation_lapl_div_source_fem(const FT dt );
   void p_equation_lapl_Dvol_source(const FT dt );
   void p_equation_divgrad_div_source(const FT dt , const bool  = false );
   void p_equation_divgrad_Dvol_source(const FT dt , const bool  = false );
@@ -51,6 +52,7 @@ class linear {
   void reset_p( void );
   void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
+  void u_add_press_grad_fem( const FT dt ) ;
   void u_add_press_grad_wdot(  const FT dt ) ;
   void om_add_press_grad( const FT dt ) ;
   void u_add_angular();
@@ -63,15 +65,20 @@ class linear {
 
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );
   VectorXd DD_scalar_vfield(const vfield_list::take from );
+  VectorXd DD_scalar_vfield_fem(const vfield_list::take from );
+
   VectorXd MM_scalar_vfield(const vfield_list::take from );
   void DD_times_sfield(const sfield_list::take from ,
+		       VectorXd& Dx,VectorXd& Dy);
+  void DD_times_sfield_fem(const sfield_list::take from ,
 		       VectorXd& Dx,VectorXd& Dy);
   void MM_times_sfield(const sfield_list::take from ,
 		       VectorXd& Dx,VectorXd& Dy);
   VectorXd Delta_times_sfield(const sfield_list::take from );
 
   void copy(const sfield_list::take from, sfield_list::take to  );
-
+  void copy(const vfield_list::take from, vfield_list::take to  ) ;
+  void copy(const FT a , const sfield_list::take from, sfield_list::take to  ) ;
   void dd2_stats( void ) ;
 
   //  Vector_2 values_at_v(const Point& p0, const vfield_list::take v_field) ;
@@ -87,6 +94,7 @@ private:
   SpMat Delta;
   SpMat GG;
   SpMat DDx, DDy;
+  SpMat DDx_fem, DDy_fem;
   SpMat LL;
   SpMat MMx, MMy;
   SpMat NN;

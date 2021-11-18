@@ -9,6 +9,8 @@ struct data_kept {
   Vector_2 Ustar;
   FT p, p0;
 
+  Vector_2 gradP;
+  
   FT s;
   FT I0;
 
@@ -36,6 +38,8 @@ struct data_kept {
     p = fv->p.val();
     p0 = fv->p0.val();
 
+    gradP = fv->gradp.val();
+    
     s  = fv->s.val();
     I0 = fv->I0.val();
 
@@ -66,6 +70,8 @@ struct data_kept {
     fv->p.set( p );
     fv->p0.set( p0 );
 
+    fv->gradp.set( gradP );
+    
     fv->s.set( s );
     fv->I0.set( I0 );
 

@@ -66,3 +66,25 @@ void linear::copy(const sfield_list::take from, sfield_list::take to  ) {
 
   return;
 }
+
+
+void linear::copy(const FT a , const sfield_list::take from, sfield_list::take to  ) {
+
+  VectorXd p = a*field_to_vctr( from );
+
+  vctr_to_field( p , to );
+
+  return;
+}
+
+void linear::copy(const vfield_list::take from, vfield_list::take to  ) {
+
+  VectorXd px, py;
+  vfield_to_vctrs( from , px , py );
+
+  vctrs_to_vfield( px , py , to );
+
+  return;
+}
+
+

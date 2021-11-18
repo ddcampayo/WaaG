@@ -86,6 +86,7 @@ public:
       case sfield_list::p0 : return p0;
       case sfield_list::vol0 : return vol0;
       case sfield_list::vol  : return vol;
+      case sfield_list::Dvol  : return Dvol;
       case sfield_list::w    : return w;
       case sfield_list::w0   : return w0;//  return this->point().weight();
       case sfield_list::s : return s;
@@ -110,6 +111,7 @@ public:
       case vfield_list::Ustar  : return Ustar;
       case vfield_list::Dr : return Dr;
       case vfield_list::dd : return dd;
+      case vfield_list::gradp : return gradp;
       default : return U;
       }
   }
@@ -149,6 +151,7 @@ public:
   scalar_field p;          // pressure
   scalar_field p0;
   scalar_field vol;
+  scalar_field Dvol;
   scalar_field vol0;
 
   vector_field U;
@@ -162,6 +165,8 @@ public:
   scalar_field w0;
   scalar_field w;
 
+  vector_field gradp;
+  
   point_field  centroid;
 
   scalar_field s;

@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 100;
+  const int init_iters = 200;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -130,6 +130,7 @@ int main() {
   volumes( T ); 
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
   
+  
   FT d0;
   FT dt=0.001;
 
@@ -139,6 +140,11 @@ int main() {
 
   // half-step (for e.g. leapfrog)
   FT dt2 = dt / 2.0 ;
+
+  FT dt2sq = dt2 * dt2;
+
+  FT beta = 1e-1 / dt2sq ;
+  FT alpha = std::sqrt( beta / 2.0) / dt2sq ;
 
   // whole step
   // FT dt2 = dt  ;
@@ -221,23 +227,29 @@ int main() {
 
       //frog
 
-      algebra.solve_for_weights();
-      copy_weights( T ) ;
+      // algebra.solve_for_weights();
+      //      copy_weights( T ) ;
       
       //      algebra.p_equation( dt2 ); 
-      algebra.p_equation_lapl_div_source( dt2 );
+      algebra.p_equation_lapl_div_source_fem( dt2 );
+
+      //      algebra.p_equation_lapl_Dvol_source( dt2 );
 
       cout << "PPE solved." << endl;
 
+      algebra.copy( ( 1.0 / alpha) ,  sfield_list::p ,  sfield_list::w);
+      //      copy_weights( T ) ;
+      //      move_weights( T );
+  
       cout << "adding grads" << endl;
 
-      // algebra.u_add_press_grad( dt2 );
-      algebra.u_add_press_grad_wdot( dt2 );
+      algebra.u_add_press_grad_fem( dt2 );
+      //algebra.u_add_press_grad_wdot( dt2 );
 
       cout << "grads added" << endl;
       
       // algebra.u_add_press_grad( dt2 );//2 );
-      // algebra.u_add_spring_force( 1.0 / dt2 );
+      //      algebra.u_add_spring_force( 2*beta ) ; // 1.0 / dt2 );
 
       //      algebra.u_add_spring_force( 1.0 / dt );
       
@@ -247,7 +259,7 @@ int main() {
       //      algebra.solve_for_moments();
       //      copy_weights( T ) ;
     
-      if( displ < inner_tol ) break;
+       if( displ < inner_tol ) break;
 
       ////// testing ...
       //      backup( T );
@@ -286,7 +298,7 @@ int main() {
 //    volumes( T ); 
 //    move_from_centroid( T , dt);
     
-    // volumes( T ); 
+    volumes( T ); 
     // algebra.solve_for_weights();
     // copy_weights( T ) ;
 
@@ -312,7 +324,7 @@ int main() {
     log_file
       << simu.current_step() << "  "
       << simu.time() << "  "
-      << iter-1 << " "
+      << iter << " "
       << kinetic_E(T) << " "
       << L2_vel_Gresho(T) << " "
       << endl ;
