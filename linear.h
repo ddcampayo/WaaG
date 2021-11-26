@@ -41,6 +41,7 @@ class linear {
   void p_equation_lapl_div_source(const FT dt );
   void p_equation_lapl_div_source_fem(const FT dt );
   void p_equation_lapl_Dvol_source(const FT dt );
+  void p_equation_lapl_Dvol_source_fem(const FT dt );
   void p_equation_divgrad_div_source(const FT dt , const bool  = false );
   void p_equation_divgrad_Dvol_source(const FT dt , const bool  = false );
   void p_equation_s(const FT dt );
@@ -53,14 +54,14 @@ class linear {
   void reset_s( void );
   void u_add_press_grad( const FT dt ) ;
   void u_add_press_grad_fem( const FT dt ) ;
-  void u_add_press_grad_wdot(  const FT dt ) ;
+  void u_add_press_grad_wdot( const FT dt , const FT beta=1  ) ;
   void om_add_press_grad( const FT dt ) ;
   void u_add_angular();
   void u_add_s_grad( const FT dt ) ;
   void u_add_w_grad( const FT dt ) ;
   void u_add_grads( const FT dt ) ;
   void u_add_press_grad_MM_w( const FT dt );
-  void u_add_spring_force( const FT kdt );
+  void u_add_spring_force( const FT k, const FT dt );
   void test_operators( void );
 
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );
@@ -80,6 +81,7 @@ class linear {
   void copy(const vfield_list::take from, vfield_list::take to  ) ;
   void copy(const FT a , const sfield_list::take from, sfield_list::take to  ) ;
   void dd2_stats( void ) ;
+  void clear_vfield( const vfield_list::take vf  );
 
   //  Vector_2 values_at_v(const Point& p0, const vfield_list::take v_field) ;
 
@@ -107,6 +109,7 @@ private:
   void vctr_to_field(const VectorXd& vv, const sfield_list::take sf  );
   void vfield_to_vctrs(const vfield_list::take vf , VectorXd& vx, VectorXd& vy ) ;
   void vctrs_to_vfield(const VectorXd& vx, const VectorXd& vy , const vfield_list::take vf ) ;
+  void vctrs_add_to_vfield(const VectorXd& vx, const VectorXd& vy , const vfield_list::take vf ) ;
 
 #define DIRECT_SOLVER
 

@@ -1,7 +1,7 @@
 #include"linear.h"
 #include"fields_enum.h"
 
-void linear::u_add_spring_force( const FT kdt ) {
+void linear::u_add_spring_force( const FT k , const FT dt ) {
 
   // TODO: this can be done through .dd, a vrtx member function
   // calculated in volumes.cpp
@@ -41,6 +41,11 @@ void linear::u_add_spring_force( const FT kdt ) {
   }
 
 
+  VectorXd f_x = - k * disp_x;
+  VectorXd f_y = - k * disp_y;
+
+  // minus, to be interpreted as an "extra pressure gradient"
+  vctrs_add_to_vfield(-f_x , -f_y , vfield_list::gradp );
 
   // velocity before forces are applied
   VectorXd U_x, U_y;
@@ -49,15 +54,18 @@ void linear::u_add_spring_force( const FT kdt ) {
   //  vfield_to_vctrs(  vfield_list::Ustar , U_x, U_y );
 
   // add spring force to u0  
-  vfield_to_vctrs( vfield_list::U0  , U_x, U_y );
+  //  vfield_to_vctrs( vfield_list::U0  , U_x, U_y );
 
   // add force to u
-  //vfield_to_vctrs(  vfield_list::U , Ustar_x, Ustar_y );
+  //vfield_to_vctrs(  vfield_list::U , U_x, U_y );
+  //add force to u_star
+
+  vfield_to_vctrs(  vfield_list::Ustar , U_x, U_y );
 
   VectorXd Unew_x, Unew_y;
 
-  Unew_x = U_x.array() - kdt * disp_x.array();
-  Unew_y = U_y.array() - kdt * disp_y.array();
+  Unew_x = U_x + dt * f_x;
+  Unew_y = U_y + dt * f_y;
 
   vctrs_to_vfield( Unew_x, Unew_y , vfield_list::Ustar );
   //  vctrs_to_vfield( Unew_x, Unew_y , vfield_list::U );

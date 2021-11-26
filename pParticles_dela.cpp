@@ -148,10 +148,10 @@ int main() {
   // FT alpha = beta; // std::sqrt( beta / 2.0) / dt2sq ;
 
 
-  FT spring_to_dt = 70;
+  FT spring_to_dt = 1e10;
   FT spring_period = spring_to_dt * dt;
   FT omega = 2 * M_PI /  spring_period ;
-  FT beta = 0.5*omega*omega; // factor that appears in the spring force (aka "spring" in other versions)
+  FT beta = omega*omega; // factor that appears in the spring force (aka "spring" in other versions)
 
   // whole step
   // FT dt2 = dt  ;
@@ -243,7 +243,6 @@ int main() {
 
       
       //      copy_weights( T ) ;
-      algebra.solve_for_weights();
       
       //      algebra.p_equation( dt2 ); 
       algebra.p_equation_lapl_div_source_fem( dt2 );
@@ -258,13 +257,15 @@ int main() {
       //      copy_weights( T ) ;
       //      move_weights( T );
 
+//      algebra.solve_for_weights();
+
 //      algebra.w_equation( ); 
 
       cout << "adding grads" << endl;
 
-      //      algebra.u_add_press_grad_fem( dt2 );
+      algebra.u_add_press_grad_fem( dt2 );
 
-      algebra.u_add_press_grad_wdot( dt2 ,  beta );
+      //      algebra.u_add_press_grad_wdot( dt2 ,  beta );
 
       cout << "grads added" << endl;
 

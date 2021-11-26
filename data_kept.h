@@ -4,6 +4,7 @@ struct data_kept {
   Point r0;
   weight w, w0;
   FT vol0;
+  FT Dvol0;
   Vector_2 Dr;
   Vector_2 U, U0;
   Vector_2 Ustar;
@@ -25,6 +26,7 @@ struct data_kept {
     r0 = fv->r0.val();
 
     vol0 = fv->vol0.val();
+    Dvol0 = fv->Dvol0.val();
 
     w = fv->w.val();
     w0 = fv->w0.val();
@@ -57,6 +59,7 @@ struct data_kept {
     fv->r0.set( r0 );
 
     fv->vol0.set( vol0 );
+    fv->Dvol0.set( Dvol0 );
 
     fv->w.set( w );
     fv->w0.set( w0 );

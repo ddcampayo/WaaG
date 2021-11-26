@@ -30,10 +30,13 @@ void linear::test_operators( void ) {
 void linear::u_star( void ) {
   VectorXd usx, usy;
   
-  vfield_to_vctrs( vfield_list::U0 , usx, usy );
+  //  vfield_to_vctrs( vfield_list::U0 , usx, usy );
 
-  vctrs_to_vfield( usx, usy, vfield_list::Ustar );
+  //  vctrs_to_vfield( usx, usy, vfield_list::Ustar );
 
+
+   copy( vfield_list::U0 ,  vfield_list::Ustar );
+  
   return;
 }
 

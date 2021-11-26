@@ -128,3 +128,34 @@ void linear::vctrs_to_vfield(const VectorXd& vx,
   
 }
 
+void linear::vctrs_add_to_vfield(const VectorXd& vx,
+			   const VectorXd& vy,
+			   const vfield_list::take vf  ) {
+
+  for(F_v_it fv=T.finite_vertices_begin();
+      fv!=T.finite_vertices_end();
+      fv++)  {
+
+    int idx = fv->idx.val();
+    if( idx < 0 ) continue;
+      
+    fv->vfield(vf)  +=  Vector_2 ( vx[ idx ] , vy[idx] );
+
+  }
+  return;
+  
+}
+
+void linear::clear_vfield( const vfield_list::take vf  ) {
+
+  for(F_v_it fv=T.finite_vertices_begin();
+      fv!=T.finite_vertices_end();
+      fv++)  {
+
+    fv->vfield(vf).reset();
+
+  }
+  return;
+  
+}
+

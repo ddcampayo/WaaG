@@ -87,6 +87,7 @@ public:
       case sfield_list::vol0 : return vol0;
       case sfield_list::vol  : return vol;
       case sfield_list::Dvol  : return Dvol;
+      case sfield_list::Dvol0  : return Dvol0;
       case sfield_list::w    : return w;
       case sfield_list::w0   : return w0;//  return this->point().weight();
       case sfield_list::s : return s;
@@ -153,6 +154,7 @@ public:
   scalar_field vol;
   scalar_field Dvol;
   scalar_field vol0;
+  scalar_field Dvol0;
 
   vector_field U;
   vector_field U0;

@@ -74,6 +74,7 @@ add_executable( pPart
 		fields.cpp
 		linear_p_equation.cpp
 		linear_p_equation_from_s.cpp
+		linear_add_grad_p.cpp
 		linear_w_equation.cpp
 		linear_w_equation2.cpp
 		linear_w_equation3.cpp

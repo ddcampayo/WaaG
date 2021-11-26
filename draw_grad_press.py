@@ -33,7 +33,9 @@ gradp_y =dt[:,13]
 #p = 0.5*omega**2 * w
 
 r     = np.sqrt(       x**2 +        y**2 )
-gradp = np.sqrt( gradp_x**2 +  gradp_y**2 )
+
+# radial:
+gradp = ( gradp_x * x +  gradp_y * y ) / r
 
 plt.plot( r , gradp , 'o' )
 

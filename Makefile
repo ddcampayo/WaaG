@@ -249,6 +249,30 @@ linear_DD_scalar_prod.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_DD_scalar_prod.cpp.s
 .PHONY : linear_DD_scalar_prod.cpp.s
 
+linear_add_grad_p.o: linear_add_grad_p.cpp.o
+.PHONY : linear_add_grad_p.o
+
+# target to build an object file
+linear_add_grad_p.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_add_grad_p.cpp.o
+.PHONY : linear_add_grad_p.cpp.o
+
+linear_add_grad_p.i: linear_add_grad_p.cpp.i
+.PHONY : linear_add_grad_p.i
+
+# target to preprocess a source file
+linear_add_grad_p.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_add_grad_p.cpp.i
+.PHONY : linear_add_grad_p.cpp.i
+
+linear_add_grad_p.s: linear_add_grad_p.cpp.s
+.PHONY : linear_add_grad_p.s
+
+# target to generate assembly for a file
+linear_add_grad_p.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pPart.dir/build.make CMakeFiles/pPart.dir/linear_add_grad_p.cpp.s
+.PHONY : linear_add_grad_p.cpp.s
+
 linear_aux.o: linear_aux.cpp.o
 .PHONY : linear_aux.o
 
@@ -705,6 +729,9 @@ help:
 	@echo "... linear_DD_scalar_prod.o"
 	@echo "... linear_DD_scalar_prod.i"
 	@echo "... linear_DD_scalar_prod.s"
+	@echo "... linear_add_grad_p.o"
+	@echo "... linear_add_grad_p.i"
+	@echo "... linear_add_grad_p.s"
 	@echo "... linear_aux.o"
 	@echo "... linear_aux.i"
 	@echo "... linear_aux.s"
