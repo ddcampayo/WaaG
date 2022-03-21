@@ -148,7 +148,11 @@ int main() {
   // FT alpha = beta; // std::sqrt( beta / 2.0) / dt2sq ;
 
 
-  FT spring_to_dt = 70;
+  FT spring_to_dt;
+  cout << "Spring period / dt  = ";
+  cin >> spring_to_dt;
+  cout << endl << spring_to_dt << endl;
+
   FT spring_period = spring_to_dt * dt;
   FT omega = 2 * M_PI /  spring_period ;
   FT beta = 0.5*omega*omega; // factor that appears in the spring force (aka "spring" in other versions)
@@ -262,15 +266,15 @@ int main() {
 
       cout << "adding grads" << endl;
 
-      //      algebra.u_add_press_grad_fem( dt2 );
+      algebra.u_add_press_grad_fem( dt2 );
 
-      algebra.u_add_press_grad_wdot( dt2 ,  beta );
+      //      algebra.u_add_press_grad_wdot( dt2 ,  beta );
 
       cout << "grads added" << endl;
 
       // algebra.u_add_press_grad( dt2 );//2 );
 
-      //      algebra.u_add_spring_force( 2*beta , dt2 ) ; // 1.0 / dt2 );
+      algebra.u_add_spring_force( 2*beta , dt2 ) ; // 1.0 / dt2 );
 
       //  compare in GM:  algebra.u_add_spring_force( spring , dt2 ); 
 

@@ -1,24 +1,19 @@
 // Function to fill the various matrices involved. All of
 // them. May be split in the future
 
-
 // Glossary:
 
 // Delta_ij = d V_i / d w_j   (inf.  change of volume of cell i due to change in weight of cell j)
 
-// DD_ij =  d V_i / d r_j, aka "L"  (inf.  change of volume of cell i due to change in position of cell j)  , a matrix of vectors, thus stored as DD_ij_x and DD_ij_y
+// DD_ij =  d V_i / d r_j, aka "L"  (inf.  change of volume of cell i due to change in position of cell j), a matrix of vectors, thus stored as DD_ij_x and DD_ij_y
 
 // LL = - DD (1/V) DD^t, involved in Ralphson-Newton methods ( notice sign )
 
 // Gamma_ij = d I_i / d w_j , aka "GG"  (inf.  change of moment of inertia of cell i due to change in weight of cell j)
 
-// MM_ij = d I_i / d r_j , aka "N"  (inf.  change of moment of inertia of cell i due to change in position of cell j)
+// MM_ij = d I_i / d r_j , aka "N"  (inf.  change of moment of inertia of cell i due to change in position of cell j), a matrix of vectors, thus stored as MM_ij_x and MM_ij_y
 
-// NN =  - MM (1/V) MM^t, involved in Ralphson-Newton methods
-
-// LN = -  DD (1/V) MM^t, involved in Ralphson-Newton methods
-
-// NL = -  MM (1/V) DD^t, involved in Ralphson-Newton methods
+// More info at the end of this file !!
 
 
 #include"linear.h"
@@ -513,4 +508,46 @@ void linear::fill_Delta_DD( const FT dt ) {
   return;
 
 }
+
+// Related variables :
+
+// aa     ->   Delta  (collector)
+// ddelta ->   aa     (off-diagonal terms,  = dV_i/dw_j =dV_j/dw_i )
+// dd     ->   aa     (diagonal terms,  = dV_i/dw_i)
+
+// gg       ->   GG  (collector)
+// gamma_ij ->   gg  (off-diagonal terms,  = dI_i/dw_j)
+// gamma_ji ->   gg  (off-diagonal terms,  = dI_j/dw_i)
+// dd_g     ->   gg  (diagonal terms,  = dI_i/dw_i)
+
+// ax       ->   DDx (collector)
+// DDij.x() ->   ax  (off-diagonal terms,  = dV_i/dr_j)
+// DDji.x() ->   ax  (off-diagonal terms,  = dV_j/dr_i)
+// dd_x     ->   ax  (diagonal terms,  = dV_i/dr_i)
+
+// ay       ->   DDy (collector) , ... etc ...
+
+// mx       ->   MMx (collector)
+// MMij.x() ->   mx  (off-diagonal terms,  = dI_i/dr_j)
+// MMji.x() ->   mx  (off-diagonal terms,  = dI_j/dr_i)
+// dm_x     ->   mx   (diagonal terms,  = dI_i/dr_i)
+// MMii.x() ->   dm_x (diagonal terms,  = dI_i/dr_i)
+// MMjj.x() ->   dm_x (diagonal terms,  = dI_j/dr_j)
+// spring   ->   dm_x (diagonal terms, spring-like force = int_i  d/dr_i |r-r_i|^2 = 2 V_i (b_i - r_i) )
+
+
+
+
+// Solvers :
+// notice GG solver solves for  u = GG^t  v !
+// notice LL = - DD (1/V) DD^t ( sign! )
+
+
+// Experimental (others are not documented):
+
+// NN =  - MM (1/V) MM^t, involved in Ralphson-Newton methods
+
+// LN = -  DD (1/V) MM^t, involved in Ralphson-Newton methods
+
+// NL = -  MM (1/V) DD^t, involved in Ralphson-Newton methods
 

@@ -3,6 +3,8 @@
 #include"simu.h"
 
 
+// TODO: signs, transposes!!
+
 // Solve for pressure from the s field
 
 void linear::p_equation_from_s( const FT dt ) {
@@ -29,7 +31,7 @@ void linear::p_equation_from_s( const FT dt ) {
 
 void linear::s_equation_from_p( const FT dt ) {
 
-  cout << "Solving pressure equation " << endl;
+  cout << "Solving s equation " << endl;
   
   VectorXd p  = field_to_vctr( sfield_list::p );
 
