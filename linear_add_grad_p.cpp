@@ -13,8 +13,8 @@ void linear::u_add_press_grad( const FT dt ) {
   VectorXd vol  = field_to_vctr( sfield_list::vol );
   // perhaps mean vol would be just fine
 
-  VectorXd gradPx = gradPx.array() / vol.array()  ;
-  VectorXd gradPy = gradPy.array() / vol.array()  ;
+  VectorXd gradPx = VgradPx.array() / vol.array()  ;
+  VectorXd gradPy = VgradPy.array() / vol.array()  ;
 
   vctrs_to_vfield( gradPx , gradPy , vfield_list::gradp );
   
