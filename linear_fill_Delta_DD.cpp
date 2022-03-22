@@ -299,7 +299,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
 
 
-  // include "spring" term in M
+  // include "spring" term in M, dI_i / dr_i = ...  - 2 V_i (b_i - r_i)
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++)  {
@@ -312,9 +312,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     Point ri = fv->point().point();
     Point bi = fv->centroid.val();
 
-    Vector_2 dd = 2 * vol * ( bi - ri ) ;
+    Vector_2 dd = 2 * vol * ( ri - bi ) ;
 
-    // signs ???
     dm_x[ idx ] += dd.x();
     dm_y[ idx ] += dd.y();
 

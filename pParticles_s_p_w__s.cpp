@@ -55,7 +55,6 @@ int main() {
     volumes( T ); 
 
     //    copy_weights( T ) ;
-
     //    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
@@ -155,11 +154,9 @@ int main() {
       //algebra.p_equation_divgrad_div_source( dt2 );
       algebra.p_equation_lapl_div_source(dt);
 
-      algebra.u_add_press_grad( dt );
+      //algebra.u_add_press_grad( dt );
 
-      //      algebra.u_add_grads( dt2 );
-
-      //      algebra.u_add_press_grad( dt );
+      algebra.u_add_grads( dt2 );
 
       if( displ < disp_tol ) break;
  

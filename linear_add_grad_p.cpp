@@ -306,8 +306,8 @@ void linear::u_add_grads( const FT dt ) {
 
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-  VectorXd grad_x = - gradPx + gradsx ;
-  VectorXd grad_y = - gradPy + gradsy ;
+  VectorXd grad_x = -gradPx + gradsx ;
+  VectorXd grad_y = -gradPy + gradsy ;
 
   VectorXd vol  = field_to_vctr( sfield_list::vol );
   // perhaps mean vol would be just fine
