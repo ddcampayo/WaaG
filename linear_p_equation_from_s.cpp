@@ -3,8 +3,6 @@
 #include"simu.h"
 
 
-// TODO: signs, transposes!!
-
 // Solve for pressure from the s field
 
 void linear::p_equation_from_s( const FT dt ) {

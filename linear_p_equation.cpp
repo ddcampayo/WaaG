@@ -14,8 +14,8 @@ void linear::p_equation(const FT dt , const bool ws ) {
   // choose!!
 
   //   p_equation_divgrad_div_source(dt,ws);
-  //   p_equation_lapl_div_source(dt);
-  p_equation_lapl_Dvol_source( dt );
+  p_equation_lapl_div_source(dt);
+  // p_equation_lapl_Dvol_source( dt );
 
   return;
 }

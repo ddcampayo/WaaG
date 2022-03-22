@@ -22,8 +22,12 @@ int main() {
   int inner_max_iters; cin >> inner_max_iters; // = 10; 
   FT  disp_tol; cin >> disp_tol; //  = 1e-6;
 
-  FT total_time =   2 * 3.14 * 0.2 ;
+  const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
+  
+  //  const  FT total_time = turn_time; // once
 
+  const  FT total_time = 2 * turn_time; // twice
+  
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
 
@@ -37,8 +41,10 @@ int main() {
 
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
-
+  volumes( T ); 
   linear algebra( T );
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
 
   // Init loop!
 
@@ -59,6 +65,13 @@ int main() {
 
   }
 
+  volumes( T ); 
+
+  algebra.copy( sfield_list::vol,  sfield_list::vol0);
+  algebra.copy( sfield_list::I,  sfield_list::I0);
+
+  copy_weights( T ) ;
+  
   //  copy_weights( T ) ;
 
   cout << "Init loop converged in " << init_iter << " steps " << endl;
@@ -80,7 +93,6 @@ int main() {
   // half-step leapfrog
   //  FT dt2 = dt / 2.0 ;
 
-  // whole step
   FT dt2 = dt / 2.0 ;
 
   //  algebra.solve_for_weights();
@@ -91,6 +103,7 @@ int main() {
   
   std::ofstream log_file;
   log_file.open("main.log");
+  log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
 
   do {
     simu.next_step();
@@ -104,8 +117,8 @@ int main() {
 
     //   displ = move( T , dt2 , d0 );
 
-    algebra.reset_s();
-    algebra.reset_p();
+    //    algebra.reset_s();
+    //   algebra.reset_p();
 
     algebra.u_star( );
  
@@ -115,40 +128,38 @@ int main() {
         
     for ( ; in_iter <= inner_max_iters ; in_iter++) {
 
-      displ = move( T , dt , d0 );
+      displ = move( T , dt2 , d0 );
+
+      cout
+	<< "********" << endl
+	<< "Iter  " << in_iter
+	<< " . Moved from previous (rel.): " << displ <<
+	" ; from original (rel.): " << d0
+	<< endl ;
 
       volumes( T ); 
 
       algebra.fill_Delta_DD();
 
       //      algebra.solve_for_weights();
-      algebra.solve_for_moments();
+      //      algebra.solve_for_moments();
+      //      copy_weights( T ) ;
+      //      volumes( T ); 
+      //      algebra.fill_Delta_DD();
 
-      copy_weights( T ) ;
+      algebra.s_equation_from_p( dt2 );
 
-      volumes( T ); 
-
-      algebra.fill_Delta_DD();
-
-      algebra.s_equation_from_p( dt );
-
-      algebra.p_equation_s( dt );	
+      //      algebra.p_equation_s( dt );	
     
-//      algebra.p_equation( dt );
+      //algebra.p_equation( dt );
+      //algebra.p_equation_divgrad_div_source( dt2 );
+      algebra.p_equation_lapl_div_source(dt);
 
-      //      algebra.u_add_s_grad( dt );
+      algebra.u_add_press_grad( dt );
 
-      algebra.u_add_grads( dt2 );
+      //      algebra.u_add_grads( dt2 );
 
       //      algebra.u_add_press_grad( dt );
-
-      cout
-	<< "********" << endl
-	<< "Inner Iter  " << in_iter
-	<< " . Moved from previous (rel.): " << displ <<
-	" ; from original (rel.): " << d0
-	<< endl ;
-	
 
       if( displ < disp_tol ) break;
  
@@ -161,15 +172,17 @@ int main() {
 
 //    algebra.u_add_press_grad( dt );
 
-//    displ = move( T , dt , d0 );
+    displ = move( T , dt , d0 );
 
-    algebra.u_add_grads( dt );
+    update_half_velocity( T );
 
+    volumes( T ); 
+    
     cout
       << "Whole step  "
       << " : disp " << displ << endl ;
 
-    volumes( T ); 
+
 
     // half-step:
 //    update_full_vel( T );
@@ -177,15 +190,14 @@ int main() {
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );
 
+    
     log_file
-      << simu.current_step() << " t=   "
+      << simu.current_step() << "  "
       << simu.time() << "  "
-      << simu.time()/total_time << " % "
-      << " iters = " << in_iter
-      << " T =  " << kinetic_E(T)
-      << " L2_vel =  " << L2_vel_Gresho(T)
+      << in_iter-1 << " "
+      << kinetic_E(T) << " "
+      << L2_vel_Gresho(T) << " "
       << endl ;
-
 
   } while ( simu.time() < total_time );
 

@@ -56,6 +56,7 @@ for time in times:
 #    vx=dt[:,5]; vym=dt[:,6];
 
     p=dt[:,9]
+    s=dt[:,10]
 
     # Gallouet & Merrigot
 #    p = 0.5*omega**2 * w
@@ -70,8 +71,8 @@ for time in times:
     p -= p[ rm ] #  np.min( p )
 
     
-    I=dt[:,11];  #  I
-    d2=dt[:,12];  #  I
+#    I=dt[:,11];  #  I
+#    d2=dt[:,12];  #  d2
 #    om=dt[:,13];  #  ang velocity
 
 #    I=dt[:,14];  #  eccentricity
@@ -82,7 +83,8 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 10, c=p )
+#    plt.scatter( x , y , 10, c=p )
+    plt.scatter( x , y , 10, c=s )
 #    plt.scatter( x , y , 80, c= vol , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )
 #    plt.scatter( x , y , 10, c=I )

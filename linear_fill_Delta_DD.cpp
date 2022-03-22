@@ -230,7 +230,7 @@ void linear::fill_Delta_DD( const FT dt ) {
     if (i >= 0 ) {
       dd[ i ]  -= ddelta;
 
-      dd_g[ i ]  -= gamma_ji ;
+      dd_g[ i ]  -= gamma_ij ; // NOT gamma_ji (I think)
 
       dd_e[ i ]  -= Eij ;
       
@@ -259,7 +259,7 @@ void linear::fill_Delta_DD( const FT dt ) {
     if (j >= 0 ) {
       dd[ j ]  -= ddelta;
 
-      dd_g[ j ]  -= gamma_ij ;
+      dd_g[ j ]  -= gamma_ji ;
 
       dd_e[ j ]  -= Eji ;
 

@@ -97,7 +97,8 @@ add_executable( pPart
 #		pParticles_GM.cpp
 #		pParticles_s_p_w.cpp
 #		pParticles_p_om.cpp
-		pParticles_p_wdot.cpp
+#		pParticles_p_wdot.cpp
+		pParticles_s_p_w__s.cpp
 )
 
 
