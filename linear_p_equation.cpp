@@ -211,21 +211,26 @@ void linear::p_equation_divgrad_Dvol_source(const FT dt , const bool ws ) {
 
 void linear::p_equation_s(const FT dt ) {
 
-  cout << "Solving pressure equation " << endl;
+  cout << "Solving pressure equation with s term" << endl;
   
   FT ddt = dt;
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
-  VectorXd p;
 
   VectorXd s  = field_to_vctr( sfield_list::s );
 
   VectorXd LNs = LN * s;
 
-  p =  LL_solver.solve( divUstar / dt + LNs );
+  VectorXd p =  Delta_solver.solve( divUstar / ddt + LNs );
+  // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
+
+  vctr_to_field( -0.5 * p ,  sfield_list::p ) ;
+
   
-  vctr_to_field( p ,  sfield_list::p ) ;
+  //VectorXd  p =  LL_solver.solve( divUstar / dt + LNs );
+  
+  //  vctr_to_field( p ,  sfield_list::p ) ;
 
   return;
 }

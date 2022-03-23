@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
+import matplotlib
+#matplotlib.use('GTK3Agg')
+matplotlib.use('Cairo')
 import numpy as np
 #import matplotlib.cm as cm
 #from matplotlib.colors import Normalize
@@ -16,7 +19,7 @@ import glob
 if(len(sys.argv) == 1) :
     init_t = 0
 else:
-    init_t = int( sys.argv[1] )
+    init_t = float( sys.argv[1] )
 
 #import pylab as pl
 

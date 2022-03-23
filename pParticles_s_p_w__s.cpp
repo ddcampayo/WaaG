@@ -148,13 +148,13 @@ int main() {
 
       algebra.s_equation_from_p( dt2 );
 
-      //      algebra.p_equation_s( dt );	
-    
+      //algebra.p_equation_s( dt );
+      
       //algebra.p_equation( dt );
       //algebra.p_equation_divgrad_div_source( dt2 );
-      algebra.p_equation_lapl_div_source(dt);
+      algebra.p_equation_lapl_div_source( dt );
 
-      //algebra.u_add_press_grad( dt );
+      //      algebra.u_add_press_grad( dt2 );
 
       algebra.u_add_grads( dt2 );
 
