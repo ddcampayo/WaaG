@@ -95,6 +95,7 @@ add_executable( pPart
 #		pParticles_s.cpp
 #		pParticles_s_p.cpp
 #		pParticles_GM.cpp
+#		pParticles_GM_improved_3.cpp
 #		pParticles_s_p_w.cpp
 #		pParticles_p_om.cpp
 #		pParticles_p_wdot.cpp

@@ -15,7 +15,7 @@ sim_data simu;
 
 int main() {
   
-  const int init_iters = 200;
+  const int init_iters = 20;
   const FT  init_tol2 = 1e-6;
 
   const int inner_iters= 10;
@@ -129,6 +129,8 @@ int main() {
 
       displ = move( T , dt2 , d0 );
 
+      algebra.u_star( );
+
       cout
 	<< "********" << endl
 	<< "Iter  " << iter
@@ -136,29 +138,33 @@ int main() {
 	" ; from original (rel.): " << d0
       << endl ;
 
-      algebra.solve_for_weights();
-
       volumes( T ); 
+      algebra.fill_Delta_DD();
 
       algebra.clear_vfield( vfield_list::gradp );
+
+      algebra.solve_for_weights();
       
+      algebra.u_add_spring_force( spring , dt2 );
+
+      algebra.p_equation_lapl_div_source_fem( dt2 );
+
+      algebra.u_add_press_grad_fem( dt2 );
+
       //      algebra.fill_Delta_DD();
 
     // pressure proportional to weights: p = 1/2 spring w
-      algebra.copy( 0.5 * spring ,  sfield_list::w ,  sfield_list::p);
+      //      algebra.copy( 0.5 * spring ,  sfield_list::w ,  sfield_list::p);
 
     //  copy_weights( T ) ;
     //  volumes( T );
 
-      algebra.u_add_spring_force( spring , dt2 );
+
+      //      algebra.copy( vfield_list::Ustar ,  vfield_list::U );
+
       algebra.copy( vfield_list::Ustar ,  vfield_list::U );
-
-      //      algebra.p_equation_lapl_div_source_fem( dt2 );
-
-      //     algebra.u_add_press_grad_fem( dt2 );
-    
+      
       if( displ < inner_tol ) break;
-
     }
 
     displ = move( T , dt , d0 );

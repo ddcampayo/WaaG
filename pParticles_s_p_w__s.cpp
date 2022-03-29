@@ -129,6 +129,8 @@ int main() {
 
       displ = move( T , dt2 , d0 );
 
+      algebra.u_star( );
+
       cout
 	<< "********" << endl
 	<< "Iter  " << in_iter
@@ -141,22 +143,29 @@ int main() {
       algebra.fill_Delta_DD();
 
       //      algebra.solve_for_weights();
-      //      algebra.solve_for_moments();
-      //      copy_weights( T ) ;
-      //      volumes( T ); 
-      //      algebra.fill_Delta_DD();
 
-      algebra.s_equation_from_p( dt2 );
+      //algebra.solve_for_moments();
+      //copy_weights( T ) ;
+      //volumes( T ); 
+      //algebra.fill_Delta_DD();
+
+      algebra.clear_vfield( vfield_list::gradp );
 
       //algebra.p_equation_s( dt );
       
       //algebra.p_equation( dt );
       //algebra.p_equation_divgrad_div_source( dt2 );
-      algebra.p_equation_lapl_div_source( dt );
 
-      //      algebra.u_add_press_grad( dt2 );
+      algebra.s_equation_from_p( 1 );
 
-      algebra.u_add_grads( dt2 );
+      algebra.u_add_s_grad( dt2 );
+
+      algebra.p_equation_lapl_div_source( dt2 );
+
+      //algebra.u_add_grads( dt2 );
+      
+      algebra.u_add_press_grad( dt2 );
+      algebra.copy( vfield_list::Ustar ,  vfield_list::U );
 
       if( displ < disp_tol ) break;
  

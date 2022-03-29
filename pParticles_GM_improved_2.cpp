@@ -148,7 +148,7 @@ int main() {
     //  copy_weights( T ) ;
     //  volumes( T );
  
-      algebra.u_add_spring_force( spring*dt2 );
+      algebra.u_add_spring_force( spring , dt2 );
 
       algebra.copy( vfield_list::Ustar ,  vfield_list::U );
 

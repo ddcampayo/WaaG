@@ -35,7 +35,7 @@ void linear::u_add_press_grad( const FT dt ) {
   U_x = Ustar_x - ddt * gradPx;
   U_y = Ustar_y - ddt * gradPy;
   
-  vctrs_to_vfield( U_x, U_y , vfield_list::U );
+  vctrs_to_vfield( U_x, U_y , vfield_list::Ustar );
 
 }
 
@@ -307,11 +307,11 @@ void linear::u_add_grads( const FT dt ) {
   FT ddt = dt;
 //  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
 // standard sign for s:
-//  VectorXd grad_x = -gradPx + gradsx ;
-//  VectorXd grad_y = -gradPy + gradsy ;
+  VectorXd grad_x = -gradPx + gradsx ;
+  VectorXd grad_y = -gradPy + gradsy ;
 // alternative sign for s:
-  VectorXd grad_x = -gradPx - gradsx ;
-  VectorXd grad_y = -gradPy - gradsy ;
+//  VectorXd grad_x = -gradPx - gradsx ;
+//  VectorXd grad_y = -gradPy - gradsy ;
 
   VectorXd vol  = field_to_vctr( sfield_list::vol );
   // perhaps mean vol would be just fine
@@ -323,6 +323,32 @@ void linear::u_add_grads( const FT dt ) {
 
 }
 
+
+// Not a "gradient" at all, but named so in parallel with the p
+// counterpart
+void linear::u_add_s_grad( const FT dt ) {
+
+  VectorXd gradsx,gradsy;
+
+  MM_times_sfield( sfield_list::s  ,  gradsx, gradsy);
+
+  VectorXd vol  = field_to_vctr( sfield_list::vol );
+
+  VectorXd Ustar_x, Ustar_y;
+
+  vfield_to_vctrs(  vfield_list::Ustar , Ustar_x, Ustar_y );
+
+  VectorXd U_x, U_y;
+
+  FT ddt = dt;
+//  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+
+  U_x = Ustar_x.array() + ddt * gradsx.array() / vol.array()  ;
+  U_y = Ustar_y.array() + ddt * gradsy.array() / vol.array() ;
+
+  vctrs_to_vfield( U_x, U_y , vfield_list::Ustar );
+
+}
 
 
 

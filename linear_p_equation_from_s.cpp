@@ -39,7 +39,11 @@ void linear::s_equation_from_p( const FT dt ) {
 
   s =  GG_solver.solve( Delta_p );
 
-  vctr_to_field( s  ,  sfield_list::s ) ;
+  // offset:
+  //  FT s_min = s.minCoeff(); 
+  //  s = s.array() - s_min;
+
+  vctr_to_field( s ,  sfield_list::s ) ;
 
   return;
 }

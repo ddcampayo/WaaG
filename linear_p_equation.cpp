@@ -34,6 +34,9 @@ void linear::p_equation_lapl_div_source(const FT dt ){
   
   VectorXd divUstar  =  DD_scalar_vfield( vfield_list::Ustar );
   VectorXd p =  Delta_solver.solve( divUstar );
+
+  //  VectorXd p =  Delta0_solver.solve( divUstar );
+
   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
   vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
@@ -54,9 +57,12 @@ void linear::p_equation_lapl_div_source_fem(const FT dt ){
 
   
   VectorXd divUstar  =  DD_scalar_vfield_fem( vfield_list::Ustar );
-  VectorXd p =  Delta_solver.solve( divUstar );
+  VectorXd p =  Delta0_solver.solve( divUstar );
+  vctr_to_field( p / ddt ,  sfield_list::p ) ;
+
+  //VectorXd p =  Delta_solver.solve( divUstar );
   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
-  vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+  //vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
 
   return;
 }
@@ -107,10 +113,12 @@ void linear::p_equation_lapl_Dvol_source_fem(const FT dt ){
 
   VectorXd Dvol = vol.array() - vol0.array()  ;
 
-  VectorXd Dp =  Delta_solver.solve( Dvol );
+  VectorXd Dp =  Delta0_solver.solve( Dvol );
+  vctr_to_field(  Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
+  //  VectorXd Dp =  Delta_solver.solve( Dvol );  
   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
-  vctr_to_field( -0.5 * Dp / ( ddt * ddt) , sfield_list::p  ) ;
+  //  vctr_to_field( -0.5 * Dp / ( ddt * ddt) , sfield_list::p  ) ;
 
   
   return;
@@ -222,7 +230,9 @@ void linear::p_equation_s(const FT dt ) {
 
   VectorXd LNs = LN * s;
 
-  VectorXd p =  Delta_solver.solve( divUstar / ddt + LNs );
+  //  VectorXd p =  Delta_solver.solve( divUstar / ddt + LNs );
+  VectorXd p =  Delta0_solver.solve( divUstar / ddt + LNs );
+
   // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
 
   vctr_to_field( -0.5 * p ,  sfield_list::p ) ;

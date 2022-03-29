@@ -26,13 +26,13 @@ void linear::fill_Delta_DD( const FT dt ) {
   //  int n=simu.no_of_points();
 
   std::vector<triplet>
-    aa, ax, ay, mx, my,
+    aa, aa0 ,ax, ay, mx, my,
     ax_fem, ay_fem,
     ee ,
     gg ; // , bb ;            // list of non-zeros coefficients
 
   typedef std::map<int,FT> diag_map;
-  diag_map   dd; // diagonal
+  diag_map   dd, dd0; // diagonal
   diag_map   dd_g;
   diag_map   dd_e;
   diag_map   dd_x, dd_y;
@@ -51,6 +51,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     //   #ifdef FEM
 
     Vector_2 DDij_fem, DDji_fem ;
+
+    FT ddelta0;  // Voronoi ddelta (regardless of weights!!!)
 
     {
       int i3 = i0 ;
@@ -80,6 +82,28 @@ void linear::fill_Delta_DD( const FT dt ) {
 
       DDij_fem = v_3p_3_perp / 6.0 ;
       DDji_fem = -DDij_fem ;
+
+      Vertex_handle v2 = f->vertex( (i3+2) % 3);
+      Point p2 = v2->point().point() ;
+
+      Point p0 = p3;
+
+      FT ll0= CGAL::squared_distance( p1 , p2 );
+      FT ll1= CGAL::squared_distance( p2 , p0 );
+      FT ll2= CGAL::squared_distance( p0 , p1 );
+
+      FT area = CGAL::area(p0, p1, p2) ; // std::fabs( tr.area() );
+
+      Point p0p = p3p;
+      FT ll1p= CGAL::squared_distance( p0p , p2 );
+      FT ll2p= CGAL::squared_distance( p1  , p0p );
+
+      FT areap = CGAL::area(p0p, p2, p1) ;
+      
+      ddelta0 =
+	( ll1  + ll2  - ll0 ) / ( 8 * area  )+
+	( ll1p + ll2p - ll0 ) / ( 8 * areap );
+
     }
     
     // #endif
@@ -87,6 +111,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     Vertex_handle vi = f->vertex( (i0+1) % 3);
     Vertex_handle vj = f->vertex( (i0+2) % 3);
 
+    // equiv. v1 and v2 before !
+    
     int i = vi->idx();
     int j = vj->idx();
 
@@ -199,6 +225,9 @@ void linear::fill_Delta_DD( const FT dt ) {
       aa.push_back( triplet( i, j,  ddelta ));
       aa.push_back( triplet( j, i,  ddelta ));
 
+      aa0.push_back( triplet( i, j,  ddelta0 ));
+      aa0.push_back( triplet( j, i,  ddelta0 ));
+      
       gg.push_back( triplet( i, j,  gamma_ij ));
       gg.push_back( triplet( j, i,  gamma_ji ));
 
@@ -229,6 +258,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     if (i >= 0 ) {
       dd[ i ]  -= ddelta;
+      dd0[ i ]  -= ddelta0;
 
       dd_g[ i ]  -= gamma_ij ; // NOT gamma_ji (I think)
 
@@ -258,6 +288,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     if (j >= 0 ) {
       dd[ j ]  -= ddelta;
+      dd0[ j ]  -= ddelta0;
 
       dd_g[ j ]  -= gamma_ji ;
 
@@ -331,6 +362,12 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   }
 
+  for( auto it : dd0 ) {
+    int i = it.first;
+    FT diag = it.second;
+    aa0.push_back( triplet( i, i,  diag ));
+  }
+
 
   for( auto it : dd_g ) {
     int i = it.first;
@@ -392,6 +429,9 @@ void linear::fill_Delta_DD( const FT dt ) {
   Delta.setFromTriplets(aa.begin(), aa.end());
   // std::cout << " Filled Delta  matrix" << std::endl;
   // cout << "matrix size " << Delta.rows() << " times " << Delta.cols() << endl;
+
+  Delta0.resize( N , N );
+  Delta0.setFromTriplets(aa0.begin(), aa0.end());
 
   GG.resize( N , N );
   GG.setFromTriplets(gg.begin(), gg.end());
@@ -463,7 +503,7 @@ void linear::fill_Delta_DD( const FT dt ) {
 
   // special.-  experimental
 
-  if( dt > 1e-8) Delta -= dt*dt*LL;
+  if( dt > 1e-4) Delta -= dt*dt*LL;
 
   Delta_solver.compute( Delta );
 
@@ -472,6 +512,13 @@ void linear::fill_Delta_DD( const FT dt ) {
       " matrix\n";
   }
 
+  Delta0_solver.compute( Delta0 );
+
+  if(Delta0_solver.info()!=Eigen::Success) {
+    std::cout << "Failure decomposing Delta0 " << //minus 1
+      " matrix\n";
+  }
+  
   GG_solver.compute(  GG.transpose() );
 
   if(GG_solver.info()!=Eigen::Success) {

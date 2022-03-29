@@ -128,8 +128,9 @@ int main() {
 
       //      algebra.s_equation( dt );
 
-      algebra.p_equation( dt );
-
+      //      algebra.p_equation( dt );
+      algebra.p_equation_lapl_div_source( dt );
+      
       //      algebra.u_add_s_grad( dt2 );
       algebra.u_add_press_grad( dt );
       //      algebra.u_add_press_grad_MM_w( dt2 );

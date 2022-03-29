@@ -203,8 +203,6 @@ FT move_from_centroid(Triangulation& T, const FT dt ) {
       fv->U.set( fv->Ustar() );
 
   }
-
-  
   
   vector<data_kept> prev;
 
