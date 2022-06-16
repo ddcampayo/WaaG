@@ -2,10 +2,16 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+
+if(len(sys.argv) == 1) :
+    infile = 'traj.dat'
+else:
+    infile = sys.argv[1]
 
 LL= 1
 
-dt=np.loadtxt( 'traj.dat' )
+dt=np.loadtxt( infile )
 x=dt[:,1]; y=dt[:,2];
 #vol=dt[:,3]
 #w=dt[:,4];
@@ -26,4 +32,5 @@ plt.ylim([-LL/8.0 , LL/8.0 ])
 plt.clim(-1,1)
 plt.colorbar()
 
-plt.savefig( 'traj.png' )
+outfile = infile + '.png'
+plt.savefig( outfile )

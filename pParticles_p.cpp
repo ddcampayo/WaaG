@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 5000;
+  const int init_iters = 1000;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -25,7 +25,7 @@ int main() {
   
   //  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 2 * turn_time; // twice
+  const  FT total_time = 3 * turn_time; // twice
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -135,6 +135,12 @@ int main() {
 
   cin >> dt ;
 
+  FT beta;
+  cout << "Spring beta  = ";
+  cin >> beta;
+  cout << endl << beta << endl;
+
+  
   simu.set_dt( dt );
 
   // half-step (for e.g. leapfrog)
@@ -191,6 +197,8 @@ int main() {
       // frog
       //      displ = move( T , dt2 , d0 );
 
+      algebra.u_star( );
+
       cout
 	<< "********" << endl
 	<< "Iter  " << iter
@@ -219,12 +227,20 @@ int main() {
 
       //frog
 
+      algebra.clear_vfield( vfield_list::gradp );
+
+      //algebra.u_add_fem_force( beta,  dt );
+
+      //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
       algebra.p_equation_divgrad_div_source( dt2 );
+      //      algebra.p_equation_lapl_div_source( dt2 ) ;
 
-      //algebra.p_equation_lapl_div_source( dt2 ) ;
+      //      algebra.p_equation_lapl_div_source_fem( dt2 );
 
-      algebra.u_add_press_grad( dt2 );     //2 );
-      // algebra.u_add_press_grad( dt2 );//2 );
+      // algebra.u_add_press_grad_fem( dt2 );
+      
+      algebra.u_add_press_grad( dt2 );
+
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
       //      algebra.u_add_spring_force( 1.0 / dt );
@@ -234,7 +250,8 @@ int main() {
 
       //      algebra.solve_for_moments();
 
-      
+      algebra.copy( vfield_list::Ustar ,  vfield_list::U );
+            
       if( displ < inner_tol ) break;
 
       ////// testing ...

@@ -170,6 +170,7 @@ public:
   vector_field gradp;
   
   point_field  centroid;
+  vector_field  FEM_disp;
 
   scalar_field s;
   scalar_field I;  // second moment of area

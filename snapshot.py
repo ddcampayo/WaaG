@@ -17,9 +17,11 @@ import glob
 #print "The arguments are: " , str(sys.argv)
 
 if(len(sys.argv) == 1) :
+    all_times = True
     init_t = 0
 else:
-    init_t = float( sys.argv[1] )
+    all_times = False
+    init_t = sys.argv[1]
 
 #import pylab as pl
 
@@ -40,7 +42,10 @@ omega = 2 * np.pi / T_spring
 def by_number(elem):
     return float(elem)
 
-times = sorted(glob.glob('[0-9]*'), key=by_number)
+if all_times:
+    times = sorted(glob.glob('[0-9]*'), key=by_number)
+else:
+    times = [init_t]
 
 for time in times:
 
@@ -86,9 +91,9 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-#    plt.scatter( x , y , 10, c=p )
-    plt.scatter( x , y , 10, c=s )
-#    plt.scatter( x , y , 80, c= vol , vmin=0.0022, vmax=0.0028 )
+    plt.scatter( x , y , 10, c=p )
+#    plt.scatter( x , y , 10, c=s )
+#    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )
 #    plt.scatter( x , y , 10, c=I )
 #    plt.scatter( x , y , 80,  c= I , vmin= 1.02e-6, vmax= 1.06e-6 )
@@ -109,6 +114,7 @@ for time in times:
     plt.xlim([-LL/2.0 , LL/2.0 ])
     plt.ylim([-LL/2.0 , LL/2.0 ])
     plt.colorbar()
+
     #    pl.colorbar(ticks=[0.45,0.55])
 
     

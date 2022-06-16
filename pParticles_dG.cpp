@@ -11,8 +11,8 @@ sim_data simu;
 int main() {
 
   
-  const int init_iters = 200;
-  const FT  init_tol2 = 5e-5;
+  const int init_iters = 1000;
+  const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
@@ -21,7 +21,7 @@ int main() {
   
   //  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 2 * turn_time; // twice
+  const  FT total_time = 3 * turn_time; // twice
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -113,8 +113,11 @@ int main() {
     volumes( T );
 
     algebra.fill_Delta_DD();
-    algebra.p_equation( dt );
+    //    algebra.p_equation( dt );
+    algebra.p_equation_divgrad_div_source( dt );
     algebra.u_add_press_grad( dt );
+
+    algebra.copy( vfield_list::Ustar ,  vfield_list::U );
 
     draw( T , particle_file     );
     draw_diagram( T , diagram_file );

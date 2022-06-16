@@ -21,6 +21,7 @@ void volumes(Triangulation& T) {
     fv->vol.reset();
     fv->Dvol.reset();
     fv->centroid.reset( );
+    fv->FEM_disp.reset( );
     fv->I.reset();
     fv->I_xx.reset();
     fv->I_yy.reset();
@@ -175,6 +176,34 @@ void volumes(Triangulation& T) {
     // vi->centroid =  vi->centroid.val() + ar_i * tri_ctr_v;
     // vj->centroid =  vj->centroid.val() + ar_j * trj_ctr_v;
 
+
+    // FEM center
+
+    Vertex_handle vk = f->vertex( i0 );
+    Point pk = vk->point().point();
+
+    FT area1 = CGAL::area(pi, pj, pk) ; // std::fabs( ??
+
+    Point circum_1=T.dual( f ) ; // This is either p1 or p2, not clear which, so safer to use dual again
+ 
+    vi->FEM_disp = vi->FEM_disp.val() + ( circum_1 - pi ) * area1 / 3.0 ;
+    vj->FEM_disp = vj->FEM_disp.val() + ( circum_1 - pj ) * area1 / 3.0 ;
+
+    Face_handle f2 =  f->neighbor( i0 );
+
+    int jp = f2->index( vi );
+    
+    Vertex_handle vkp = f2->vertex ( ( jp + 1 ) % 3 );
+    Point pkp = vkp->point().point();
+
+    FT area2 = CGAL::area( pi, pkp, pj ) ; // std::fabs( ??
+
+    Point circum_2=T.dual( f2 ) ;
+ 
+    vi->FEM_disp = vi->FEM_disp.val() + ( circum_2 - pi ) * area2 / 3.0 ;
+    vj->FEM_disp = vj->FEM_disp.val() + ( circum_2 - pj ) * area2 / 3.0 ;
+
+    
   }
 
   for(F_v_it fv=T.finite_vertices_begin();

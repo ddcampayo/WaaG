@@ -62,6 +62,7 @@ class linear {
   void u_add_grads( const FT dt ) ;
   void u_add_press_grad_MM_w( const FT dt );
   void u_add_spring_force( const FT k, const FT dt );
+  void u_add_fem_force( const FT k, const FT dt );
   void test_operators( void );
 
   void DD_scalar_vfield(const vfield_list::take from , const sfield_list::take to );

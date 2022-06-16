@@ -62,6 +62,9 @@ void linear::fill_Delta_DD( const FT dt ) {
       Vertex_handle v1 = f->vertex( (i3+1) % 3);
       Point p1 = v1->point().point() ;
 
+      Vertex_handle v2 = f->vertex( (i3+2) % 3);
+      Point p2 = v2->point().point() ;
+
       Vertex_handle v3p = T.mirror_vertex( f , i3 );
       Point p3p = v3p->point().point() ;
 
@@ -81,10 +84,22 @@ void linear::fill_Delta_DD( const FT dt ) {
       // if( ori == CGAL::RIGHT_TURN ) v_3p_3_perp = -v_3p_3_perp;
 
       DDij_fem = v_3p_3_perp / 6.0 ;
-      DDji_fem = -DDij_fem ;
 
-      Vertex_handle v2 = f->vertex( (i3+2) % 3);
-      Point p2 = v2->point().point() ;
+      ///////
+      //experimental: project onto line connecting i and j:
+      // does not seem to work too great, perhaps because ...
+
+      // Vector_2 e12 = p2 - p1; // == eij later
+
+      // FT l12_2 =  e12.squared_length() ;
+      
+      // DDij_fem = ( ( DDij_fem * e12 ) / l12_2 ) * e12;
+
+      ///////
+
+      // ... interaction respects 3rd law
+      
+      DDji_fem = -DDij_fem ;
 
       Point p0 = p3;
 
@@ -156,6 +171,9 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    //experimental
     //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
     //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
+    //experimental, equivalent: project onto line connecting i and j:
+    DDij = ( (DDij*eij) / lij2 ) * eij;
+    DDji = ( (DDji*eij) / lij2 ) * eij;
     //#endif
     
     // dd**2
