@@ -108,7 +108,7 @@ void linear::u_add_fem_force( const FT k , const FT dt ) {
     disp_y( idx_vals_y[nn].first ) = idx_vals_y[nn].second;
   }
 
-  VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
+  VectorXd vol  = field_to_vctr( sfield_list::Dvol ) ;
 
   VectorXd f_x = k * disp_x.array() / vol.array()  ;
   VectorXd f_y = k * disp_y.array() / vol.array()  ;
