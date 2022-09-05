@@ -21,8 +21,8 @@ void create(Triangulation& T, const FT& LL) {
   points.reserve(N);
   cout << N << " particles to be placed on square lattice" << endl;
 
-  //  FT spacing = LL/FT(Nb+1);
-  FT side    = LL - 2*spacing;
+  FT spacing = LL/FT(Nb);
+  FT side    = LL - spacing;
 
   points_on_square_grid_2(side/2.0, N, std::back_inserter(points),Creator());;
 
@@ -100,7 +100,7 @@ void expand(Triangulation& T, const FT& LL) {
     data.idx = -1;
     Point r0 = fv->point().point(); 
 
-    for( int i=0 ; i<1 ; i++ ) {
+    for( int i=0 ; i<8 ; i++ ) {
       Vector_2 disp = LL * dirs[i];
       Point rr = r0 +  disp; 
 

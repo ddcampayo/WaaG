@@ -30,8 +30,8 @@ FT lloyds(Triangulation& T) {
 
     if(idx < 0 ) {
       
-      data.pos = fv->point().point(); 
-      prev.push_back (data);
+      //data.pos = fv->point().point(); 
+      //prev.push_back (data);
 
       continue;
 
@@ -78,6 +78,8 @@ FT lloyds(Triangulation& T) {
     data->restore(fv);
 
   }
+
+  expand( T , 1.0 );
 
   return dd2;
 }

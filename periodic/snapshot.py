@@ -32,7 +32,7 @@ skip=1
 #path='timings_full/'
 path='./'
 
-LL= 2
+LL= 3
 
 
 T_spring = 10 * 0.005
@@ -61,7 +61,7 @@ for time in times:
     x=dt[:,0]; y=dt[:,1];
     vol=dt[:,3]
     w=dt[:,4];
-#    vx=dt[:,5]; vym=dt[:,6];
+    vx=dt[:,5]; vy=dt[:,6];
 
     p=dt[:,9]
     s=dt[:,10]
@@ -91,7 +91,7 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 10, c=p )
+    plt.scatter( x , y , 10, c= vx )
 #    plt.scatter( x , y , 10, c=s )
 #    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )

@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 1000;
+  const int init_iters = -1;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -74,10 +74,10 @@ int main() {
 
   // simu.next_step();
 
-   draw( T , particle_file     );
-   draw_diagram( T , diagram_file );  
+  //   draw( T , particle_file     );
+  //draw_diagram( T , diagram_file );  
   
-   return 0;
+  //return 0;
 
 
 
@@ -110,7 +110,6 @@ int main() {
 
   }
 
-  
   // volumes( T ); 
   // simu.set_dt( 0 );  
   // draw( T , particle_file     );
