@@ -76,6 +76,8 @@ void create(Triangulation& T, const FT& LL) {
 
 }
 
+
+// call number() first!!
 void expand(Triangulation& T, const FT& LL) {
 
   std::vector<Vector_2> dirs(8);

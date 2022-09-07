@@ -14,6 +14,7 @@ void number(Triangulation& T) {
     if( vit->idx() < 0) continue;
 
     vit->idx.set( idx );
+    vit->idx0.set( idx );
 
     ++idx;
 

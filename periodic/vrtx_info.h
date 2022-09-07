@@ -162,6 +162,7 @@ public:
 
   point_field  r0;
   int_field    idx;
+  int_field    idx0;
   vector_field Dr;
   // FT w() { return this->point().weight(); }
   scalar_field w0;

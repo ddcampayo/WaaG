@@ -1,5 +1,6 @@
 struct data_kept {
   int idx;
+  int idx0;
   Point pos;  // some position
   Point r0;
   weight w, w0;
@@ -22,6 +23,7 @@ struct data_kept {
   
   data_kept(const F_v_it fv) {
     idx = fv->idx();
+    idx0 = fv->idx0();
 
     r0 = fv->r0.val();
 
@@ -55,6 +57,7 @@ struct data_kept {
 
   void restore(Vertex_handle fv) {
     fv->idx.set( idx );
+    fv->idx0.set( idx0 );
 
     fv->r0.set( r0 );
 

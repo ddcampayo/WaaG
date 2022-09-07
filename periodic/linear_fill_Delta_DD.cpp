@@ -239,6 +239,45 @@ void linear::fill_Delta_DD( const FT dt ) {
     FT gamma_ij = ddelta * ( I + r2_ij_i  );
     FT gamma_ji = ddelta * ( I + r2_ij_j  );
 
+
+    //// WORK IN PROGRESS!!
+    if(i >= 0 ) {
+
+      int j0 =  vj->idx0();  // takes care of periodic BCs
+
+      aa.push_back( triplet( i, j,  ddelta ));
+      aa.push_back( triplet( j, i,  ddelta ));
+
+      aa0.push_back( triplet( i, j,  ddelta0 ));
+      aa0.push_back( triplet( j, i,  ddelta0 ));
+      
+      gg.push_back( triplet( i, j,  gamma_ij ));
+      gg.push_back( triplet( j, i,  gamma_ji ));
+
+      ax.push_back( triplet( i, j,  DDij.x() ));
+      ay.push_back( triplet( i, j,  DDij.y() ));
+
+      ax.push_back( triplet( j, i,  DDji.x() ));
+      ay.push_back( triplet( j, i,  DDji.y() ));
+
+      ax_fem.push_back( triplet( i, j,  DDij_fem.x() ));
+      ay_fem.push_back( triplet( i, j,  DDij_fem.y() ));
+
+      ax_fem.push_back( triplet( j, i,  DDji_fem.x() ));
+      ay_fem.push_back( triplet( j, i,  DDji_fem.y() ));
+      
+      mx.push_back( triplet( i, j,  MMij.x() ));
+      my.push_back( triplet( i, j,  MMij.y() ));
+
+      mx.push_back( triplet( j, i,  MMji.x() ));
+      my.push_back( triplet( j, i,  MMji.y() ));
+
+      ee.push_back( triplet( i, j,  Eij ) );
+      ee.push_back( triplet( j, i,  Eji ) );
+      
+    }
+
+    
     if( (i >= 0 ) && ( j >= 0) ) {
       aa.push_back( triplet( i, j,  ddelta ));
       aa.push_back( triplet( j, i,  ddelta ));
