@@ -93,15 +93,13 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
     
     data_kept data(fv);
 
-    if(idx < 0 ) {
-      
-      data.pos = fv->point().point(); 
-
-      prev.push_back (data);
-
+    if(idx < 0 )
       continue;
-
-    }
+      // {
+      // data.pos = fv->point().point(); 
+      // prev.push_back (data);
+      // continue;
+      // }
     
     Vector_2  vel = fv->U();
 
@@ -164,6 +162,8 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
     data->restore(fv);
 
   }
+
+  expand( T , 1.0 );
 
   return dd2;
 }

@@ -168,6 +168,31 @@ FT L2_vel_Gresho( Triangulation& T) {
 }
 
 
+FT field_sin_cos(const FT x,const FT y)  {
+  return std::sin( 2*M_PI * x  ) * std::cos(2* M_PI * y  );
+}
+
+Vector_2 TG_v( const FT x, const FT y)  {
+  return Vector_2( field_sin_cos(x,y) , - field_sin_cos(y,x) );
+}
+
+
+void set_vels_TG(Triangulation& T) {
+
+  for(F_v_it vit=T.finite_vertices_begin();
+      vit != T.finite_vertices_end();
+      vit++) {
+
+    FT x=vit->point().x();
+    FT y=vit->point().y();
+
+    vit->U.set( TG_v( x , y) ) ;
+
+  }
+
+  return;
+}
+
 
 
 

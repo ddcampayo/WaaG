@@ -46,7 +46,7 @@ int main() {
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
   algebra.copy( sfield_list::I,  sfield_list::I0);
 
-  set_vels_Gresho( T );
+  set_vels_TG( T );
 
   
   // // checking volume equalization:
@@ -125,7 +125,7 @@ int main() {
 
   cout << "Init loop converged in " << iter << " steps " << endl;
   
-  set_vels_Gresho( T );
+  set_vels_TG( T );
 
   volumes( T ); 
   algebra.copy( sfield_list::vol,  sfield_list::vol0);

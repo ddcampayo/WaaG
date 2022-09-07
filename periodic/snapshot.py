@@ -74,9 +74,10 @@ for time in times:
 
 #make furthest pressure value 0
 
-    rm = np.argmax(r)
+#    rm = np.argmax(r)
 
-    p -= p[ rm ] #  np.min( p )
+#    p -= p[ rm ] #  np.min( p )
+    p -= np.mean( p )
 
     
 #    I=dt[:,11];  #  I
@@ -91,7 +92,7 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 10, c= vx )
+    plt.scatter( x , y , 10, c= p )
 #    plt.scatter( x , y , 10, c=s )
 #    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )

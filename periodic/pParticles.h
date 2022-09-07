@@ -100,8 +100,10 @@ void update_half_velocity( Triangulation& Tp );
 
 void set_vels_rotating(Triangulation& T);
 void set_vels_Lamb_Oseen(Triangulation& T) ;
-Vector_2 Gresho_v( const FT x, const FT y) ;
 void set_vels_Gresho(Triangulation& T) ;
+Vector_2 Gresho_v( const FT x, const FT y) ;
+void set_vels_TG(Triangulation& T) ;
+Vector_2 TG_v( const FT x, const FT y) ;
 void set_pressure(Triangulation& T) ;
 FT L2_vel_Gresho( Triangulation& T) ;
 FT kinetic_E( Triangulation& T) ;

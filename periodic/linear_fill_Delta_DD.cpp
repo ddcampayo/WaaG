@@ -195,181 +195,77 @@ void linear::fill_Delta_DD( const FT dt ) {
  
     FT I = Aij*Aij/12 ;
     
-    // Voronoi-only:
-    // Vector_2 MMij = Aij / lij * (
-    // 				 ( r2_ij_j +  Aij*Aij / 4 ) * rr_ij_j
-    // 				 - ( Aij*Aij / 12 ) * eij
-    // 				 );
-    // // debug 
-    // // cout
-    // //   << " MMij :  "
-    // //   <<  Aij*Aij / 4  * rr_ij_j - ( Aij*Aij / 12 ) * eij
-    // //   << "  "
-    // //   <<  Aij*Aij / 12  * rr_ij_j + ( Aij*Aij / 6 ) * rr_ij_i_para
-    // //   << endl;
-
-
-    // Vector_2 MMji = Aij / lij * (
-    // 				 ( r2_ij_i +  Aij*Aij / 4 ) * rr_ij_i
-    // 				 + ( Aij*Aij / 12 ) * eij
-    // 				 );
-
-    
-    // General:
-    Vector_2 MMij = Aij / lij * (
-    				 ( r2_ij_i +  I ) * rr_ij_j
-    				 + 2 *I * rr_ij_i_para
-    				 );
-
-    Vector_2 MMji = Aij / lij * (
-    				 ( r2_ij_j +  I ) * rr_ij_i
-    				 + 2* I * rr_ij_j_para
-    				 );
-
-    Vector_2 MMii =-Aij / lij * (
-    				 ( r2_ij_i +  I ) * rr_ij_i
-    				 + 2 * I * rr_ij_i_para
-    				 );
-
-    Vector_2 MMjj =-Aij / lij * (
-    				 ( r2_ij_j +  I ) * rr_ij_j
-    				 + 2 * I * rr_ij_j_para
-    				 );
-
     FT gamma_ij = ddelta * ( I + r2_ij_i  );
     FT gamma_ji = ddelta * ( I + r2_ij_j  );
 
+    if( (i >= 0 ) || ( j >= 0) ) {
 
-    //// WORK IN PROGRESS!!
-    if(i >= 0 ) {
-
-      int j0 =  vj->idx0();  // takes care of periodic BCs
-
-      aa.push_back( triplet( i, j,  ddelta ));
-      aa.push_back( triplet( j, i,  ddelta ));
-
-      aa0.push_back( triplet( i, j,  ddelta0 ));
-      aa0.push_back( triplet( j, i,  ddelta0 ));
+      int i0 =  vi->idx0();  // grabs "mother" if from periodic BCs
+      int j0 =  vj->idx0();  // grabs "mother" if from periodic BCs
       
-      gg.push_back( triplet( i, j,  gamma_ij ));
-      gg.push_back( triplet( j, i,  gamma_ji ));
+      aa.push_back( triplet( i0, j0,  ddelta ));
 
-      ax.push_back( triplet( i, j,  DDij.x() ));
-      ay.push_back( triplet( i, j,  DDij.y() ));
-
-      ax.push_back( triplet( j, i,  DDji.x() ));
-      ay.push_back( triplet( j, i,  DDji.y() ));
-
-      ax_fem.push_back( triplet( i, j,  DDij_fem.x() ));
-      ay_fem.push_back( triplet( i, j,  DDij_fem.y() ));
-
-      ax_fem.push_back( triplet( j, i,  DDji_fem.x() ));
-      ay_fem.push_back( triplet( j, i,  DDji_fem.y() ));
+      aa0.push_back( triplet( i0, j0,  ddelta0 ));
       
-      mx.push_back( triplet( i, j,  MMij.x() ));
-      my.push_back( triplet( i, j,  MMij.y() ));
+      gg.push_back( triplet( i0, j0,  gamma_ij ));
 
-      mx.push_back( triplet( j, i,  MMji.x() ));
-      my.push_back( triplet( j, i,  MMji.y() ));
+      ax.push_back( triplet( i0, j0,  DDij.x() ));
+      ay.push_back( triplet( i0, j0,  DDij.y() ));
 
-      ee.push_back( triplet( i, j,  Eij ) );
-      ee.push_back( triplet( j, i,  Eji ) );
+      ax_fem.push_back( triplet( i0, j0,  DDij_fem.x() ));
+      ay_fem.push_back( triplet( i0, j0,  DDij_fem.y() ));
+
+      aa.push_back( triplet( j0, i0,  ddelta ));
+
+      aa0.push_back( triplet( j0, i0,  ddelta0 ));
       
-    }
+      gg.push_back( triplet( j0, i0,  gamma_ji ));
+
+      ax.push_back( triplet( j0, i0,  DDji.x() ));
+      ay.push_back( triplet( j0, i0,  DDji.y() ));
+
+      ax_fem.push_back( triplet( j0, i0,  DDji_fem.x() ));
+      ay_fem.push_back( triplet( j0, i0,  DDji_fem.y() ));
+      
+      //    }
 
     
-    if( (i >= 0 ) && ( j >= 0) ) {
-      aa.push_back( triplet( i, j,  ddelta ));
-      aa.push_back( triplet( j, i,  ddelta ));
-
-      aa0.push_back( triplet( i, j,  ddelta0 ));
-      aa0.push_back( triplet( j, i,  ddelta0 ));
-      
-      gg.push_back( triplet( i, j,  gamma_ij ));
-      gg.push_back( triplet( j, i,  gamma_ji ));
-
-      ax.push_back( triplet( i, j,  DDij.x() ));
-      ay.push_back( triplet( i, j,  DDij.y() ));
-
-      ax.push_back( triplet( j, i,  DDji.x() ));
-      ay.push_back( triplet( j, i,  DDji.y() ));
-
-      ax_fem.push_back( triplet( i, j,  DDij_fem.x() ));
-      ay_fem.push_back( triplet( i, j,  DDij_fem.y() ));
-
-      ax_fem.push_back( triplet( j, i,  DDji_fem.x() ));
-      ay_fem.push_back( triplet( j, i,  DDji_fem.y() ));
-      
-      mx.push_back( triplet( i, j,  MMij.x() ));
-      my.push_back( triplet( i, j,  MMij.y() ));
-
-      mx.push_back( triplet( j, i,  MMji.x() ));
-      my.push_back( triplet( j, i,  MMji.y() ));
-
-      ee.push_back( triplet( i, j,  Eij ) );
-      ee.push_back( triplet( j, i,  Eji ) );
-      
-    }
-
     // diagonal terms
 
-    if (i >= 0 ) {
-      dd[ i ]  -= ddelta;
-      dd0[ i ]  -= ddelta0;
+      //    if (i >= 0 ) {
+      dd[ i0 ]  -= ddelta;
+      dd0[ i0 ]  -= ddelta0;
 
-      dd_g[ i ]  -= gamma_ij ; // NOT gamma_ji (I think)
+      dd_g[ i0 ]  -= gamma_ij ; // NOT gamma_ji (I think)
 
-      dd_e[ i ]  -= Eij ;
-      
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
 
-      dd_x[ i ] -= DDji.x();
-      dd_y[ i ] -= DDji.y();
+      dd_x[ i0 ] -= DDji.x();
+      dd_y[ i0 ] -= DDji.y();
 
-      dd_x_fem[ i ] -= DDji_fem.x();
-      dd_y_fem[ i ] -= DDji_fem.y();
+      dd_x_fem[ i0 ] -= DDji_fem.x();
+      dd_y_fem[ i0 ] -= DDji_fem.y();
       
-
-      // Voronoi-only:
-
-      // dm_x[ i ] -= MMji.x();
-      // dm_y[ i ] -= MMji.y();
-      
-      // General:
-      
-      dm_x[ i ] += MMii.x();
-      dm_y[ i ] += MMii.y();
  
-    }
+      //    }
 
-    if (j >= 0 ) {
-      dd[ j ]  -= ddelta;
-      dd0[ j ]  -= ddelta0;
+      //    if (j >= 0 ) {
+      dd[ j0 ]  -= ddelta;
+      dd0[ j0 ]  -= ddelta0;
 
-      dd_g[ j ]  -= gamma_ji ;
-
-      dd_e[ j ]  -= Eji ;
+      dd_g[ j0 ]  -= gamma_ji ;
 
 //      dd_x[ j ] -= DDji.x();
 //      dd_y[ j ] -= DDji.y();
 
-      dd_x[ j ] -= DDij.x();
-      dd_y[ j ] -= DDij.y();
+      dd_x[ j0 ] -= DDij.x();
+      dd_y[ j0 ] -= DDij.y();
 
-      dd_x_fem[ j ] -= DDij_fem.x();
-      dd_y_fem[ j ] -= DDij_fem.y();
+      dd_x_fem[ j0 ] -= DDij_fem.x();
+      dd_y_fem[ j0 ] -= DDij_fem.y();
 
-      
-      // Voronoi-only:
-
-      // dm_x[ j ] -= MMij.x();
-      // dm_y[ j ] -= MMij.y();
-
-      // General:
-
-      dm_x[ j ] += MMjj.x();
-      dm_y[ j ] += MMjj.y();
+      //    }
 
     }
 
@@ -384,7 +280,6 @@ void linear::fill_Delta_DD( const FT dt ) {
 
     //    cout << i << "  " << j << "  " << ddelta << endl;
   }
-
 
 
   // include "spring" term in M, dI_i / dr_i = ...  - 2 V_i (b_i - r_i)

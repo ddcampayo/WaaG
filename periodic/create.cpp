@@ -9,7 +9,7 @@ void create(Triangulation& T, const FT& LL) {
 
   typedef CGAL::Creator_uniform_2<FT,Point> Creator;
 
-  int Nb = 19; //simu_N_side() ;
+  int Nb = 29; //simu_N_side() ;
 //  int Nb = 49; //simu_N_side() ;
   typedef std::vector<Point> vctP;
   vctP points;
@@ -40,7 +40,7 @@ void create(Triangulation& T, const FT& LL) {
 
       FT x=p.x();    FT y=p.y();
 
-      p+= simu.pert_rel()* Gresho_v( x, y);
+      p+= simu.pert_rel()* TG_v( x, y);
 
       *vv = p;
   
@@ -76,8 +76,6 @@ void create(Triangulation& T, const FT& LL) {
 
 }
 
-
-// call number() first!!
 void expand(Triangulation& T, const FT& LL) {
 
   std::vector<Vector_2> dirs(8);
