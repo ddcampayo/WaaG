@@ -21,7 +21,7 @@ int main() {
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
-  const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
+  const  FT turn_time = 2 ; // two whole turns
   
   //  const  FT total_time = turn_time; // once
 

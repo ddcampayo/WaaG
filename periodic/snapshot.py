@@ -32,7 +32,7 @@ skip=1
 #path='timings_full/'
 path='./'
 
-LL= 3
+LL= 1# 3
 
 
 T_spring = 10 * 0.005
@@ -92,7 +92,7 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 10, c= p )
+    plt.scatter( x , y , 20, c= p )
 #    plt.scatter( x , y , 10, c=s )
 #    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )
