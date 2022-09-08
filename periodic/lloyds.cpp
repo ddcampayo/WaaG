@@ -12,7 +12,7 @@ FT lloyds(Triangulation& T) {
   
   //  copy_weights( T );
 
-  // volumes( T );
+  volumes( T );
 
   //  copy_weights( T );
 
@@ -79,6 +79,8 @@ FT lloyds(Triangulation& T) {
   }
 
   expand( T , 1.0 );
+  volumes( T );
+
 
   return dd2;
 }

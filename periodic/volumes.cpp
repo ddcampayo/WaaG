@@ -103,27 +103,6 @@ void volumes(Triangulation& T) {
       vi->vol +=  ar_i ;
       totalV += ar_i;
 
-      vi->I += ar_i / 6 * 
-	( vi1.squared_length() +
-	  vi2.squared_length() +
-	  vi1 * vi2 );
-
-      vi->I_xx += ar_i / 6 * 
-	( vi1.x() * vi1.x() +
-	  vi2.x() * vi2.x() +
-	  vi1.x() * vi2.x() );
-
-      vi->I_yy += ar_i / 6 * 
-	( vi1.y() * vi1.y() +
-	  vi2.y() * vi2.y() +
-	  vi1.y() * vi2.y() );
-
-      // TODO: orientation is important !
-      vi->I_xy += ar_i / 12 * 
-	( 2*vi1.x() * vi1.y() +
-	  2*vi2.x() * vi2.y() +
-	    vi1.x() * vi2.y() +
-	    vi1.y() * vi2.x() );
 
       FT x_cm = ( p1.x() + p2.x() + pi.x() ) / 3.0;
       FT y_cm = ( p1.y() + p2.y() + pi.y() ) / 3.0;
@@ -140,28 +119,6 @@ void volumes(Triangulation& T) {
       vj->vol +=  ar_j ;
       totalV += ar_j;
       
-      vj->I += ar_j / 6 * 
-	( vj1.squared_length() +
-	  vj2.squared_length() +
-	  vj1 * vj2 );
-
-      vj->I_xx += ar_j / 6 * 
-	( vj1.x() * vj1.x() +
-	  vj2.x() * vj2.x() +
-	  vj1.x() * vj2.x() );
-
-      vj->I_yy += ar_j / 6 * 
-	( vj1.y() * vj1.y() +
-	  vj2.y() * vj2.y() +
-	  vj1.y() * vj2.y() );
-
-      // TODO: orientation is important !
-      vj->I_xy += ar_j / 12 * 
-	( 2*vj1.x() * vj1.y() +
-	  2*vj2.x() * vj2.y() +
-	    vj1.x() * vj2.y() +
-	    vj1.y() * vj2.x() );
-
       FT x_cm = ( p1.x() + p2.x() + pj.x() ) / 3.0;
       FT y_cm = ( p1.y() + p2.y() + pj.y() ) / 3.0;
  

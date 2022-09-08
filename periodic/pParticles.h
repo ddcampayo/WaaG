@@ -106,6 +106,7 @@ void set_vels_TG(Triangulation& T) ;
 Vector_2 TG_v( const FT x, const FT y) ;
 void set_pressure(Triangulation& T) ;
 FT L2_vel_Gresho( Triangulation& T) ;
+FT L2_vel_TG( Triangulation& T) ;
 FT kinetic_E( Triangulation& T) ;
 
 Vector_2 values_at_v(const Triangulation& T , const Point& p0, const vfield_list::take v_field) ;

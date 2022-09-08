@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 1000;
+  const int init_iters = 100;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -34,7 +34,7 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  simu.do_perturb(1e-3);
+  simu.do_perturb(1e-2);
   create( T , 1.0 );
   number( T );
   expand( T , 1.0 );
@@ -79,9 +79,7 @@ int main() {
   //return 0;
 
 
-
-  
-  
+ 
   // // testing .-
   // set_pressure( T );
   // volumes( T );
@@ -114,11 +112,6 @@ int main() {
   // draw( T , particle_file     );
   // draw_diagram( T , diagram_file );  
   // return 0;
-
-  volumes( T ); 
-
-  algebra.copy( sfield_list::vol,  sfield_list::vol0);
-  algebra.copy( sfield_list::I,  sfield_list::I0);
 
   copy_weights( T ) ;
 
@@ -316,7 +309,7 @@ int main() {
       << simu.time() << "  "
       << iter-1 << " "
       << kinetic_E(T) << " "
-      << L2_vel_Gresho(T) << " "
+      << L2_vel_TG(T) << " "
       << endl ;
 
   } while ( simu.time() < total_time );
