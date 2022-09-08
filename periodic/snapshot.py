@@ -71,6 +71,7 @@ for time in times:
 
     
     r = np.sqrt( x**2 + y**2 )
+    v = np.sqrt( vx**2 + vy**2 )
 
 #make furthest pressure value 0
 
@@ -92,7 +93,8 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 20, c= p )
+#    plt.scatter( x , y , 20, c= p )
+    plt.scatter( x , y , 20, c= v )
 #    plt.scatter( x , y , 10, c=s )
 #    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )

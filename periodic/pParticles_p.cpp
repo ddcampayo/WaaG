@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = -1;
+  const int init_iters = 1000;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -48,7 +48,6 @@ int main() {
 
   set_vels_TG( T );
 
-  
   // // checking volume equalization:
 
   // draw( T , particle_file     );

@@ -28,14 +28,13 @@ FT lloyds(Triangulation& T) {
     
     data_kept data(fv);
 
-    if(idx < 0 ) {
-      
+    if(idx < 0 )
+      continue;
+//    {
       //data.pos = fv->point().point(); 
       //prev.push_back (data);
-
-      continue;
-
-    }
+//      continue;
+//    }
 
     Point rnow = fv->point().point(); // current point
 
