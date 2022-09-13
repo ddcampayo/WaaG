@@ -16,16 +16,16 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 1000;
+  const int init_iters = -1;// 100;// 1000;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
-  const  FT turn_time = 2 ; // two whole turns
+  const  FT turn_time = 1 ;
   
-  //  const  FT total_time = turn_time; // once
+  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 3 * turn_time; // twice
+  //  const  FT total_time = 2 * turn_time; // two whole turns
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -35,6 +35,7 @@ int main() {
   cout << "Creating point cloud" << endl;
 
   simu.do_perturb(1e-2);
+  //simu.do_perturb(0);
   create( T , 1.0 );
   number( T );
   expand( T , 1.0 );
@@ -221,17 +222,17 @@ int main() {
 
       algebra.clear_vfield( vfield_list::gradp );
 
-      //algebra.u_add_fem_force( beta,  dt );
+      //      algebra.u_add_fem_force( beta,  dt );
 
       //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
-      algebra.p_equation_divgrad_div_source( dt2 );
+      //      algebra.p_equation_divgrad_div_source( dt2 );
       //      algebra.p_equation_lapl_div_source( dt2 ) ;
 
-      //      algebra.p_equation_lapl_div_source_fem( dt2 );
+      algebra.p_equation_lapl_div_source_fem( dt2 );
 
-      // algebra.u_add_press_grad_fem( dt2 );
+      algebra.u_add_press_grad_fem( dt2 );
       
-      algebra.u_add_press_grad( dt2 );
+      //algebra.u_add_press_grad( dt2 );
 
       // algebra.u_add_spring_force( 1.0 / dt2 );
 

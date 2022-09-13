@@ -32,7 +32,7 @@ skip=1
 #path='timings_full/'
 path='./'
 
-LL=  3
+LL= 1
 
 
 T_spring = 10 * 0.005
@@ -59,6 +59,7 @@ for time in times:
     dt=np.loadtxt( part_file )
  
     x=dt[:,0]; y=dt[:,1];
+    idx=dt[:,2]
     vol=dt[:,3]
     w=dt[:,4];
     vx=dt[:,5]; vy=dt[:,6];
@@ -93,6 +94,7 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
+#    plt.scatter( x , y , 20, c= idx )
     plt.scatter( x , y , 20, c= p )
 #    plt.scatter( x , y , 20, c= vx )
 #    plt.scatter( x , y , 10, c=s )

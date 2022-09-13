@@ -2,7 +2,7 @@ main_data
 << std::setprecision (15) 
 << p.x() << "  "            //  0
 << p.y() << "    "          //  1
-<< vit->idx.val() << "  "   //  2
+<< vit->idx0.val() << "  "   //  2
 << vit->vol.val() << "  "   //  3
 << vit->w() << "  "   //  4
 << vit->U.val() << "  "   //  5, 6

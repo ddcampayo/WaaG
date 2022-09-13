@@ -90,11 +90,11 @@ add_executable( pPart
 #		pParticles_w.cpp
 #		pParticles_ww.cpp
 #		pParticles_d.cpp
-#		pParticles_p.cpp
+		pParticles_p.cpp
 #		pParticles_dG_I_thru_w.cpp
 #		pParticles_s.cpp
 #		pParticles_s_p.cpp
-		pParticles_GM.cpp
+#		pParticles_GM.cpp
 #		pParticles_GM_improved_3.cpp
 #		pParticles_s_p_w.cpp
 #		pParticles_p_om.cpp

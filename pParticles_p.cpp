@@ -16,16 +16,16 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = 100;
+  const int init_iters = -1;// 100;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
   const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
   
-  //  const  FT total_time = turn_time; // once
+  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 3 * turn_time; // twice
+  //  const  FT total_time = 3 * turn_time; // thrice
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");

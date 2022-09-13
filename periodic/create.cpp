@@ -9,7 +9,7 @@ void create(Triangulation& T, const FT& LL) {
 
   typedef CGAL::Creator_uniform_2<FT,Point> Creator;
 
-  int Nb = 10; //40; //simu_N_side() ;
+  int Nb = 20; //40; //simu_N_side() ;
 //  int Nb = 49; //simu_N_side() ;
   typedef std::vector<Point> vctP;
   vctP points;
@@ -33,25 +33,25 @@ void create(Triangulation& T, const FT& LL) {
   
     // perturbation with some velocity field
 
-    for( vctP::iterator vv= points.begin() ;
-	 vv != points.end() ;
-	 vv++) {
-      Point p = *vv;
+    // for( vctP::iterator vv= points.begin() ;
+    // 	 vv != points.end() ;
+    // 	 vv++) {
+    //   Point p = *vv;
 
-      FT x=p.x();    FT y=p.y();
+    //   FT x=p.x();    FT y=p.y();
 
-      p+= simu.pert_rel()* TG_v( x, y);
+    //   p+= simu.pert_rel()* TG_v( x, y);
 
-      *vv = p;
+    //   *vv = p;
   
-    }
-    cout << "each particle perturbed about " << simu.pert_rel()   << endl;
+    // }
+    // cout << "each particle perturbed about " << simu.pert_rel()   << endl;
   // // random perturbation
   
-  //   CGAL::perturb_points_2(
-  // 			   points.begin(), points.end(),
-  // 			   simu.pert_rel()* spacing );
-    //    cout << "each particle perturbed about " << simu.pert_rel()* spacing  << endl;
+    CGAL::perturb_points_2(
+			   points.begin(), points.end(),
+			   simu.pert_rel()* spacing );
+    cout << "each particle perturbed about " << simu.pert_rel()* spacing  << endl;
   }
 
   
@@ -95,6 +95,7 @@ void expand(Triangulation& T, const FT& LL) {
   for(F_v_it fv=T.finite_vertices_begin();
       fv!=T.finite_vertices_end();
       fv++) {
+
     data_kept data(fv);
 
     data.idx = -1;
