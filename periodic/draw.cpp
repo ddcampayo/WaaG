@@ -30,6 +30,8 @@ void draw(Triangulation& T,  const std::string file_name  ) {
       vit != T.finite_vertices_end();
       vit++) {
 
+    if(  vit->idx() < 0  ) continue;
+
     Point p = vit->point().point();
 
     #include"printout.h"

@@ -131,7 +131,7 @@ void linear::fill_Delta_DD( const FT dt ) {
     int i = vi->idx();
     int j = vj->idx();
 
-    //    if( (i < 0 ) || ( j < 0) ) continue;
+    //    if( (i < 0 ) && ( j < 0) ) continue;
     
     CGAL::Object o = T.dual(eit);
 

@@ -230,9 +230,9 @@ int main() {
 
       algebra.p_equation_lapl_div_source_fem( dt2 );
 
-      algebra.u_add_press_grad_fem( dt2 );
+      //      algebra.u_add_press_grad_fem( dt2 );
       
-      //algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad( dt2 );
 
       // algebra.u_add_spring_force( 1.0 / dt2 );
 

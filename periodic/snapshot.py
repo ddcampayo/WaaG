@@ -32,7 +32,7 @@ skip=1
 #path='timings_full/'
 path='./'
 
-LL= 1
+LL= 1.2
 
 
 T_spring = 10 * 0.005
@@ -106,12 +106,12 @@ for time in times:
 #    plt.scatter( x , y , 10, c=om )
 
 #    di = np.loadtxt(path+str(n)+'/diagram.dat')
-    di=np.loadtxt( diag_file )
+#    di=np.loadtxt( diag_file )
 
-    xd=di[:,0]; yd=di[:,1];
+#    xd=di[:,0]; yd=di[:,1];
 
-    for i in range( 0 , xd.size , 2) :
-        plt.plot( [ xd[i] , xd[i+1] ] , [ yd[i] , yd[i+1] ] , c='k')
+#    for i in range( 0 , xd.size , 2) :
+#        plt.plot( [ xd[i] , xd[i+1] ] , [ yd[i] , yd[i+1] ] , c='k')
 
     plt.xlabel(r'$x$')
     plt.ylabel(r'$y$')
@@ -120,8 +120,11 @@ for time in times:
     plt.ylim([-LL/2.0 , LL/2.0 ])
     plt.colorbar()
 
-    plt.grid()
-
+#    plt.grid()
+    plt.axhline( 0.5, linestyle='--', color='r')
+    plt.axhline(-0.5, linestyle='--', color='r')
+    plt.axvline( 0.5, linestyle='--', color='r')
+    plt.axvline(-0.5, linestyle='--', color='r')
     #    pl.colorbar(ticks=[0.45,0.55])
 
     
