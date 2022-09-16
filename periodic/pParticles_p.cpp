@@ -45,7 +45,6 @@ int main() {
   volumes( T ); 
   linear algebra( T );
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
-  algebra.copy( sfield_list::I,  sfield_list::I0);
 
   set_vels_TG( T );
 
@@ -222,17 +221,19 @@ int main() {
 
       algebra.clear_vfield( vfield_list::gradp );
 
-      //      algebra.u_add_fem_force( beta,  dt );
+      algebra.u_add_fem_force( beta,  dt );
 
       //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
+
       //      algebra.p_equation_divgrad_div_source( dt2 );
-      //      algebra.p_equation_lapl_div_source( dt2 ) ;
+
+      //algebra.p_equation_lapl_div_source( dt2 ) ;
 
       algebra.p_equation_lapl_div_source_fem( dt2 );
 
-      //      algebra.u_add_press_grad_fem( dt2 );
+      algebra.u_add_press_grad_fem( dt2 );
       
-      algebra.u_add_press_grad( dt2 );
+      //algebra.u_add_press_grad( dt2 );
 
       // algebra.u_add_spring_force( 1.0 / dt2 );
 

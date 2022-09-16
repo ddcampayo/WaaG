@@ -198,59 +198,54 @@ void linear::fill_Delta_DD( const FT dt ) {
     FT gamma_ij = ddelta * ( I + r2_ij_i  );
     FT gamma_ji = ddelta * ( I + r2_ij_j  );
 
-    if( (i >= 0 ) || ( j >= 0) ) {
+    int ii0 =  vi->idx0();  // grabs "mother" index from periodic BCs
+    int  j0 =  vj->idx0();
 
-      int i0 =  vi->idx0();  // grabs "mother" if from periodic BCs
-      int j0 =  vj->idx0();  // grabs "mother" if from periodic BCs
+    //    if( (i >= 0 ) || ( j >= 0) ) { // at least on of them is in main box
+
+    if(i >= 0 ) { // if in main box, otherwise periodic pairs are counted twice
+
+      aa.push_back( triplet( ii0, j0,  ddelta ) );
+
+      aa0.push_back( triplet( ii0, j0,  ddelta0 ) );
       
-      aa.push_back( triplet( i0, j0,  ddelta ));
+      gg.push_back( triplet( ii0, j0,  gamma_ij ) );
 
-      aa0.push_back( triplet( i0, j0,  ddelta0 ));
-      
-      gg.push_back( triplet( i0, j0,  gamma_ij ));
+      ax.push_back( triplet( ii0, j0,  DDij.x() ) );
+      ay.push_back( triplet( ii0, j0,  DDij.y() ) );
 
-      ax.push_back( triplet( i0, j0,  DDij.x() ));
-      ay.push_back( triplet( i0, j0,  DDij.y() ));
+      ax_fem.push_back( triplet( ii0, j0,  DDij_fem.x() ) );
+      ay_fem.push_back( triplet( ii0, j0,  DDij_fem.y() ) );
 
-      ax_fem.push_back( triplet( i0, j0,  DDij_fem.x() ));
-      ay_fem.push_back( triplet( i0, j0,  DDij_fem.y() ));
+      dd[ ii0 ]  -= ddelta;
+      dd0[ii0 ]  -= ddelta0;
 
-      aa.push_back( triplet( j0, i0,  ddelta ));
-
-      aa0.push_back( triplet( j0, i0,  ddelta0 ));
-      
-      gg.push_back( triplet( j0, i0,  gamma_ji ));
-
-      ax.push_back( triplet( j0, i0,  DDji.x() ));
-      ay.push_back( triplet( j0, i0,  DDji.y() ));
-
-      ax_fem.push_back( triplet( j0, i0,  DDji_fem.x() ));
-      ay_fem.push_back( triplet( j0, i0,  DDji_fem.y() ));
-      
-      //    }
-
-    
-    // diagonal terms
-
-      //    if (i >= 0 ) {
-      dd[ i0 ]  -= ddelta;
-      dd0[ i0 ]  -= ddelta0;
-
-      dd_g[ i0 ]  -= gamma_ij ; // NOT gamma_ji (I think)
+      dd_g[ ii0 ]  -= gamma_ij ; // NOT gamma_ji (I think)
 
 //      dd_x[ i ] -= DDij.x();
 //      dd_y[ i ] -= DDij.y();
 
-      dd_x[ i0 ] -= DDji.x();
-      dd_y[ i0 ] -= DDji.y();
+      dd_x[ ii0 ] -= DDji.x();
+      dd_y[ ii0 ] -= DDji.y();
 
-      dd_x_fem[ i0 ] -= DDji_fem.x();
-      dd_y_fem[ i0 ] -= DDji_fem.y();
+      dd_x_fem[ ii0 ] -= DDji_fem.x();
+      dd_y_fem[ ii0 ] -= DDji_fem.y();
+
+    }
+
+    if( j >= 0) {
+      aa.push_back( triplet( j0, ii0,  ddelta ) );
+
+      aa0.push_back( triplet( j0, ii0,  ddelta0 ) );
       
- 
-      //    }
+      gg.push_back( triplet( j0, ii0,  gamma_ji ) );
 
-      //    if (j >= 0 ) {
+      ax.push_back( triplet( j0, ii0,  DDji.x() ) );
+      ay.push_back( triplet( j0, ii0,  DDji.y() ) );
+
+      ax_fem.push_back( triplet( j0, ii0,  DDji_fem.x() ) );
+      ay_fem.push_back( triplet( j0, ii0,  DDji_fem.y() ) );
+      
       dd[ j0 ]  -= ddelta;
       dd0[ j0 ]  -= ddelta0;
 
@@ -265,8 +260,6 @@ void linear::fill_Delta_DD( const FT dt ) {
       dd_x_fem[ j0 ] -= DDij_fem.x();
       dd_y_fem[ j0 ] -= DDij_fem.y();
 
-      //    }
-
     }
 
     // if( (i!=0) && (j!=0) ) {
@@ -276,7 +269,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     //   ++N;
     // }
 
-    if( i+1 > N ) { N = i+1 ; } // keep maximum
+    if( ii0 + 1 > N ) { N = ii0 + 1 ; } // keep maximum index
+    if(  j0 + 1 > N ) { N =  j0 + 1 ; }
 
     //    cout << i << "  " << j << "  " << ddelta << endl;
   }

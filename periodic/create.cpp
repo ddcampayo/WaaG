@@ -9,8 +9,8 @@ void create(Triangulation& T, const FT& LL) {
 
   typedef CGAL::Creator_uniform_2<FT,Point> Creator;
 
-  int Nb = 20; //40; //simu_N_side() ;
-//  int Nb = 49; //simu_N_side() ;
+  //  int Nb = 20; //simu_N_side() ;
+  int Nb = 49; //simu_N_side() ;
   typedef std::vector<Point> vctP;
   vctP points;
 
@@ -98,6 +98,7 @@ void expand(Triangulation& T, const FT& LL) {
 
     data_kept data(fv);
 
+    data.idx0 = data.idx; // redundant
     data.idx = -1;
     Point r0 = fv->point().point(); 
 

@@ -50,7 +50,7 @@ void backup( Triangulation& T ) {
 }
 
 
-// // now in linear::
+// // now in linear_aux.vpp:
 // void u_star(Triangulation& T) {
 //   for(F_v_it fv=T.finite_vertices_begin();
 //       fv!=T.finite_vertices_end();
@@ -70,6 +70,17 @@ void update_full_vel( Triangulation& T ) {
     Vector_2 Uhalf = fv->U.val();
     fv->U.set(  2 * Uhalf - U0  );
   }
+}
+
+
+FT periodic( FT x , const FT LL= 1 ) {
+  if (x > LL/2.0)
+    return x - LL;
+  else if (x < -LL/2.0)
+    return x + LL;
+
+  return x;
+  
 }
 
 
@@ -156,8 +167,16 @@ FT move(Triangulation& T, const FT dt , FT& dd0 ) {
       data++) {
 
     //    cout << "Inserting back at " << data->pos << endl ;
+
+    // Optional: bring points back to original box
+    Point r = data->pos;
+
+    FT x = periodic( r.x() );
+    FT y = periodic( r.y() );
     
-    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
+    Vertex_handle fv=T.insert( wPoint( Point(x,y) , data->w )  );
+
+    //    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
 
     data->restore(fv);
 
