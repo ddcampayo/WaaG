@@ -54,7 +54,6 @@ void linear::p_equation_lapl_div_source_fem(const FT dt ){
 
   FT ddt = dt;
   if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
-
   
   VectorXd divUstar  =  DD_scalar_vfield_fem( vfield_list::Ustar );
   VectorXd p =  Delta0_solver.solve( divUstar );

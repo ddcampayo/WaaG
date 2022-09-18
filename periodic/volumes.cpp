@@ -52,7 +52,10 @@ void volumes(Triangulation& T) {
     v1->Dvol += area / 3.0;
     v2->Dvol += area / 3.0;
   }
+  // TODO: bring FEM_disp calculation here! It's currently double-counting
+  //  displacements!
 
+  
   //#else
 
   // Volumes, Voronoi cells

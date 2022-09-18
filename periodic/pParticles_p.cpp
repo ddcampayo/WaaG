@@ -23,9 +23,9 @@ int main() {
   const FT  inner_tol  = 1e-5;
   const  FT turn_time = 1 ;
   
-  const  FT total_time = turn_time; // once
+  //  const  FT total_time = turn_time; // once
 
-  //  const  FT total_time = 2 * turn_time; // two whole turns
+  const  FT total_time = 3 * turn_time; // three whole turns
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -221,7 +221,10 @@ int main() {
 
       algebra.clear_vfield( vfield_list::gradp );
 
-      algebra.u_add_fem_force( beta,  dt );
+      algebra.u_add_fem_force( beta,  dt2 );
+
+      // u_star to all boxes: perhaps not needed -- and not working!
+      //      radiate( T );
 
       //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
 

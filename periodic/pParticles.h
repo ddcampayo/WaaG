@@ -86,6 +86,7 @@ void draw_diagram(Triangulation& T,  const std::string file_name  ) ;
 
 void create(Triangulation& Tp, const FT& LL) ;
 void expand(Triangulation& Tp, const FT& LL) ;
+void radiate(Triangulation& Tp) ;
 void volumes(Triangulation& T) ;
 void number(Triangulation& T);
 FT lloyds(Triangulation& T) ;

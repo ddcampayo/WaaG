@@ -6,6 +6,8 @@ struct data_kept {
   weight w, w0;
   FT vol0;
   FT Dvol0;
+  FT vol;
+  FT Dvol;
   Vector_2 Dr;
   Vector_2 U, U0;
   Vector_2 Ustar;
