@@ -48,13 +48,21 @@ void volumes(Triangulation& T) {
 
     FT area = CGAL::area(p0, p1, p2) ; // std::fabs( tr.area() );
 
-    v0->Dvol += area / 3.0;
-    v1->Dvol += area / 3.0;
-    v2->Dvol += area / 3.0;
-  }
-  // TODO: bring FEM_disp calculation here! It's currently double-counting
-  //  displacements!
+    FT Dvol = area / 3.0;
+    
+    v0->Dvol += Dvol;
+    v1->Dvol += Dvol;
+    v2->Dvol += Dvol;
 
+    // FEM center
+
+    Point circum = T.dual( ff ) ; // This is either p1 or p2, not clear which, so safer to use dual again
+
+    v0->FEM_disp = v0->FEM_disp.val() + ( circum - p0 ) * Dvol;
+    v1->FEM_disp = v1->FEM_disp.val() + ( circum - p1 ) * Dvol;
+    v2->FEM_disp = v2->FEM_disp.val() + ( circum - p2 ) * Dvol;
+
+  }
   
   //#else
 
@@ -135,34 +143,6 @@ void volumes(Triangulation& T) {
 
     // vi->centroid =  vi->centroid.val() + ar_i * tri_ctr_v;
     // vj->centroid =  vj->centroid.val() + ar_j * trj_ctr_v;
-
-
-    // FEM center
-
-    Vertex_handle vk = f->vertex( i0 );
-    Point pk = vk->point().point();
-
-    FT area1 = CGAL::area(pi, pj, pk) ; // std::fabs( ??
-
-    Point circum_1=T.dual( f ) ; // This is either p1 or p2, not clear which, so safer to use dual again
- 
-    vi->FEM_disp = vi->FEM_disp.val() + ( circum_1 - pi ) * area1 / 3.0 ;
-    vj->FEM_disp = vj->FEM_disp.val() + ( circum_1 - pj ) * area1 / 3.0 ;
-
-    Face_handle f2 =  f->neighbor( i0 );
-
-    int jp = f2->index( vi );
-    
-    Vertex_handle vkp = f2->vertex ( ( jp + 1 ) % 3 );
-    Point pkp = vkp->point().point();
-
-    FT area2 = CGAL::area( pi, pkp, pj ) ; // std::fabs( ??
-
-    Point circum_2=T.dual( f2 ) ;
- 
-    vi->FEM_disp = vi->FEM_disp.val() + ( circum_2 - pi ) * area2 / 3.0 ;
-    vj->FEM_disp = vj->FEM_disp.val() + ( circum_2 - pj ) * area2 / 3.0 ;
-
     
   }
 

@@ -322,9 +322,9 @@ void move_weights( Triangulation& T )
       fv!=T.finite_vertices_end();
       fv++) {
 
-    //    int idx = fv->idx();
+    int idx = fv->idx();
 
-    //    if(idx < 0 ) continue;
+    if(idx < 0 ) continue;
     
     data_kept data(fv);
 
@@ -354,5 +354,7 @@ void move_weights( Triangulation& T )
     data->restore(fv);
 
   }
+  expand( T , 1.0 );
 
+  return;
 }
