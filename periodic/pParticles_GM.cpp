@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = -1;// 100;// 1000;
+  const int init_iters = 1000;// 100;// 1000;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -34,12 +34,12 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  simu.do_perturb(1e-2);
+  //  simu.do_perturb(1e-2);
   //simu.do_perturb(0);
   create( T , 1.0 );
   number( T );
   expand( T , 1.0 );
-
+  
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
   volumes( T ); 
@@ -56,9 +56,9 @@ int main() {
   
     volumes( T ); 
 
-    //    copy_weights( T ) ;
+    copy_weights( T ) ;
 
-    //    algebra.solve_for_weights();
+    algebra.solve_for_weights();
 
     FT dd = lloyds( T ) ;
 
@@ -66,7 +66,7 @@ int main() {
     if( dd < init_tol2) break;
 
   }
-
+  
   // volumes( T ); 
   // simu.set_dt( 0 );  
   // draw( T , particle_file     );
@@ -146,8 +146,6 @@ int main() {
 
     // frog
     //      displ = move( T , dt2 , d0 );
-
-    algebra.u_star( );
 
     cout
       << "********" << endl

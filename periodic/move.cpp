@@ -257,15 +257,15 @@ FT move_from_centroid(Triangulation& T, const FT dt ) {
     
     data_kept data(fv);
 
-    if(idx < 0 ) {
+    if(idx < 0 ) continue;
       
-      data.pos = fv->point().point(); 
+    //   data.pos = fv->point().point(); 
 
-      prev.push_back (data);
+    //   prev.push_back (data);
 
-      continue;
+    //   continue;
 
-    }
+    // }
     
     Vector_2  vel = fv->U();
 
@@ -301,13 +301,23 @@ FT move_from_centroid(Triangulation& T, const FT dt ) {
       data++) {
 
     //    cout << "Inserting back at " << data->pos << endl ;
+
+    // Optional: bring points back to original box
+    Point r = data->pos;
+
+    FT x = periodic( r.x() );
+    FT y = periodic( r.y() );
     
-    Vertex_handle fv=T.insert(   wPoint( data->pos , data->w )  );
+    Vertex_handle fv=T.insert( wPoint( Point(x,y) , data->w )  );
+
+    //    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
 
     data->restore(fv);
-
+    
   }
 
+  expand( T , 1.0 );
+  
   return dd;
 }
 
@@ -346,14 +356,15 @@ void move_weights( Triangulation& T )
   for(vector<data_kept>::iterator data=prev.begin();
       data!=prev.end();
       data++) {
+   
+    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
 
-    //    cout << "Inserting back at " << data->pos << endl ;
-
-    Vertex_handle fv=T.insert(   wPoint( data->pos , data->w )  );
+    //    Vertex_handle fv=T.insert( wPoint( data->pos , data->w )  );
 
     data->restore(fv);
 
   }
+
   expand( T , 1.0 );
 
   return;

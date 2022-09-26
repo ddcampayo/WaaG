@@ -30,7 +30,7 @@ void draw(Triangulation& T,  const std::string file_name  ) {
       vit != T.finite_vertices_end();
       vit++) {
 
-    //    if(  vit->idx() < 0  ) continue;
+    if(  vit->idx() < 0  ) continue;
 
     Point p = vit->point().point();
 
@@ -77,6 +77,15 @@ void draw_diagram(Triangulation& T,  const std::string file_name  ) {
   for (  F_e_it eit = T.finite_edges_begin() ;
 	 eit !=T.finite_edges_end(); ++eit) {
 
+    Face_handle f =  eit -> first ;
+    int i0 = eit -> second;
+
+    Vertex_handle vi = f->vertex( (i0+1) % 3);
+
+    Vertex_handle vj = f->vertex( (i0+2) % 3);
+
+    if((  vi->idx() < 0) && (  vj->idx() < 0) ) continue;
+    
     CGAL::Object o = T.dual(eit);
 
     const Segment * Vor_segment = CGAL::object_cast<Segment>( &o );

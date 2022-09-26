@@ -1,27 +1,31 @@
 // pParticles
-// Attempt to replicate de Goes  et al.
-// Power Particles: An incompressible fluid solver based on power diagrams
+// no weigths are used, basically
+// Pressure is used in order to enforce incompressibility
+
+// half-step froggy predictor-corrector
 
 #include"pParticles.h"
 #include"linear.h"
 #include"simu.h"
 
+
 sim_data simu;
 
 int main() {
 
+
+  // TODO: read parameter file
   
-  const int init_iters = 1000;
+  const int init_iters = -1; // 100;// 1000;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
   const FT  inner_tol  = 1e-5;
-
-  const  FT turn_time = 2 * M_PI * 0.2 ; // one whole turn
+  const  FT turn_time = 1 ;
   
   //  const  FT total_time = turn_time; // once
 
-  const  FT total_time = 3 * turn_time; // twice
+  const  FT total_time = 3 * turn_time; // three whole turns
   
   const std::string particle_file("particles.dat");
   const std::string diagram_file("diagram.dat");
@@ -30,20 +34,21 @@ int main() {
 
   cout << "Creating point cloud" << endl;
 
-  simu.do_perturb(1e-3);
+  simu.do_perturb(1e-2);
+  //simu.do_perturb(0);
   create( T , 1.0 );
   number( T );
+  expand( T , 1.0 );
 
   //  set_vels_rotating( T );
   //  set_vels_Lamb_Oseen( T );
-
-  volumes( T );
+  volumes( T ); 
   linear algebra( T );
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
-  algebra.copy( sfield_list::I,  sfield_list::I0);
+
+  set_vels_TG( T );
 
   // Init loop!
-
   
   int iter=1;
 
@@ -62,16 +67,21 @@ int main() {
 
   }
 
+  // volumes( T ); 
+  // simu.set_dt( 0 );  
+  // draw( T , particle_file     );
+  // draw_diagram( T , diagram_file );  
+  // return 0;
+
   copy_weights( T ) ;
 
-  set_vels_Gresho( T );
-
-   cout << "Init loop converged in " << iter << " steps " << endl;
+  cout << "Init loop converged in " << iter << " steps " << endl;
   
- 
+  set_vels_TG( T );
+
   volumes( T ); 
   algebra.copy( sfield_list::vol,  sfield_list::vol0);
-
+  
   FT d0;
   FT dt=0.001;
 
@@ -80,10 +90,33 @@ int main() {
   cout << endl << dt << endl;
 
   simu.set_dt( dt );
+  
+  FT spring_to_dt;
+  cout << "Spring period / dt  = ";
+  cin >> spring_to_dt;
+  cout << endl << spring_to_dt << endl;
 
-  draw( T , particle_file);
+  // 31 dt is the value for G&M first simulation,
+  // "Beltrami flow in the square"
+  FT spring_period = spring_to_dt * dt;
+//  FT spring_period = 80 * dt;
+  FT omega = 2 * M_PI /  spring_period ;
+
+  cout << " omega  = " << omega << endl ;
+
+  FT spring = omega*omega; // factor that appears in the spring force
+  
+  // half-step (for e.g. leapfrog)
+  FT dt2 = dt / 2.0 ;
+
+  // whole step
+  // FT dt2 = dt  ;
+
+  //  algebra.solve_for_weights();
+
+  draw( T , particle_file     );
   draw_diagram( T , diagram_file );
-
+  
   std::ofstream log_file;
   log_file.open("main.log");
   log_file << " #  step   time   iters   kin_energy   L2_velocity " << endl;
@@ -93,14 +126,24 @@ int main() {
     simu.advance_time( );
 
     backup( T );
-    int iter=1;
+    
+    //    copy_weights( T ) ;
+    
+    //  volumes( T );
+    //  algebra.fill_Delta();
+
+    //    algebra.reset_s();
+  
+    int iter = 1;
+
+//    algebra.fill_Delta_DD();
 
     volumes( T ); 
 
-    algebra.u_star( );
-
     FT displ = move_from_centroid( T , dt );
 
+    algebra.u_star( );
+    
     cout
       << "********" << endl
       << "Iter  " << iter
@@ -112,6 +155,8 @@ int main() {
     copy_weights( T ) ;
     volumes( T );
 
+    algebra.clear_vfield( vfield_list::gradp );
+    
     algebra.fill_Delta_DD();
     //    algebra.p_equation( dt );
     algebra.p_equation_divgrad_div_source( dt );
@@ -127,9 +172,9 @@ int main() {
       << simu.time() << "  "
       << iter-1 << " "
       << kinetic_E(T) << " "
-      << L2_vel_Gresho(T) << " "
+      << L2_vel_TG(T) << " "
       << endl ;
-    
+
   } while ( simu.time() < total_time );
 
   log_file.close();

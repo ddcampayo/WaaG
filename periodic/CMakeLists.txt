@@ -1,7 +1,7 @@
 # Created by the script cgal_create_CMakeLists
 # This is the CMake script for compiling a set of CGAL applications.
 
-project( pPart_GM )
+project( pPart )
 
 cmake_minimum_required(VERSION 2.8.11)
 
@@ -57,7 +57,7 @@ include_directories( ${CHOLMOD_INCLUDES})
 # Creating entries for target: pPart
 # ############################
 
-add_executable( pPart_GM
+add_executable( pPart
 		create.cpp
 		linear_aux.cpp
 		linear_solve_for_weights.cpp
@@ -75,13 +75,13 @@ add_executable( pPart_GM
 #		linear_stats.cpp
 		lloyds.cpp
 # choice of main file:
-#		pParticles_p.cpp
-		pParticles_GM.cpp
+		pParticles_p.cpp
+		#		pParticles_GM.cpp
 )
 
 
-add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart_GM )
+add_to_cached_list( CGAL_EXECUTABLE_TARGETS pPart )
 
 # Link the executable to CGAL and third-party libraries
-target_link_libraries(pPart_GM   ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
+target_link_libraries(pPart  ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
 

@@ -58,7 +58,6 @@ void linear::solve_for_weights( const FT dt ) {
     cout << "Volumes rel diff: " << diff<< endl;
 
     cout << "   solving for  weights, iter : " << iter << endl;
-
     
     fill_Delta_DD( );
 
@@ -70,7 +69,7 @@ void linear::solve_for_weights( const FT dt ) {
 
     vctr_to_field( w0 + Dw ,  sfield_list::w ) ;
 
-    volumes( T ); // ??
+    volumes( T ); // needed ??
 
     move_weights( T );
 

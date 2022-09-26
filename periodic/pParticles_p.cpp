@@ -221,22 +221,22 @@ int main() {
 
       algebra.clear_vfield( vfield_list::gradp );
 
-      algebra.u_add_fem_force( beta,  dt2 );
+      //algebra.u_add_fem_force( beta,  dt2 );
 
       // u_star to all boxes: perhaps not needed -- and not working!
       //      radiate( T );
 
       //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
 
-      //      algebra.p_equation_divgrad_div_source( dt2 );
+      algebra.p_equation_divgrad_div_source( dt2 );
 
-      //algebra.p_equation_lapl_div_source( dt2 ) ;
+      //      algebra.p_equation_lapl_div_source( dt2 ) ;
 
-      algebra.p_equation_lapl_div_source_fem( dt2 );
+      //algebra.p_equation_lapl_div_source_fem( dt2 );
 
-      algebra.u_add_press_grad_fem( dt2 );
+      //algebra.u_add_press_grad_fem( dt2 );
       
-      //algebra.u_add_press_grad( dt2 );
+      algebra.u_add_press_grad( dt2 );
 
       // algebra.u_add_spring_force( 1.0 / dt2 );
 
