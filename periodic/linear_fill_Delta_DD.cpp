@@ -172,8 +172,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
     //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
     //experimental, equivalent: project onto line connecting i and j:
-    DDij = ( (DDij*eij) / lij2 ) * eij;
-    DDji = ( (DDji*eij) / lij2 ) * eij;
+    //DDij = ( (DDij*eij) / lij2 ) * eij;
+    //DDji = ( (DDji*eij) / lij2 ) * eij;
     //#endif
     
     // dd**2
@@ -413,12 +413,20 @@ void linear::fill_Delta_DD( const FT dt ) {
   VectorXd vol  = field_to_vctr( sfield_list::vol ) ;
   VectorXd inv_vol  = 1.0 / vol.array() ;
 
+  VectorXd Dvol  = field_to_vctr( sfield_list::Dvol ) ;
+  VectorXd inv_Dvol  = 1.0 / Dvol.array() ;
+
 
   // regular.-
    LL =
      - DDx * inv_vol.asDiagonal() * DDx.transpose()
      - DDy * inv_vol.asDiagonal() * DDy.transpose();
 
+   LL_fem =
+     - DDx_fem * inv_Dvol.asDiagonal() * DDx_fem.transpose()
+     - DDy_fem * inv_Dvol.asDiagonal() * DDy_fem.transpose();
+
+   
   // rotation.-
 
 //  VectorXd I  = field_to_vctr( sfield_list::I ) ;

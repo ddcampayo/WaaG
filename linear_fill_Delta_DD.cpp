@@ -172,8 +172,8 @@ void linear::fill_Delta_DD( const FT dt ) {
     //    Vector_2 DDij = Aij / lij * (pj - mij) ; // ( pj - bij);
     //    Vector_2 DDji = Aij / lij * (pi - mij) ; // ( pi - bij);
     //experimental, equivalent: project onto line connecting i and j:
-    DDij = ( (DDij*eij) / lij2 ) * eij;
-    DDji = ( (DDji*eij) / lij2 ) * eij;
+    //DDij = ( (DDij*eij) / lij2 ) * eij;
+    //DDji = ( (DDji*eij) / lij2 ) * eij;
     //#endif
     
     // dd**2

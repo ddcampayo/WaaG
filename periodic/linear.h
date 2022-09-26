@@ -97,9 +97,8 @@ private:
   SpMat Delta;
   SpMat Delta0;
   SpMat GG;
-  SpMat DDx, DDy;
-  SpMat DDx_fem, DDy_fem;
-  SpMat LL;
+  SpMat DDx, DDy, DDx_fem, DDy_fem;
+  SpMat LL, LL_fem;
   SpMat MMx, MMy;
   SpMat NN;
   SpMat LN , NL;
