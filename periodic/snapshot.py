@@ -8,6 +8,8 @@ import numpy as np
 #import matplotlib.cm as cm
 #from matplotlib.colors import Normalize
 
+import sizes
+
 import sys
 import glob
 
@@ -134,5 +136,5 @@ for time in times:
 
     formatted_time = '{:.3f}'.format( float( time ) )
     print( formatted_time )
-    plt.savefig( 'snap'+formatted_time+'.png' )
+    plt.savefig( 'snap'+formatted_time+'.png' , dpi=300, bbox_inches = "tight")
     

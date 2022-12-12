@@ -175,6 +175,7 @@ void linear::fill_Delta_DD( const FT dt ) {
     //DDij = ( (DDij*eij) / lij2 ) * eij;
     //DDji = ( (DDji*eij) / lij2 ) * eij;
     //#endif
+    // works ok, but should be justified!
     
     // dd**2
     FT Eij = Aij / lij * ( vi->dd.val() * rr_ij_i );

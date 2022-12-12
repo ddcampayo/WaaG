@@ -40,6 +40,7 @@ class linear {
   void p_equation(const FT dt , const bool ws = false );
   void p_equation_lapl_div_source(const FT dt );
   void p_equation_lapl_div_source_fem(const FT dt );
+  void p_equation_divgrad_div_source_fem(const FT dt );
   void p_equation_lapl_Dvol_source(const FT dt );
   void p_equation_lapl_Dvol_source_fem(const FT dt );
   void p_equation_divgrad_div_source(const FT dt , const bool  = false );
@@ -123,6 +124,7 @@ private:
   Eigen::SimplicialLDLT<SpMat> EE_solver;
   Eigen::SimplicialLDLT<SpMat> GG_solver;
   Eigen::SimplicialLDLT<SpMat> LL_solver;
+  Eigen::SimplicialLDLT<SpMat> LL_fem_solver;
   Eigen::SimplicialLDLT<SpMat> NN_solver;
 #endif
 #else

@@ -16,7 +16,7 @@ int main() {
 
   // TODO: read parameter file
   
-  const int init_iters = -1;// 100;
+  const int init_iters = 1000;// 100;
   const FT  init_tol2 = 1e-5;
 
   const int inner_iters= 10;
@@ -233,7 +233,7 @@ int main() {
 
       //algebra.p_equation_divgrad_Dvol_source_fem( dt2 );
       algebra.p_equation_divgrad_div_source( dt2 );
-      //      algebra.p_equation_lapl_div_source( dt2 ) ;
+      //algebra.p_equation_lapl_div_source( dt2 ) ;
 
       //      algebra.p_equation_lapl_div_source_fem( dt2 );
 

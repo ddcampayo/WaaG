@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
+import sizes
+
 if(len(sys.argv) == 1) :
     infile = 'traj.dat'
 else:
@@ -29,8 +31,8 @@ plt.ylabel(r'$y$')
 
 plt.xlim([-LL/8.0 , LL/8.0 ])
 plt.ylim([-LL/8.0 , LL/8.0 ])
-plt.clim(-1,1)
+#plt.clim(-1,1)
 plt.colorbar()
 
 outfile = infile + '.png'
-plt.savefig( outfile )
+plt.savefig( outfile , dpi=300, bbox_inches = "tight")

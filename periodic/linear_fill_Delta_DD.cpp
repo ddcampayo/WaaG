@@ -455,6 +455,13 @@ void linear::fill_Delta_DD( const FT dt ) {
     std::cout << "Failure decomposing LL matrix " << endl;
   }
 
+  LL_fem_solver.compute( LL_fem );
+
+  if( LL_fem_solver.info() != Eigen::Success ) {
+    std::cout << "Failure decomposing LL_fem matrix " << endl;
+  }
+
+  
   // special.-  experimental
 
   if( dt > 1e-4) Delta -= dt*dt*LL;

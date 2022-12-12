@@ -68,6 +68,29 @@ void linear::p_equation_lapl_div_source_fem(const FT dt ){
 
 
 
+void linear::p_equation_divgrad_div_source_fem(const FT dt ){
+
+  cout << "Solving pressure equation " << endl;
+  
+  //  fill_Delta_DD(); // This may be important -- or not
+
+  FT ddt = dt;
+  if( dt < 1e-10 ) ddt = 1;  // for debugging, mainly
+  
+  VectorXd divUstar  =  DD_scalar_vfield_fem( vfield_list::Ustar );
+  VectorXd p =  LL_fem_solver.solve( divUstar );
+  vctr_to_field( p / ddt ,  sfield_list::p ) ;
+
+  //VectorXd p =  Delta_solver.solve( divUstar );
+  // // times (-0.5), because the Laplacian is approximated by -2 Delta / V
+  //vctr_to_field( -0.5 * p / ddt ,  sfield_list::p ) ;
+
+  return;
+}
+
+
+
+
 
 //  Laplacian = - Delta / (2 V), Delta vol as source
 

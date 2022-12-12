@@ -8,6 +8,8 @@ import numpy as np
 #import matplotlib.cm as cm
 #from matplotlib.colors import Normalize
 
+import sizes
+
 import sys
 import glob
 
@@ -91,9 +93,10 @@ for time in times:
     #    plt.plot( r , p , 'o' )
 
     plt.axis('scaled')
-    plt.scatter( x , y , 10, c=p )
+#    plt.scatter( x , y , 10, c=p )
 #    plt.scatter( x , y , 10, c=s )
-#    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 ) # , vmin=0.0022, vmax=0.0028 )
+    plt.scatter( x , y , 20, c= vol)
+#    plt.scatter( x , y , 20, c= vol - 0.000380805861735379 )  # , vmin=0.0022, vmax=0.0028 )
 #    plt.scatter( x , y , 10, c=w )
 #    plt.scatter( x , y , 10, c=I )
 #    plt.scatter( x , y , 80,  c= I , vmin= 1.02e-6, vmax= 1.06e-6 )
@@ -113,6 +116,8 @@ for time in times:
 
     plt.xlim([-LL/2.0 , LL/2.0 ])
     plt.ylim([-LL/2.0 , LL/2.0 ])
+#    plt.clim(0.000,0.0005)
+
     plt.colorbar()
 
     #    pl.colorbar(ticks=[0.45,0.55])
@@ -123,5 +128,4 @@ for time in times:
 
     formatted_time = '{:.3f}'.format( float( time ) )
     print( formatted_time )
-    plt.savefig( 'snap'+formatted_time+'.png' )
-    
+    plt.savefig( 'snap'+formatted_time+'.png' , dpi=300, bbox_inches = "tight")

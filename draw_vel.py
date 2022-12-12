@@ -5,6 +5,8 @@ import numpy as np
 #import matplotlib.cm as cm
 #from matplotlib.colors import Normalize
 
+import sizes
+
 import sys
 
 #print "This is the name of the script: ", sys.argv[0]
@@ -75,5 +77,5 @@ plt.ylabel(r'$v$')
 
 #print( 'step no ' + n )
 
-plt.savefig( 'velocity_' + n + '.png')
+plt.savefig( 'velocity_' + n + '.png' , dpi=300, bbox_inches = "tight")
 plt.show()
