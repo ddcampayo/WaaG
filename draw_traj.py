@@ -31,8 +31,26 @@ plt.ylabel(r'$y$')
 
 plt.xlim([-LL/8.0 , LL/8.0 ])
 plt.ylim([-LL/8.0 , LL/8.0 ])
-#plt.clim(-1,1)
-plt.colorbar()
+#plt.clim(-0.75,-0.55 )
+
+from matplotlib import ticker
+
+def fmt(x, pos):
+#    a, b = '{:.2e}'.format(x).split('e')
+#    b = int(b)
+#    return r'${} \times 10^{{{}}}$'.format(a, b)
+    return '{:.2f}'.format(x)
+
+cb = plt.colorbar( format=ticker.FuncFormatter(fmt))
+
+#cb = plt.colorbar()
+
+tick_locator = ticker.MaxNLocator(nbins=5)
+cb.locator = tick_locator
+cb.update_ticks()
+
+#plt.show()
+#plt.colorbar()
 
 outfile = infile + '.png'
 plt.savefig( outfile , dpi=300, bbox_inches = "tight")
